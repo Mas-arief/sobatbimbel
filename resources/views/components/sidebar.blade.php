@@ -3,7 +3,7 @@
     aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto">
         <ul class="space-y-2 font-medium">
-            <li><a href="{{ url('halaman_utama') }}" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-[#1F1AA1]"><i class="fas fa-home"></i><span class="ml-3">HALAMAN UTAMA</span></a></li>
+            <li><a href="{{ url('dashboard-admin') }}" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-[#1F1AA1]"><i class="fas fa-home"></i><span class="ml-3">HALAMAN UTAMA</span></a></li>
             <li><a href="{{ url('verifikasi') }}" class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-[#1F1AA1]"><i class="fas fa-check-circle"></i><span class="ml-3">VERIFIKASI</span></a></li>
             <li>
                 <button type="button" class="flex items-center w-full p-2 text-white hover:bg-white hover:text-[#1F1AA1]" data-dropdown-toggle="multi-dropdown">

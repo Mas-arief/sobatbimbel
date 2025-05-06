@@ -27,3 +27,14 @@ Route::get('/kursus_siswa', function () {
 Route::get('/ganti_pw_siswa', function () {
     return view('ganti_pw_siswa');
 })->name('ganti_pw_siswa');
+
+use App\Http\Controllers\DashboardController;
+
+Route::get('/dashboard-admin', [DashboardController::class, 'index'])->name('dashboard');
+// routes/web.php
+use App\Http\Controllers\GuruController;
+
+Route::get('/profile_guru', [GuruController::class, 'index'])->name('guru.index');
+Route::get('/verifikasi', function () {
+    return view('verifikasi');
+});
