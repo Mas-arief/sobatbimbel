@@ -8,6 +8,15 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login'); // Asumsi file Blade bernama static_login.blade.php
 })->name('login'); // Anda tetap bisa memberikan nama rute jika diperlukan
+
+Route::get('/daftar', function () {
+    return view('daftar');
+})->name('daftarr');
+
+Route::get('/ganti_sandi', function () {
+    return view('ganti_sandi');
+})->name('ganti_sandi');
+
 Route::get('/daftar_hadir', function () {
     return view('daftar_hadir');
 })->name('daftar_hadir');
@@ -31,6 +40,7 @@ Route::get('/ganti_pw_siswa', function () {
 use App\Http\Controllers\DashboardController;
 
 Route::get('/admin.dashboard-admin', [DashboardController::class, 'index'])->name('dashboard');
+
 // routes/web.php
 use App\Http\Controllers\GuruController;
 

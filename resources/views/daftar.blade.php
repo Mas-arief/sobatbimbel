@@ -12,12 +12,12 @@
 
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm">
-        <h2 class="text-2xl font-bold text-center mb-6">MASUK</h2>
-        <form>
+        <h2 class="text-2xl font-bold text-center mb-6">DAFTAR</h2>
+        <form action="proses_daftar.php" method="POST">
             <!-- Nama Pengguna -->
             <div class="relative mb-4">
                 <input type="text" id="username" name="username" placeholder="Nama Pengguna"
-                    class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-user"></i>
                 </span>
@@ -26,34 +26,29 @@
             <!-- Kata Sandi -->
             <div class="relative mb-4">
                 <input type="password" id="password" name="password" placeholder="Kata Sandi"
-                    class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-lock"></i>
                 </span>
             </div>
 
-            <!-- Pilih Role -->
-            <div class="relative mb-6">
-                <select name="role" id="role"
-                    class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Pilih Role</option>
-                    <option value="siswa">Siswa</option>
-                    <option value="guru">Guru</option>
-                    <option value="admin">Admin</option>
-                </select>
+            <!-- Email -->
+            <div class="relative mb-4">
+                <input type="email" id="email" name="email" placeholder="Email"
+                    class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                    <i class="fas fa-user-tag"></i>
+                    <i class="fas fa-envelope"></i>
                 </span>
             </div>
 
-            <!-- Tombol Masuk -->
+            <!-- Tombol Daftar -->
             <button type="submit"
-                class="w-full bg-white text-blue-900 font-bold py-2 rounded-xl hover:bg-gray-100 transition duration-300">MASUK</button>
+                class="w-full bg-white text-blue-900 font-bold py-2 rounded-xl hover:bg-gray-100 transition duration-300">DAFTAR</button>
 
-            <!-- Link Daftar -->
+            <!-- Link Masuk -->
             <p class="text-center mt-4 text-sm text-white">
-                Belum punya akun?
-                <a href="{{ url('daftar') }}" class="font-semibold text-blue-300 hover:underline">Daftar</a>
+                Sudah punya akun?
+                <a href="{{ url('login') }}" class="font-semibold text-blue-300 hover:underline">Masuk</a>
             </p>
         </form>
     </div>
