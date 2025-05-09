@@ -38,6 +38,9 @@ class GuruController extends Controller
             ],
         ];
 
-        return view('profile_guru', compact('dataGuru'));
+        return view('admin.profile_guru', [
+            'dataGuru' => $dataGuru,
+            'tipe' => 'admin', // Ganti jadi 'guru' jika nanti untuk akun guru
+        ]);
     }
 }

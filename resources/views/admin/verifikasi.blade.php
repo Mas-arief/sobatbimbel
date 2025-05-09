@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="px-4 sm:ml-64">
   <h1 class="text-2xl font-bold text-gray-800 text-center sm:text-left">VERIFIKASI</h1>

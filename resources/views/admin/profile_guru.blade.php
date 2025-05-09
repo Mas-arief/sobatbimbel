@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('components.navbar')
 
     <div class="text-white p-2 mt-20">
         <div class="container mx-auto flex justify-between items-center">

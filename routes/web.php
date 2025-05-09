@@ -30,11 +30,41 @@ Route::get('/ganti_pw_siswa', function () {
 
 use App\Http\Controllers\DashboardController;
 
-Route::get('/dashboard-admin', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/admin.dashboard-admin', [DashboardController::class, 'index'])->name('dashboard');
 // routes/web.php
 use App\Http\Controllers\GuruController;
 
-Route::get('/profile_guru', [GuruController::class, 'index'])->name('guru.index');
-Route::get('/verifikasi', function () {
-    return view('verifikasi');
+Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('guru.index');
+Route::get('/admin.verifikasi', function () {
+    $tipe = 'admin';
+    return view('admin.verifikasi', compact('tipe'));
 });
+
+use App\Http\Controllers\ProfileController;
+
+// Menampilkan profil
+Route::get('/guru.profile', [ProfileController::class, 'show'])->name('guru.profile_guru');
+
+// Memperbarui profil
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+Route::get('/guru.daftar_hadir', function () {
+    $tipe = 'guru';
+    return view('guru.daftar_hadir', compact('tipe'));
+})->name('daftarhadir.index');
+
+Route::get('/guru.daftar_nilai', function () {
+    $tipe = 'guru';
+    return view('guru.daftar_nilai', compact('tipe'));
+})->name('daftarnilai.index');
+
+Route::get('/guru.kursus', function () {
+    $tipe = 'guru';
+    return view('guru.kursus', compact('tipe'));
+});
+
+Route::get('/siswa.profile', [App\Http\Controllers\ProfileeController::class, 'index'])->name('profile.index');
+
+Route::get('/siswa.daftar_hadir', [App\Http\Controllers\DaftarHadirController::class, 'index'])->name('daftar_hadir.index');
+Route::get('/siswa.daftar_nilai', [App\Http\Controllers\DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
+Route::get('/siswa.kursus', [App\Http\Controllers\KursusController::class, 'index'])->name('kursus.index');

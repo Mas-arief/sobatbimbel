@@ -8,7 +8,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Data bisa diambil dari database, contoh nanti ya
-        return view('dashboard-admin');
+        return view('admin.dashboard-admin', ['tipe' => 'admin']);
     }
 }
