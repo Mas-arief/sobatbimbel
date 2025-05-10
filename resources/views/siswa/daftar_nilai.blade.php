@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mt-8 sm:mt-16 md:mt-24 ml-0 sm:ml-64 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">DAFTAR NILAI</h1>
+<main class="pt-25 px-6">
+    <div class="w-full max-w-6xl">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">DAFTAR NILAI</h2>
 
-        <div class="mt-6 p-4 rounded-lg">
+        <div class="p-4 rounded-lg">
             <div class="overflow-x-auto rounded-md shadow-md">
                 <table class="w-full text-sm text-center text-black border border-white dark:text-white dark:border-gray-700">
                     <thead class="bg-gray-300 text-black dark:bg-gray-700 dark:text-gray-300">
@@ -19,35 +20,35 @@
                         <tr>
                             @for ($i = 1; $i <= 16; $i++)
                                 <th class="px-2 py-1 border border-white dark:border-gray-700">{{ $i }}</th>
-                            @endfor
+                                @endfor
                         </tr>
                     </thead>
                     <tbody class="bg-gray-100 dark:bg-gray-800">
                         <tr>
                             <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">Bahasa Indonesia</th>
                             @php
-                                $nilaiBahasaIndonesia = [80, 85, 78, 90, '', 88, '', 92, '', 86, '', '', '', 84, '', 89];
+                            $nilaiBahasaIndonesia = [80, 85, 78, 90, '', 88, '', 92, '', 86, '', '', '', 84, '', 89];
                             @endphp
                             @foreach ($nilaiBahasaIndonesia as $nilai)
-                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
+                            <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
                             @endforeach
                         </tr>
                         <tr>
                             <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">Bahasa Inggris</th>
                             @php
-                                $nilaiBahasaInggris = [75, 80, '', '', 82, '', 79, '', '', '', '', '', '', '', '', ''];
+                            $nilaiBahasaInggris = [75, 80, '', '', 82, '', 79, '', '', '', '', '', '', '', '', ''];
                             @endphp
                             @foreach ($nilaiBahasaInggris as $nilai)
-                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
+                            <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
                             @endforeach
                         </tr>
                         <tr>
                             <th class="px-4 py-2 border border-white text-center font-medium rounded-bl-md dark:border-gray-700 dark:text-white">Matematika</th>
                             @php
-                                $nilaiMatematika = [90, '', 85, 88, '', '', '', 91, '', '', '', 86, '', '', 89, ''];
+                            $nilaiMatematika = [90, '', 85, 88, '', '', '', 91, '', '', '', 86, '', '', 89, ''];
                             @endphp
                             @foreach ($nilaiMatematika as $nilai)
-                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
+                            <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
                             @endforeach
                         </tr>
                     </tbody>
@@ -55,4 +56,5 @@
             </div>
         </div>
     </div>
-@endsection
+    </div>
+    @endsection
