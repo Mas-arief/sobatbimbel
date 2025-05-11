@@ -2,7 +2,14 @@
     class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-[#1F1AA1] border-r border-[#1F1AA1] sm:translate-x-0"
     aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-[#1F1AA1]">
-        <ul class="space-y-2 font-medium">
+
+        <!-- Tambahan Teks Judul -->
+        <div class="text-white text-center text-lg font-semibold uppercase leading-tight tracking-wide mb-6">
+            Sistem Informasi <br> Siswa/i Sobat Bimbel
+        </div>
+
+        <ul class="space-y-3 font-medium">
+
             <li>
                 <a href="{{ url('guru.profile') }}"
                     class="flex items-center p-2 text-white rounded-lg hover:bg-white hover:text-[#1F1AA1] group">

@@ -1,5 +1,5 @@
 <nav class="fixed top-0 z-50 w-full bg-[#1F1AA1] border-b border-[#1F1AA1]">
-    <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="px-3 py-4 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
                 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
@@ -12,21 +12,21 @@
                         </path>
                     </svg>
                 </button>
-                <img src="{{ asset('image/logo putih.png') }}" class="h-8 me-3" alt="Logo" />
+                <img src="{{ asset('images/sb putih1.png ') }}" class="h-8 me-3" alt="Logo" />
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">SOBAT BIMBEL</span>
             </div>
             <div class="flex items-center">
-                <div class="flex items-center ms-3">
+                <div class="flex items-center ms-3 ">
                     <span class="text-white font-medium hidden sm:inline pr-4">Selamat Datang, Guru!</span>
                     <div>
                         <button type="button"
-                            class="flex text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-300"
+                            class="flex text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                             aria-expanded="false" data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6 bg-transparent">
+                                stroke-width="1.5" stroke="currentColor" class="size-8 bg-transparent">
                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 11-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0Z" />
+                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             </svg>
                         </button>
                     </div>

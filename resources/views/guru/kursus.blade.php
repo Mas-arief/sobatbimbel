@@ -3,28 +3,33 @@
 @section('title', 'Kursus')
 
 @section('content')
-    <div x-data="{ tab: 'indo', materiOpen: null, tugasOpen: null }" class="bg-gray-100 dark:bg-gray-900 min-h-screen">
-        <div class="mt-8 sm:mt-16 md:mt-24 ml-0 sm:ml-64 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">KURSUS</h1>
+    <div x-data="{ tab: 'indo', materiOpen: null, tugasOpen: null }" class=" min-h-screen">
+        <div class="mt-8 sm:mt-16 md:mt-3 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-left">KURSUS</h1>
         </div>
 
-        <div class="mt-5 flex justify-center space-x-4">
-            <button @click="tab = 'indo'"
-                    :class="{'bg-blue-800 text-white dark:bg-blue-700 dark:text-white' : tab === 'indo', 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600' : tab !== 'indo'}"
-                    class="py-2 px-4 rounded-full font-semibold transition-colors duration-200">Bahasa Indonesia</button>
-            <button @click="tab = 'inggris'"
-                    :class="{'bg-blue-800 text-white dark:bg-blue-700 dark:text-white' : tab === 'inggris', 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600' : tab !== 'inggris'}"
-                    class="py-2 px-4 rounded-full font-semibold transition-colors duration-200">Bahasa Inggris</button>
-            <button @click="tab = 'mtk'"
-                    :class="{'bg-blue-800 text-white dark:bg-blue-700 dark:text-white' : tab === 'mtk', 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600' : tab !== 'mtk'}"
-                    class="py-2 px-4 rounded-full font-semibold transition-colors duration-200">Matematika</button>
+        <!--Filter mata pelajaran-->
+        <div class="mt-5 flex justify-center space-x-6">
+                <button @click="tab = 'indo'"
+                        :class="{'bg-blue-900 text-white' : tab === 'indo','bg-blue-700 text-white hover:bg-blue-800' : tab !== 'indo'}"
+                            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">Bahasa Indonesia
+                </button>
+                <button @click="tab = 'inggris'"
+                        :class="{'bg-blue-900 text-white' : tab === 'inggris','bg-blue-700 text-white hover:bg-blue-800' : tab !== 'inggris'}"
+                            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">Bahasa Inggris
+                </button>
+                <button @click="tab = 'mtk'"
+                        :class="{'bg-blue-900 text-white' : tab === 'mtk','bg-blue-700 text-white hover:bg-blue-800' : tab !== 'mtk'}"
+                            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">Matematika
+                </button>
         </div>
+
 
         <div class="space-y-6 mt-10 max-w-4xl mx-auto text-lg">
-            <template x-for="i in 6" :key="i">
+            <template x-for="i in 16" :key="i">
                 <div x-data="{ open: null }">
                     <div class="bg-blue-800 text-white rounded-lg mb-2 dark:bg-blue-700">
-                        <div class="p-4 flex items-center justify-between cursor-pointer"
+                        <div class="p-5 flex items-center justify-between cursor-pointer"
                              @click="open = (open === i ? null : i)">
                             <div class="flex items-center space-x-2">
                                 <svg :class="{ 'transform rotate-90': open === i }"
