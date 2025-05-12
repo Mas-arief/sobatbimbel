@@ -1,34 +1,16 @@
-<!doctype html>
-<html>
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        integrity="sha512-yzK+xOuhvEfrF9D3MGoUczFayVmEr0mTwqkqMZWTtfJLPbOP+6FfqDloTfByywvqlwDZcKQhOj9MYj8+1qJZPQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+@section('content')
+<div class="px-4 sm:px-6 lg:px-8 mt-3">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-5 text-center">Manajemen Profile Siswa</h1>
 
-<body>
-    <?php include 'navbar.php'; ?>
-    <?php include 'modal_profile_siswa.php'; ?>
-
-    <div class="text-white p-2 mt-20">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="halaman_utama.php">
-                <button class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded shadow-md">
-                    Kembali
-                </button>
-            </a>
-        </div>
-    </div>
-
-    <div class="px-4">
-        <div class="max-w-7xl mx-auto">
-            <h1 class="text-2xl font-bold text-gray-800 text-center my-6">MANAJEMEN PROFILE SISWA</h1>
-        </div>
+    <div class="mb-4">
+        <a href="{{ route('dashboard') }}">
+            <button class="bg-blue-800 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded shadow-md flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i>
+                Kembali
+            </button>
+        </a>
     </div>
 
     <div class="overflow-x-auto rounded-md shadow-md max-w-7xl mx-auto mt-4">
@@ -46,25 +28,110 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                <tr class="border border-gray-300">
-                    <td class="px-4 py-2 border">001</td>
-                    <td class="px-4 py-2 border font-semibold">Nama Siswa</td>
-                    <td class="px-4 py-2 border">Bandung</td>
-                    <td class="px-4 py-2 border">2005-01-01</td>
-                    <td class="px-4 py-2 border">Laki-Laki</td>
-                    <td class="px-4 py-2 border">Jl. Merdeka No. 1</td>
-                    <td class="px-4 py-2 border">siswa1@example.com</td>
-                    <td class="px-4 py-2 border flex justify-center items-center gap-2">
-                        <button data-modal-target="modalEditSiswa" data-modal-toggle="modalEditSiswa" class="bg-white border border-gray-600 px-2 py-1 rounded text-sm hover:bg-gray-100">
-                            Edit
-                        </button>
-                        <button class="bg-white border border-gray-600 px-2 py-1 rounded text-sm hover:bg-gray-100">Hapus</button>
-                    </td>
-                </tr>
+                @php
+                    $dataSiswa = [
+                        [
+                            'id' => '001',
+                            'nama' => 'Budi Santoso',
+                            'tempat_lahir' => 'Jakarta',
+                            'tanggal_lahir' => '2006-03-15',
+                            'jenis_kelamin' => 'Laki-Laki',
+                            'alamat' => 'Jl. Kenanga No. 10',
+                            'email' => 'budi.s@example.com',
+                        ],
+                        [
+                            'id' => '002',
+                            'nama' => 'Siti Aminah',
+                            'tempat_lahir' => 'Bandung',
+                            'tanggal_lahir' => '2005-11-20',
+                            'jenis_kelamin' => 'Perempuan',
+                            'alamat' => 'Gg. Mawar No. 5',
+                            'email' => 'siti.a@example.com',
+                        ],
+                        [
+                            'id' => '003',
+                            'nama' => 'Rizky Pratama',
+                            'tempat_lahir' => 'Surabaya',
+                            'tanggal_lahir' => '2007-01-05',
+                            'jenis_kelamin' => 'Laki-Laki',
+                            'alamat' => 'Jl. Anggrek No. 123',
+                            'email' => 'rizky.p@example.com',
+                        ],
+                        // Tambahkan data siswa lainnya di sini
+                    ];
+                @endphp
+                @foreach ($dataSiswa as $siswa)
+                    <tr class="border border-gray-300">
+                        <td class="px-4 py-2 border">{{ $siswa['id'] }}</td>
+                        <td class="px-4 py-2 border font-semibold">{{ $siswa['nama'] }}</td>
+                        <td class="px-4 py-2 border">{{ $siswa['tempat_lahir'] }}</td>
+                        <td class="px-4 py-2 border">{{ $siswa['tanggal_lahir'] }}</td>
+                        <td class="px-4 py-2 border">{{ $siswa['jenis_kelamin'] }}</td>
+                        <td class="px-4 py-2 border">{{ $siswa['alamat'] }}</td>
+                        <td class="px-4 py-2 border">{{ $siswa['email'] }}</td>
+                        <td class="px-4 py-2 border flex justify-center items-center gap-2">
+                            <button onclick="openEditModal({{ json_encode($siswa) }})" data-modal-target="modalEditSiswa" data-modal-toggle="modalEditSiswa" class="bg-white border border-gray-600 px-2 py-1 rounded text-sm hover:bg-gray-100">
+                                Edit
+                            </button>
+                            <button class="bg-white border border-gray-600 px-2 py-1 rounded text-sm hover:bg-gray-100">Hapus</button>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-</body>
 
-</html>
+    @include('admin.modal_profile_siswa')
+</div>
+
+<script>
+    function openEditModal(siswa) {
+        document.getElementById('modalEditSiswa').classList.remove('hidden');
+        document.getElementById('editSiswaForm').setAttribute('data-id', siswa.id);
+        document.getElementById('editNama').value = siswa.nama;
+        document.getElementById('editTempatLahir').value = siswa.tempat_lahir;
+        document.getElementById('editTanggalLahir').value = siswa.tanggal_lahir;
+
+        if (siswa.jenis_kelamin === 'Laki-Laki') {
+            document.getElementById('editJKL').checked = true;
+        } else if (siswa.jenis_kelamin === 'Perempuan') {
+            document.getElementById('editJKP').checked = true;
+        }
+
+        document.getElementById('editAlamat').value = siswa.alamat;
+        document.getElementById('editEmail').value = siswa.email;
+        // Anda mungkin perlu menambahkan isian untuk kolom lain jika ada
+    }
+
+    function closeEditModal() {
+        document.getElementById('modalEditSiswa').classList.add('hidden');
+    }
+
+    document.getElementById('editSiswaForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const siswaId = this.getAttribute('data-id');
+        const nama = document.getElementById('editNama').value;
+        const tempatLahir = document.getElementById('editTempatLahir').value;
+        const tanggalLahir = document.getElementById('editTanggalLahir').value;
+        const jenisKelamin = document.querySelector('input[name="jenisKelamin"]:checked').value;
+        const alamat = document.getElementById('editAlamat').value;
+        const email = document.getElementById('editEmail').value;
+        // Dapatkan juga nilai kolom lain jika ada
+
+        // Karena tidak ada database, kita hanya bisa menampilkan data yang diubah di konsol
+        console.log('Data siswa setelah diubah (tanpa database):', {
+            id: siswaId,
+            nama: nama,
+            tempat_lahir: tempatLahir,
+            tanggal_lahir: tanggalLahir,
+            jenis_kelamin: jenisKelamin,
+            alamat: alamat,
+            email: email,
+            // tambahkan kolom lain jika ada
+        });
+
+        // Setelah "menyimpan" (hanya menampilkan di konsol), tutup modal
+        closeEditModal();
+    });
+</script>
+@endsection

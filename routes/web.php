@@ -73,6 +73,11 @@ Route::get('/guru.kursus', function () {
     return view('guru.kursus', compact('tipe'));
 });
 
+Route::get('/admin.profile_siswa', function () {
+    $tipe = 'admin';
+    return view('admin.profile_siswa', compact('tipe'));
+});
+
 Route::get('/admin.guru_mapel', function () {
     $tipe = 'admin';
     return view('admin.guru_mapel', compact('tipe'));
@@ -83,3 +88,12 @@ Route::get('/siswa.daftar_hadir', [App\Http\Controllers\DaftarHadirController::c
 Route::get('/siswa.daftar_nilai', [App\Http\Controllers\DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
 Route::get('/siswa.kursus', [App\Http\Controllers\KursusController::class, 'index'])->name('kursus.index');
 
+use App\Http\Controllers\TugasController;
+
+Route::post('/guru.modal_tambah_tugas', [TugasController::class, 'index'])->name('tugas.store');
+
+use App\Http\Controllers\MateriController;
+
+Route::post('/materi/store', [MateriController::class, 'store'])->name('materi.store');
+Route::get('/materi', [MateriController::class, 'index'])->name('materi.index'); // Contoh rute untuk melihat data
+Route::get('/kursus', [KursussiswaController::class, ' kursus.index'])->name('siswa.kursus');
