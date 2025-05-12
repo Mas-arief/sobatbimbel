@@ -73,7 +73,13 @@ Route::get('/guru.kursus', function () {
     return view('guru.kursus', compact('tipe'));
 });
 
+Route::get('/admin.guru_mapel', function () {
+    $tipe = 'admin';
+    return view('admin.guru_mapel', compact('tipe'));
+});
+
 Route::get('/siswa.profile', [App\Http\Controllers\ProfileeController::class, 'index'])->name('profile.index');
 Route::get('/siswa.daftar_hadir', [App\Http\Controllers\DaftarHadirController::class, 'index'])->name('daftar_hadir.index');
 Route::get('/siswa.daftar_nilai', [App\Http\Controllers\DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
 Route::get('/siswa.kursus', [App\Http\Controllers\KursusController::class, 'index'])->name('kursus.index');
+
