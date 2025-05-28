@@ -5,13 +5,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/login', function () {
-    return view('login'); // Asumsi file Blade bernama static_login.blade.php
-})->name('login'); // Anda tetap bisa memberikan nama rute jika diperlukan
-
-Route::get('/daftar', function () {
-    return view('daftar');
-})->name('daftarr');
 
 Route::get('/ganti_sandi', function () {
     return view('ganti_sandi');
@@ -83,7 +76,9 @@ Route::get('/admin.guru_mapel', function () {
     return view('admin.guru_mapel', compact('tipe'));
 });
 
-Route::get('/siswa.profile', [App\Http\Controllers\ProfileeController::class, 'index'])->name('profile.index');
+Route::get('/siswa.profile', [App\Http\Controllers\ProfileeController::class, 'index'])->name('siswa.profile');
+Route::post('/siswa.profile', [App\Http\Controllers\ProfileeController::class, 'update'])->name('siswa.profile.update');
+
 Route::get('/siswa.daftar_hadir', [App\Http\Controllers\DaftarHadirController::class, 'index'])->name('daftar_hadir.index');
 Route::get('/siswa.daftar_nilai', [App\Http\Controllers\DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
 Route::get('/siswa.kursus', [App\Http\Controllers\KursusController::class, 'index'])->name('kursus.index');
@@ -96,4 +91,20 @@ use App\Http\Controllers\MateriController;
 
 Route::post('/materi/store', [MateriController::class, 'store'])->name('materi.store');
 Route::get('/materi', [MateriController::class, 'index'])->name('materi.index'); // Contoh rute untuk melihat data
+use App\Http\Controllers\KursussiswaController;
 Route::get('/kursus', [KursussiswaController::class, ' kursus.index'])->name('siswa.kursus');
+
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Auth;
+
+// Routes Pendaftaran
+Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/daftar', [RegisterController::class, 'register']);
+
+// Routes Login
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+
+// Route Logout
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

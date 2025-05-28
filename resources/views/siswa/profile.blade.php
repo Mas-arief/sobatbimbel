@@ -9,7 +9,7 @@
 
     <!-- Form Tampil Data -->
     <div class="flex justify-center">
-        <form action="{{ route('profile.update') }}" method="POST" class="w-full max-w-3xl space-y-2">
+        <form action="{{ route('siswa.profile.update') }}" method="POST" class="w-full max-w-3xl space-y-2">
             @csrf
 
             <!-- Tampilkan pesan sukses jika ada -->
