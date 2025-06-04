@@ -14,10 +14,11 @@
                     <h5 class="text-lg font-semibold mb-2">DATA SISWA</h5>
                     <p class="text-4xl font-bold mb-2">50</p>
                     <p class="text-sm mb-4 text-center">TOTAL DATA PROFILE SISWA</p>
-                    <button
+                    <a
+                        href="{{ url('admin.profile_siswa') }}"
                         class="bg-white text-[#1F1AA1] text-sm font-semibold px-4 py-1 rounded-md hover:bg-gray-100 transition">
                         LIHAT
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Card Data Guru -->
@@ -26,10 +27,11 @@
                     <h5 class="text-lg font-semibold mb-2">DATA GURU</h5>
                     <p class="text-4xl font-bold mb-2">16</p>
                     <p class="text-sm mb-4 text-center">TOTAL DATA PROFILE GURU</p>
-                    <button
+                    <a
+                        href="{{ url('admin.profile_guru') }}"
                         class="bg-white text-[#1F1AA1] text-sm font-semibold px-4 py-1 rounded-md hover:bg-gray-100 transition">
                         LIHAT
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
