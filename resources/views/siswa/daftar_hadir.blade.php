@@ -3,7 +3,7 @@
 @section('content')
 <main class="pt-25 px-6">
     <div class="w-full max-w-6xl">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 mt-6">DAFTAR HADIR</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-6">DAFTAR HADIR</h2>
 
         <div class="p-4 rounded-lg">
             <div class="overflow-x-auto rounded-md shadow-md">
