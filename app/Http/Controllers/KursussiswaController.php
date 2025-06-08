@@ -9,35 +9,26 @@ use Illuminate\Support\Facades\File;
 
 class KursussiswaController extends Controller
 {
-    public function index(): View
+    public function index()
     {
-        // Opsi 1: Menggunakan Array Statis
         $dataKursus = [
             'indo' => [
                 1 => [
-                    'materi' => '[PDF] Materi Bahasa Indonesia Minggu 1',
+                    'materi' => 'Pengantar Bahasa Indonesia',
                     'materi_link' => '#',
-                    'tugas' => 'Tugas Bahasa Indonesia Minggu 1',
-                    'tugas_deskripsi' => ['Contoh kalimat...', 'Jelaskan perbedaan antara...'],
-                    'link_pengumpulan' => 'admin/modal_pengumpulan_tugas?minggu=1&mapel=indo',
+                    'tugas' => 'Tugas 1: Membuat Paragraf',
+                    'tugas_deskripsi' => ['Tulis paragraf naratif', 'Gunakan EYD yang benar']
                 ],
-                // ... data untuk minggu lainnya
+                // dst...
             ],
             'inggris' => [
-                // ...
+                // isi data minggu ke-1 sampai ke-16
             ],
             'mtk' => [
-                // ...
+                // isi data minggu ke-1 sampai ke-16
             ],
         ];
 
-        // Opsi 2: Menggunakan File Konfigurasi
-        // $dataKursus = Config::get('kursus');
-
-        // Opsi 3: Menggunakan File JSON
-        // $jsonData = File::get(base_path('data/kursus.json'));
-        // $dataKursus = json_decode($jsonData, true);
-
-        return view('kursus.index', ['dataKursus' => $dataKursus]); // Pastikan ini ada
+        return view('nama-view-kursus', compact('dataKursus'));
     }
 }

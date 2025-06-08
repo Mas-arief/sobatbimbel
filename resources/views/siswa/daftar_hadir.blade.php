@@ -20,37 +20,48 @@
                         <tr>
                             @for ($i = 1; $i <= 16; $i++)
                                 <th class="px-2 py-1 border border-white dark:border-gray-700">{{ $i }}</th>
-                                @endfor
+                            @endfor
                         </tr>
                     </thead>
                     <tbody class="bg-gray-100 dark:bg-gray-800">
+                        {{-- Bahasa Indonesia --}}
                         <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">Bahasa Indonesia</th>
+                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">
+                                Bahasa Indonesia
+                            </th>
                             @php
-                            $bahasaIndonesia = ['sakit', '', '', '', '', 'hadir', '', '', '', 'izin', '', '', '', '', '', ''];
+                                $bahasaIndonesia = ['sakit', '', '', '', '', 'hadir', '', '', '', 'izin', '', '', '', '', '', ''];
                             @endphp
                             @foreach ($bahasaIndonesia as $val)
-                            <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $val }}</td>
+                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
+                                    {{ $val !== '' ? $val : '-' }}
+                                </td>
                             @endforeach
                         </tr>
+
+                        {{-- Bahasa Inggris --}}
                         <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">Bahasa Inggris</th>
+                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">
+                                Bahasa Inggris
+                            </th>
                             @for ($i = 0; $i < 16; $i++)
-                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
-                                </td>
-                                @endfor
+                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">-</td>
+                            @endfor
                         </tr>
+
+                        {{-- Matematika --}}
                         <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium rounded-bl-md dark:border-gray-700 dark:text-white">Matematika</th>
+                            <th class="px-4 py-2 border border-white text-center font-medium rounded-bl-md dark:border-gray-700 dark:text-white">
+                                Matematika
+                            </th>
                             @for ($i = 0; $i < 16; $i++)
-                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
-                                </td>
-                                @endfor
+                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">-</td>
+                            @endfor
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    </div>
-    @endsection
+</main>
+@endsection

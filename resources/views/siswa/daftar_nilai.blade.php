@@ -20,35 +20,52 @@
                         <tr>
                             @for ($i = 1; $i <= 16; $i++)
                                 <th class="px-2 py-1 border border-white dark:border-gray-700">{{ $i }}</th>
-                                @endfor
+                            @endfor
                         </tr>
                     </thead>
                     <tbody class="bg-gray-100 dark:bg-gray-800">
+                        {{-- Bahasa Indonesia --}}
                         <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">Bahasa Indonesia</th>
+                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">
+                                Bahasa Indonesia
+                            </th>
                             @php
-                            $nilaiBahasaIndonesia = [80, 85, 78, 90, '', 88, '', 92, '', 86, '', '', '', 84, '', 89];
+                                $nilaiBahasaIndonesia = [80, 85, 78, 90, '', 88, '', 92, '', 86, '', '', '', 84, '', 89];
                             @endphp
                             @foreach ($nilaiBahasaIndonesia as $nilai)
-                            <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
+                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
+                                    {{ $nilai !== '' ? $nilai : '-' }}
+                                </td>
                             @endforeach
                         </tr>
+
+                        {{-- Bahasa Inggris --}}
                         <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">Bahasa Inggris</th>
+                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">
+                                Bahasa Inggris
+                            </th>
                             @php
-                            $nilaiBahasaInggris = [75, 80, '', '', 82, '', 79, '', '', '', '', '', '', '', '', ''];
+                                $nilaiBahasaInggris = [75, 80, '', '', 82, '', 79, '', '', '', '', '', '', '', '', ''];
                             @endphp
                             @foreach ($nilaiBahasaInggris as $nilai)
-                            <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
+                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
+                                    {{ $nilai !== '' ? $nilai : '-' }}
+                                </td>
                             @endforeach
                         </tr>
+
+                        {{-- Matematika --}}
                         <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium rounded-bl-md dark:border-gray-700 dark:text-white">Matematika</th>
+                            <th class="px-4 py-2 border border-white text-center font-medium rounded-bl-md dark:border-gray-700 dark:text-white">
+                                Matematika
+                            </th>
                             @php
-                            $nilaiMatematika = [90, '', 85, 88, '', '', '', 91, '', '', '', 86, '', '', 89, ''];
+                                $nilaiMatematika = [90, '', 85, 88, '', '', '', 91, '', '', '', 86, '', '', 89, ''];
                             @endphp
                             @foreach ($nilaiMatematika as $nilai)
-                            <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">{{ $nilai }}</td>
+                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
+                                    {{ $nilai !== '' ? $nilai : '-' }}
+                                </td>
                             @endforeach
                         </tr>
                     </tbody>
@@ -56,5 +73,5 @@
             </div>
         </div>
     </div>
-    </div>
-    @endsection
+</main>
+@endsection

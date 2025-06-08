@@ -70,9 +70,9 @@
             <!-- Tombol Edit -->
             <div class="flex justify-center pt-3">
                 <button type="button"
-                        data-modal-target="editProfileModal"
-                        data-modal-toggle="editProfileModal"
-                        class="text-white bg-[#1F1AA1] hover:bg-[#1a178f] focus:ring-2 focus:outline-none focus:ring-[#1F1AA1]/50 font-medium rounded-xl text-sm px-4 py-2 sm:mt-2">
+                    data-modal-target="editProfileModal"
+                    data-modal-toggle="editProfileModal"
+                    class="text-white bg-[#1F1AA1] hover:bg-[#1a178f] focus:ring-2 focus:outline-none focus:ring-[#1F1AA1]/50 font-medium rounded-xl text-sm px-4 py-2 sm:mt-2">
                     Edit Profil
                 </button>
             </div>
