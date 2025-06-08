@@ -49,7 +49,7 @@ use App\Http\Controllers\ProfileController;
 Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile_guru');
 
 // Memperbarui profil
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
 Route::get('/guru.daftar_hadir', function () {
     $tipe = 'guru';

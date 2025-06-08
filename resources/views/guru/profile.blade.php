@@ -78,4 +78,6 @@
         </form>
     </div>
 </div>
+{{-- Sertakan modal di sini --}}
+@include('guru.modal_edit_profile')
 @endsection
