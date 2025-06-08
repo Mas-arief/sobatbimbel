@@ -12,7 +12,6 @@ class AddProfileFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->nullable()->after('username');
             $table->string('alamat')->nullable()->after('email');
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable()->after('alamat');
             $table->string('telepon')->nullable()->after('jenis_kelamin');
@@ -25,7 +24,7 @@ class AddProfileFieldsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['name', 'alamat', 'jenis_kelamin', 'telepon']);
+            $table->dropColumn([ 'alamat', 'jenis_kelamin', 'telepon']);
         });
     }
 }

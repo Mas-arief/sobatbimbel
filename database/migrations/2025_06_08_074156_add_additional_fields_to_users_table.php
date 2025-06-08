@@ -12,14 +12,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Tambahkan kolom-kolom baru di sini
-            $table->string('name')->nullable()->after('username'); // Setelah username
-            $table->string('alamat')->nullable()->after('telepon'); // Sesuaikan posisi
-            $table->string('jenis_kelamin')->nullable()->after('alamat'); // Sesuaikan posisi
-            $table->string('telepon')->nullable()->after('jenis_kelamin'); // Sesuaikan posisi
-            $table->string('nisn')->nullable()->after('telepon'); // Setelah telepon atau sesuaikan
-            $table->string('kelas')->nullable()->after('nisn'); // Setelah nisn atau sesuaikan
-            $table->string('guru_mata_pelajaran')->nullable()->after('kelas'); // Setelah kelas atau sesuaikan
+            // Hapus baris 'name' di sini karena sudah ada dari migrasi create_users_table
+            // $table->string('name')->nullable()->after('username'); // <--- BARIS INI HARUS DIHAPUS
+
+            // Tambahkan kolom-kolom baru secara berurutan dan logis
+            // Mulai dari kolom yang sudah ada seperti 'email' atau 'username'
+            if (!Schema::hasColumn('users', 'alamat')) {
+                $table->string('alamat')->nullable()->after('email'); // Gunakan 'email' sebagai referensi awal
+            }
+            if (!Schema::hasColumn('users', 'jenis_kelamin')) {
+                $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable()->after('alamat');
+            }
+            if (!Schema::hasColumn('users', 'telepon')) {
+                $table->string('telepon')->nullable()->after('jenis_kelamin');
+            }
+            if (!Schema::hasColumn('users', 'nisn')) {
+                $table->string('nisn')->nullable()->unique()->after('telepon');
+            }
+            if (!Schema::hasColumn('users', 'kelas')) {
+                $table->string('kelas')->nullable()->after('nisn');
+            }
+            if (!Schema::hasColumn('users', 'guru_mata_pelajaran')) {
+                $table->string('guru_mata_pelajaran')->nullable()->after('kelas');
+            }
         });
     }
 
@@ -29,13 +44,15 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Hapus kolom-kolom jika migrasi di-rollback
+            // Pastikan semua kolom yang ditambahkan di up() juga dihapus di down()
             $table->dropColumn([
-                'name',
+                // 'name', // Hapus ini juga dari down() jika Anda menghapusnya dari up() migrasi ini
                 'alamat',
                 'jenis_kelamin',
                 'telepon',
-                'guru_mata_pelajaran',
+                'nisn', // Tambahkan
+                'kelas', // Tambahkan
+                'guru_mata_pelajaran', // Tambahkan
             ]);
         });
     }

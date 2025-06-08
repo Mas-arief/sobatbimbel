@@ -6,53 +6,42 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // Periksa jika kolom 'name' belum ada, tambahkan
-            if (!Schema::hasColumn('users', 'name')) {
-                $table->string('name')->nullable()->after('username');
-            }
-            // Tambahkan kolom-kolom lainnya setelah kolom yang sesuai
-            if (!Schema::hasColumn('users', 'alamat')) {
-                $table->string('alamat')->nullable()->after('email');
-            }
-            if (!Schema::hasColumn('users', 'jenis_kelamin')) {
-                $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable()->after('alamat');
-            }
-            if (!Schema::hasColumn('users', 'telepon')) {
-                $table->string('telepon')->nullable()->after('jenis_kelamin');
-            }
-            if (!Schema::hasColumn('users', 'nisn')) {
-                $table->string('nisn')->nullable()->unique()->after('telepon');
-            }
-            if (!Schema::hasColumn('users', 'kelas')) {
-                $table->string('kelas')->nullable()->after('nisn');
-            }
-            if (!Schema::hasColumn('users', 'guru_mata_pelajaran')) {
-                $table->string('guru_mata_pelajaran')->nullable()->after('kelas');
-            }
+        // Pastikan ini adalah Schema::create
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('username')->unique(); // Tambahkan ini jika Anda menggunakan username
+            $table->string('name')->nullable(); // Ini bisa dihapus jika tidak diperlukan, tapi harus diurus di migrasi lain atau sebagai nullable
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->string('role')->default('siswa'); // Tambahkan ini jika Anda punya kolom role
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+        // Biasanya migrasi ini juga membuat tabel lain seperti password_reset_tokens dan sessions
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'name',
-                'alamat',
-                'jenis_kelamin',
-                'telepon',
-                'nisn',
-                'kelas',
-                'guru_mata_pelajaran',
-            ]);
-        });
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
     }
 };
