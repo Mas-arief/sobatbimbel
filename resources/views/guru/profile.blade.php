@@ -23,7 +23,7 @@
             <div>
                 <label class="block text-sm font-medium text-black mb-1">ID</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
-                    {{ $user->id ?? '1234567' }}
+                    {{ $user->id ?? 'N/A' }}
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Nama</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
-                    {{ $user->name ?? 'Max Versteppen' }}
+                    {{ $user->name ?? 'N/A' }}
                 </div>
             </div>
 
@@ -39,7 +39,7 @@
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Guru Mata Pelajaran</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
-                    {{ $user->guru_mata_pelajaran ?? 'Bahasa Belanda' }}
+                    {{ $user->guru_mata_pelajaran ?? 'N/A' }}
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Jenis Kelamin</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
-                    {{ $user->jenis_kelamin ?? 'Laki-laki' }}
+                    {{ $user->jenis_kelamin ?? 'N/A' }}
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Telepon</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
-                    {{ $user->telepon ?? '085880088808' }}
+                    {{ $user->telepon ?? 'N/A' }}
                 </div>
             </div>
 
@@ -63,7 +63,7 @@
             <div>
                 <label" class="block text-sm font-medium text-black mb-1">Email</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
-                    {{ $user->email ?? 'maxxxxxxx@gmail.com' }}
+                    {{ $user->email ?? 'N/A' }}
                 </div>
             </div>
 
