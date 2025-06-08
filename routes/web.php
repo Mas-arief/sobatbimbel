@@ -46,10 +46,10 @@ Route::get('/admin.verifikasi', function () {
 use App\Http\Controllers\ProfileController;
 
 // Menampilkan profil
-Route::get('/guru.profile', [ProfileController::class, 'show'])->name('guru.profile_guru');
+Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile_guru');
 
 // Memperbarui profil
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
 Route::get('/guru.daftar_hadir', function () {
     $tipe = 'guru';
@@ -76,8 +76,16 @@ Route::get('/admin.guru_mapel', function () {
     return view('admin.guru_mapel', compact('tipe'));
 });
 
-Route::get('/siswa.profile', [App\Http\Controllers\ProfileeController::class, 'index'])->name('siswa.profile');
-Route::post('/siswa.profile', [App\Http\Controllers\ProfileeController::class, 'update'])->name('siswa.profile.update');
+use App\Http\Controllers\ProfileeController; // Pastikan Anda mengimpor controller ini
+
+// Asumsikan Anda memiliki middleware autentikasi
+Route::middleware(['auth'])->group(function () {
+    // Rute untuk menampilkan halaman profil (GET request)
+    Route::get('/siswa.profile', [ProfileeController::class, 'index'])->name('siswa.profile');
+
+    // Rute untuk menangani pengiriman form update profil (POST request)
+    Route::post('/siswa.profile', [ProfileeController::class, 'update'])->name('siswa.profile.update');
+});
 
 Route::get('/siswa.daftar_hadir', [App\Http\Controllers\DaftarHadirController::class, 'index'])->name('daftar_hadir.index');
 Route::get('/siswa.daftar_nilai', [App\Http\Controllers\DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');

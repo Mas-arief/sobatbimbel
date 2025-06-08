@@ -4,22 +4,20 @@
 
 @section('content')
 <div class="px-4 sm:px-6 lg:px-8 mt-3">
-    <!-- Judul -->
     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-1">Profil Siswa</h1>
 
-    <!-- Form Tampil Data -->
     <div class="flex justify-center">
         <form action="{{ route('siswa.profile.update') }}" method="POST" class="w-full max-w-3xl space-y-2">
             @csrf
 
-            <!-- Tampilkan pesan sukses jika ada -->
+            {{-- Tampilkan pesan sukses jika ada --}}
             @if(session('success'))
-                <div class="bg-green-500 text-white p-2 rounded text-sm">
+                <div class="bg-green-500 text-white p-2 rounded text-sm mb-4">
                     {{ session('success') }}
                 </div>
             @endif
 
-            <!-- ID -->
+            {{-- ID Pengguna --}}
             <div>
                 <label class="block text-sm font-medium text-black mb-1">ID</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
@@ -27,7 +25,7 @@
                 </div>
             </div>
 
-            <!-- Nama -->
+            {{-- Nama Pengguna --}}
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Nama</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
@@ -35,7 +33,7 @@
                 </div>
             </div>
 
-            <!-- Alamat -->
+            {{-- Alamat Lengkap --}}
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Alamat</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
@@ -43,7 +41,7 @@
                 </div>
             </div>
 
-            <!-- Jenis Kelamin -->
+            {{-- Jenis Kelamin --}}
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Jenis Kelamin</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
@@ -51,7 +49,7 @@
                 </div>
             </div>
 
-            <!-- Telepon -->
+            {{-- Nomor Telepon --}}
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Telepon</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
@@ -59,7 +57,7 @@
                 </div>
             </div>
 
-            <!-- Email -->
+            {{-- Alamat Email --}}
             <div>
                 <label class="block text-sm font-medium text-black mb-1">Email</label>
                 <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
@@ -67,7 +65,7 @@
                 </div>
             </div>
 
-            <!-- Tombol Edit -->
+            {{-- Tombol Edit Profil --}}
             <div class="flex justify-center pt-3">
                 <button type="button"
                     data-modal-target="editProfileModal"
@@ -80,6 +78,5 @@
     </div>
 </div>
 
-<!-- Modal Edit -->
 @include('siswa.modal_edit_profile')
 @endsection

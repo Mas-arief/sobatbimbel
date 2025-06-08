@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,10 +18,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username', // Pastikan ini ada
+        'username',            // <--- TAMBAHKAN INI
+        'name',
         'email',
         'password',
-        'role',     // Pastikan ini ada
+        'alamat',
+        'jenis_kelamin',
+        'telepon',
+        'role',                // <--- TAMBAHKAN INI (SANGAT PENTING UNTUK REGISTRASI ROLE)
+        'guru_mata_pelajaran', // <--- TAMBAHKAN INI (SANGAT PENTING UNTUK GURU)
+        // Jika ada kolom lain yang Anda ingin bisa diisi secara massal, tambahkan di sini.
     ];
 
     /**
