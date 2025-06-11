@@ -12,39 +12,27 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'username',            // <--- TAMBAHKAN INI
-        'name',
+        'username', // Pastikan kolom ini juga ada di migrasi
+        'name', // Ini default 'name' dari Laravel, bisa juga Anda ubah jadi 'nama_lengkap' jika mau
         'email',
         'password',
         'alamat',
         'jenis_kelamin',
         'telepon',
-        'role',                // <--- TAMBAHKAN INI (SANGAT PENTING UNTUK REGISTRASI ROLE)
-        'guru_mata_pelajaran', // <--- TAMBAHKAN INI (SANGAT PENTING UNTUK GURU)
-        // Jika ada kolom lain yang Anda ingin bisa diisi secara massal, tambahkan di sini.
+        'role',
+        'guru_mata_pelajaran',
+        // Jika ada kolom lain untuk siswa (nisn, tempat_lahir, tanggal_lahir), tambahkan di sini juga
+        // 'nisn',
+        // 'tempat_lahir',
+        // 'tanggal_lahir',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',

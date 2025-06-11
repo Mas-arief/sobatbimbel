@@ -3,44 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class GuruController extends Controller
 {
     public function index()
     {
-        $dataGuru = [
-            [
-                'id' => '001',
-                'nama' => 'Nama Guru',
-                'tempat_lahir' => 'Bandung',
-                'tanggal_lahir' => '01-01-1980',
-                'jk' => 'L',
-                'mapel' => 'Matematika',
-                'email' => 'guru1@example.com',
-            ],
-            [
-                'id' => '002',
-                'nama' => 'Nama Guru',
-                'tempat_lahir' => 'Jakarta',
-                'tanggal_lahir' => '02-02-1985',
-                'jk' => 'P',
-                'mapel' => 'Bahasa Inggris',
-                'email' => 'guru2@example.com',
-            ],
-            [
-                'id' => '003',
-                'nama' => 'Nama Guru',
-                'tempat_lahir' => 'Surabaya',
-                'tanggal_lahir' => '03-03-1990',
-                'jk' => 'L',
-                'mapel' => 'IPA',
-                'email' => 'guru3@example.com',
-            ],
-        ];
+        // Mengambil semua user dengan role 'guru' dari tabel 'users'
+        $dataGuru = User::where('role', 'guru')->get(); // <--- Ubah $dataSiswa menjadi $dataGuru
 
-        return view('admin.profile_guru', [
-            'dataGuru' => $dataGuru,
-            'tipe' => 'admin', // Ganti jadi 'guru' jika nanti untuk akun guru
-        ]);
+        $tipe = 'admin'; // Halaman ini diakses oleh admin
+
+        return view('admin.profile_guru', compact('dataGuru', 'tipe')); // Sudah benar: meneruskan $dataGuru
     }
+
+    // ... metode lain jika ada
 }

@@ -43,13 +43,14 @@ Route::get('/admin.verifikasi', function () {
     return view('admin.verifikasi', compact('tipe'));
 });
 
-use App\Http\Controllers\ProfileController;
+// routes/web.php
+use App\Http\Controllers\ProfileController; // Pastikan ini ada
 
-// Menampilkan profil
-Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile_guru');
-
-// Memperbarui profil
-Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/guru/profile', [ProfileController::class, 'showProfile'])->name('guru.profile');
+    // Ubah dari Route::post menjadi Route::put
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+});
 
 Route::get('/guru.daftar_hadir', function () {
     $tipe = 'guru';
@@ -116,3 +117,9 @@ Route::post('/login', [LoginController::class, 'login']);
 
 // Route Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+use App\Http\Controllers\SiswaController;
+Route::get('/admin.profile_siswa', [SiswaController::class, 'index'])->name('admin.profile_siswa');
+Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('admin.profile_guru');

@@ -13,7 +13,8 @@ class ProfileController extends Controller
      */
     public function dashboard()
     {
-        return view('guru.profile'); // Pastikan Anda memiliki view ini
+        // Jika dashboard guru sama dengan profil, bisa langsung redirect atau panggil showProfile
+        return $this->showProfile();
     }
 
     /**
@@ -22,8 +23,8 @@ class ProfileController extends Controller
     public function showProfile()
     {
         $user = Auth::user(); // Dapatkan user yang sedang login
-        // Pastikan Anda mempassing objek $user, bukan array hardcode
-        return view('guru.profile', compact('user'));
+        $tipe = $user->role; // Mendefinisikan $tipe agar tidak ada error compact()
+        return view('guru.profile', compact('user', 'tipe'));
     }
 
     /**
@@ -39,9 +40,9 @@ class ProfileController extends Controller
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'alamat' => ['nullable', 'string', 'max:255'],
-            'jenis_kelamin' => ['nullable', Rule::in(['Laki-laki', 'Perempuan'])],
+            'jenis_kelamin' => ['nullable', Rule::in(['Laki-laki', 'Perempuan'])], // Sesuaikan dengan nilai di DB
             'telepon' => ['nullable', 'string', 'max:20'],
-            // guru_mata_pelajaran TIDAK ADA DI SINI
+            // 'mapel' (guru_mata_pelajaran) tidak divalidasi atau diupdate di sini, sesuai permintaan.
         ]);
 
         $user->update([
@@ -53,6 +54,7 @@ class ProfileController extends Controller
             'telepon' => $request->telepon,
         ]);
 
+        // Pastikan 'guru.profile' adalah nama route yang benar ke showProfile
         return redirect()->route('guru.profile')->with('success', 'Profil Anda berhasil diperbarui!');
     }
 }
