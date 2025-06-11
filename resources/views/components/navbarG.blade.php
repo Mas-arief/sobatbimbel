@@ -12,12 +12,13 @@
                         </path>
                     </svg>
                 </button>
-                <img src="{{ asset('images/sb putih1.png ') }}" class="h-8 me-3" alt="Logo" />
+                <img src="{{ asset('images/sb putih1.png') }}" class="h-8 me-3" alt="Logo" />
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">SOBAT BIMBEL</span>
             </div>
             <div class="flex items-center">
                 <div class="flex items-center ms-3 ">
-                    <span class="text-white font-medium hidden sm:inline pr-4">Selamat Datang, Guru!</span>
+                    {{-- Menampilkan nama guru yang login --}}
+                    <span class="text-white font-medium hidden sm:inline pr-4">Selamat Datang, {{ Auth::user()->name ?? 'Guru' }}!</span>
                     <div>
                         <button type="button"
                             class="flex text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -34,15 +35,20 @@
                         id="dropdown-user">
                         <ul class="py-1 text-center" role="none">
                             <li>
-                                <a href="{{ url('ganti_sandi') }}"
+                                {{-- Pastikan menggunakan route('password.change') --}}
+                                <a href="{{ route('password.change') }}"
                                     class="block px-4 py-2 text-sm text-white hover:bg-blue-800 hover:text-white"
                                     role="menuitem">GANTI KATA SANDI</a>
                             </li>
                             <hr>
                             <li>
-                                <a href="{{ url('login') }}"
-                                    class="block px-4 py-2 text-sm text-white hover:bg-blue-800 hover:text-white"
-                                    role="menuitem">KELUAR</a>
+                                {{-- Logout dengan form POST --}}
+                                <form action="{{ route('logout') }}" method="POST" class="w-full">
+                                    @csrf
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 text-sm text-white hover:bg-blue-800 hover:text-white"
+                                        role="menuitem">KELUAR</button>
+                                </form>
                             </li>
                         </ul>
                     </div>

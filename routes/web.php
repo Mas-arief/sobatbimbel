@@ -47,7 +47,7 @@ Route::get('/admin.verifikasi', function () {
 use App\Http\Controllers\ProfileController; // Pastikan ini ada
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/guru/profile', [ProfileController::class, 'showProfile'])->name('guru.profile');
+    Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile');
     // Ubah dari Route::post menjadi Route::put
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 });
@@ -123,3 +123,16 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('adm
 use App\Http\Controllers\SiswaController;
 Route::get('/admin.profile_siswa', [SiswaController::class, 'index'])->name('admin.profile_siswa');
 Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('admin.profile_guru');
+
+
+use App\Http\Controllers\Auth\PasswordController; // Import Controller baru Anda
+Route::middleware(['auth'])->group(function () {
+    // Rute untuk menampilkan form ganti password
+    Route::get('/ganti-sandi', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
+    // Rute untuk memproses pengiriman form ganti password
+    Route::post('/ganti-sandi', [PasswordController::class, 'changePassword']);
+
+    // Rute logout (jika belum ada atau ingin memastikan ini POST)
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // Sesuaikan dengan controller logout Anda
+});
+
