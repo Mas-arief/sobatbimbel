@@ -30,9 +30,9 @@ class RegisterController extends Controller
 
         // Arahkan user sesuai dengan perannya
         if ($user->role === 'siswa') {
-            return redirect()->route('siswa.profile')->with('success', 'Pendaftaran berhasil! Selamat datang, ' . $user->name . '. Silakan lengkapi profil Anda.');
+            return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Selamat datang, ' . $user->name . '. Silakan lengkapi profil Anda.');
         } elseif ($user->role === 'guru') {
-            return redirect()->route('guru.profile')->with('success', 'Pendaftaran berhasil! Selamat datang, ' . $user->name . '. Silakan lengkapi profil Anda.');
+            return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Selamat datang, ' . $user->name . '. Silakan lengkapi profil Anda.');
         }
 
         // Redirect default jika ada masalah atau role tidak terdefinisi
