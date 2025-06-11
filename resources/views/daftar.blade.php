@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        integrity="sha512-yzK+xOuhvF9D3MGoUczFayVmEr0mTwqkqMZWTtfJLPbOP+6FfqDloTfByywvqlwDZcKQhOj9MYj8+1qJZPQ=="
+        integrity="sha512-yzK+xOuhvEfrF9D3MGoUczFayVmEr0mTwqkqMZWTtfJLPbOP+6FfqDloTfByywvqlwDZcKQhOj9MYj8+1qJZPQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Daftar Akun</title>
 </head>
@@ -17,10 +17,11 @@
         <form action="{{ route('register') }}" method="POST">
             @csrf
 
-            {{-- Menampilkan semua error validasi di bagian atas form --}}
+            {{-- Menampilkan semua error validasi di bagian atas form (dari Laravel) --}}
             @if ($errors->any())
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <ul class="list-disc list-inside text-sm">
+                    <strong class="font-bold">Terjadi Kesalahan:</strong>
+                    <ul class="mt-2 list-disc list-inside text-sm">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -36,8 +37,9 @@
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-user"></i>
                 </span>
+                {{-- Pesan error spesifik untuk username --}}
                 @error('username')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-300 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -49,8 +51,9 @@
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-id-card"></i>
                 </span>
+                {{-- Pesan error spesifik untuk name --}}
                 @error('name')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-300 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -62,8 +65,9 @@
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-envelope"></i>
                 </span>
+                {{-- Pesan error spesifik untuk email --}}
                 @error('email')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-300 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -75,8 +79,9 @@
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-lock"></i>
                 </span>
+                {{-- Pesan error spesifik untuk password --}}
                 @error('password')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-300 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -89,6 +94,7 @@
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-lock"></i>
                 </span>
+                {{-- Konfirmasi password tidak memiliki @error terpisah karena errornya digabung dengan 'password' --}}
             </div>
 
             {{-- Pilih Role (Siswa/Guru) --}}
@@ -99,12 +105,14 @@
                     <option value="">Pilih Peran</option>
                     <option value="siswa" {{ old('role') == 'siswa' ? 'selected' : '' }}>Siswa</option>
                     <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
+                    {{-- Role 'admin' tidak ditampilkan di form daftar publik, hanya admin yang bisa membuat admin lain --}}
                 </select>
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-user-tag"></i>
                 </span>
+                {{-- Pesan error spesifik untuk role --}}
                 @error('role')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-300 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -117,10 +125,6 @@
             </p>
         </form>
     </div>
-
-    <script>
-
-    </script>
 </body>
 
 </html>

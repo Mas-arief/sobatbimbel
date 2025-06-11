@@ -2,46 +2,150 @@
 
 @section('content')
 <div class="px-4 sm:px-6 lg:px-8 mt-3">
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">VERIFIKASI</h1>
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center rounded-lg py-2 bg-white shadow-sm">VERIFIKASI</h1>
 
+    {{-- Notifikasi (session messages from Laravel backend) --}}
+    @if(session('success'))
+    <div class="bg-green-100 text-green-700 px-4 py-3 rounded-lg mb-6 shadow-md text-center">
+        <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
+    </div>
+    @elseif(session('error'))
+    <div class="bg-red-100 text-red-700 px-4 py-3 rounded-lg mb-6 shadow-md text-center">
+        <i class="fas fa-exclamation-triangle mr-2"></i> {{ session('error') }}
+    </div>
+    @endif
+
+    {{-- Bagian Guru --}}
+    <h2 class="text-2xl font-semibold text-gray-700 mt-8 mb-4">Daftar Guru Menunggu Verifikasi</h2>
     <div class="flex justify-center">
-        <div class="w-full max-w-4xl overflow-x-auto shadow-md rounded-md">
-            <table class="min-w-full text-sm text-gray-800 border border-gray-300 bg-gray-200">
-                <thead class="text-xs uppercase bg-gray-300 text-center font-semibold">
-                    <tr>
-                        <th class="px-4 py-3 border">ID</th>
-                        <th class="px-4 py-3 border">NAMA</th>
-                        <th class="px-4 py-3 border">EMAIL</th>
-                        <th class="px-4 py-3 border">AKSI</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $users = [
-                            ['id' => '123104', 'nama' => 'BUDI', 'email' => 'budi@gmail.com'],
-                            ['id' => '214908', 'nama' => 'PUTRI', 'email' => 'putri@gmail.com'],
-                            ['id' => '214564', 'nama' => 'BENI', 'email' => 'beni@gmail.com'],
-                        ];
-                    @endphp
+        <div class="w-full max-w-5xl overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">
+            @include('admin.partials.verifikasi-table', ['users' => $guru])
+        </div>
+    </div>
 
-                    @foreach ($users as $index => $user)
-                        <tr class="{{ $index % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' }} text-center">
-                            <td class="px-4 py-3 border">{{ $user['id'] }}</td>
-                            <td class="px-9 py-3 border font-semibold">{{ $user['nama'] }}</td>
-                            <td class="px-8 py-3 border">{{ $user['email'] }}</td>
-                            <td class="px-1 py-3 border text-center whitespace-nowrap">
-                                <button class="bg-white border border-gray-600 px-2 py-1 rounded text-sm hover:bg-gray-100 inline-block">
-                                  <i class="fas fa-check text-green-600 mr-1"></i> Terima
-                                </button>
-                                <button class="bg-white border border-gray-600 px-2 py-1 rounded text-sm hover:bg-gray-100 inline-block ml-4">
-                                  <i class="fas fa-times text-red-600 mr-1"></i> Tolak
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    {{-- Bagian Siswa --}}
+    <h2 class="text-2xl font-semibold text-gray-700 mt-10 mb-4">Daftar Siswa Menunggu Verifikasi</h2>
+    <div class="flex justify-center">
+        <div class="w-full max-w-5xl overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">
+            @include('admin.partials.verifikasi-table', ['users' => $siswa])
+        </div>
+    </div>
+
+    <div class="mt-8 text-center">
+        <a href="{{ route('dashboard') }}" class="inline-flex items-center bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+            <i class="fas fa-arrow-left mr-3"></i>
+            Kembali ke Dashboard
+        </a>
+    </div>
+
+    <!-- Simple modal for messages (instead of alert() or window.confirm()) -->
+    <!-- This modal is placed globally outside the partials so there's only one instance -->
+    <div id="messageModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden z-50 p-4">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center border border-gray-300">
+            <p id="modalMessage" class="text-lg font-semibold text-gray-800 mb-6"></p>
+            <button id="closeModal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200">Tutup</button>
         </div>
     </div>
 </div>
+
+<script>
+    // Get references to DOM elements for the modal
+    const messageModal = document.getElementById('messageModal');
+    const modalMessage = document.getElementById('modalMessage');
+    const closeModalButton = document.getElementById('closeModal');
+
+    /**
+     * Displays a custom modal message to the user.
+     * This replaces the use of `alert()` for better UX.
+     * @param {string} message - The message to display.
+     */
+    function showMessageModal(message) {
+        modalMessage.textContent = message;
+        messageModal.classList.remove('hidden');
+    }
+
+    // Event listener to close the message modal when the 'Tutup' button is clicked
+    closeModalButton.addEventListener('click', () => {
+        messageModal.classList.add('hidden');
+    });
+
+    /**
+     * Handles the verification action (accept or reject) for a specific user.
+     * This function sends an AJAX request to the Laravel backend.
+     * Using event delegation for efficiency and robustness with dynamic elements.
+     * @param {string} userId - The ID of the user to verify.
+     * @param {string} actionType - The action to perform: 'accept' or 'reject'.
+     * @param {HTMLElement} rowElement - The table row element corresponding to the user.
+     */
+    async function handleVerification(userId, actionType, rowElement) {
+        // Disable all action buttons in the current row to prevent multiple clicks
+        rowElement.querySelectorAll('.action-btn').forEach(btn => {
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed'); // Apply disabled styling
+        });
+
+        const apiUrl = `{{ route('admin.verify-user', ['userId' => ':userId']) }}`.replace(':userId', userId);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Get CSRF token
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST', // Or 'PUT', 'PATCH' as appropriate for your backend
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken // Essential for Laravel's CSRF protection
+                },
+                body: JSON.stringify({
+                    action: actionType // Send the action type (accept or reject)
+                })
+            });
+
+            const result = await response.json(); // Parse the JSON response from the server
+
+            if (response.ok) { // Check if the HTTP status is success (2xx)
+                showMessageModal(result.message); // Show success message from backend
+                // Upon successful verification, remove the row from the table
+                rowElement.remove();
+            } else { // Handle HTTP errors (e.g., 404, 500, or validation errors from your Controller)
+                showMessageModal(`Error: ${result.message || 'Terjadi kesalahan saat memproses permintaan.'}`);
+                // Re-enable buttons if the action failed
+                rowElement.querySelectorAll('.action-btn').forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+            }
+
+        } catch (error) {
+            console.error('Error during verification:', error);
+            showMessageModal(`Terjadi kesalahan jaringan atau tak terduga: ${error.message}`);
+            // Always re-enable buttons on error to allow user to retry
+            rowElement.querySelectorAll('.action-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }
+    }
+
+    // Use event delegation for buttons. This attaches one listener to the document
+    // and handles clicks on dynamically added/removed buttons.
+    document.addEventListener('click', (event) => {
+        // Check if the clicked element or its parent matches a button with 'action-btn' class
+        const button = event.target.closest('.action-btn');
+        if (button) {
+            const row = button.closest('tr');
+            if (row) {
+                const userId = row.getAttribute('data-user-id');
+                let actionType = '';
+                if (button.classList.contains('accept-btn')) {
+                    actionType = 'accept';
+                } else if (button.classList.contains('reject-btn')) {
+                    actionType = 'reject';
+                }
+
+                if (userId && actionType) {
+                    handleVerification(userId, actionType, row);
+                }
+            }
+        }
+    });
+</script>
 @endsection

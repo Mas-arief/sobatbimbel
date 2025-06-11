@@ -12,17 +12,34 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Tambahkan kolom-kolom ini jika belum ada
-            $table->string('username')->unique()->nullable()->after('id'); // Tambahkan username jika belum ada
-            $table->text('alamat')->nullable()->after('email');
-            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable()->after('alamat');
-            $table->string('telepon')->nullable()->after('jenis_kelamin');
-            $table->enum('role', ['admin', 'guru', 'siswa'])->default('siswa')->after('password'); // Default role 'siswa'
-            $table->string('guru_mata_pelajaran')->nullable()->after('role'); // Hanya relevan untuk role guru
-            // Jika ada kolom lain yang Anda maksud untuk siswa (misal: nisn, tempat_lahir, tanggal_lahir), tambahkan juga di sini
-            // $table->string('nisn')->unique()->nullable()->after('username');
-            // $table->string('tempat_lahir')->nullable()->after('nisn');
-            // $table->date('tanggal_lahir')->nullable()->after('tempat_lahir');
+            // Tambahkan kolom 'username' HANYA JIKA belum ada
+            if (!Schema::hasColumn('users', 'username')) {
+                $table->string('username')->unique()->nullable()->after('id');
+            }
+            // Tambahkan kolom 'alamat' HANYA JIKA belum ada
+            if (!Schema::hasColumn('users', 'alamat')) {
+                $table->text('alamat')->nullable()->after('email');
+            }
+            // Tambahkan kolom 'jenis_kelamin' HANYA JIKA belum ada
+            if (!Schema::hasColumn('users', 'jenis_kelamin')) {
+                $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable()->after('alamat');
+            }
+            // Tambahkan kolom 'telepon' HANYA JIKA belum ada
+            if (!Schema::hasColumn('users', 'telepon')) {
+                $table->string('telepon')->nullable()->after('jenis_kelamin');
+            }
+            // Tambahkan kolom 'role' HANYA JIKA belum ada
+            if (!Schema::hasColumn('users', 'role')) {
+                $table->enum('role', ['admin', 'guru', 'siswa'])->default('siswa')->after('password');
+            }
+            // Tambahkan kolom 'guru_mata_pelajaran' HANYA JIKA belum ada
+            if (!Schema::hasColumn('users', 'guru_mata_pelajaran')) {
+                $table->string('guru_mata_pelajaran')->nullable()->after('role');
+            }
+            // Jika Anda menambahkan kolom lain (misalnya 'nisn'), terapkan juga pemeriksaan yang sama:
+            // if (!Schema::hasColumn('users', 'nisn')) {
+            //     $table->string('nisn')->unique()->nullable();
+            // }
         });
     }
 
@@ -32,16 +49,29 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Drop kolom-kolom ini saat rollback
-            $table->dropColumn([
-                'username',
-                'alamat',
-                'jenis_kelamin',
-                'telepon',
-                'role',
-                'guru_mata_pelajaran',
-                // 'nisn', 'tempat_lahir', 'tanggal_lahir' // Jika Anda tambahkan
-            ]);
+            // Drop kolom HANYA JIKA mereka ada
+            if (Schema::hasColumn('users', 'username')) {
+                $table->dropColumn('username');
+            }
+            if (Schema::hasColumn('users', 'alamat')) {
+                $table->dropColumn('alamat');
+            }
+            if (Schema::hasColumn('users', 'jenis_kelamin')) {
+                $table->dropColumn('jenis_kelamin');
+            }
+            if (Schema::hasColumn('users', 'telepon')) {
+                $table->dropColumn('telepon');
+            }
+            if (Schema::hasColumn('users', 'role')) {
+                $table->dropColumn('role');
+            }
+            if (Schema::hasColumn('users', 'guru_mata_pelajaran')) {
+                $table->dropColumn('guru_mata_pelajaran');
+            }
+            // Jika Anda menghapus kolom lain, terapkan juga pemeriksaan yang sama:
+            // if (Schema::hasColumn('users', 'nisn')) {
+            //     $table->dropColumn('nisn');
+            // }
         });
     }
 };

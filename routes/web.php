@@ -1,14 +1,45 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth; // Diperlukan untuk Auth::routes() atau rute logout
 
+// Pindahkan semua use statements ke bagian paling atas
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GuruController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileeController; // Pertimbangkan untuk menggabungkan dengan ProfileController
+use App\Http\Controllers\DaftarHadirController;
+use App\Http\Controllers\DaftarNilaiController;
+use App\Http\Controllers\KursusController;
+use App\Http\Controllers\TugasController;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\KursussiswaController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SiswaController; // Ditambahkan
+use App\Http\Controllers\Auth\PasswordController; // Ditambahkan
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+// --- Rute Umum / Landing Page ---
 Route::get('/', function () {
     return view('welcome');
 });
 
+// --- Rute Static yang Tidak Diatur Melalui Controller (Pertimbangkan untuk memindahkan ke controller jika ada logika) ---
 Route::get('/ganti_sandi', function () {
     return view('ganti_sandi');
-})->name('ganti_sandi');
+})->name('ganti_sandi'); // Ini bisa dihapus jika password.change digunakan secara eksklusif
 
 Route::get('/daftar_hadir', function () {
     return view('daftar_hadir');
@@ -28,111 +59,102 @@ Route::get('/kursus_siswa', function () {
 
 Route::get('/ganti_pw_siswa', function () {
     return view('ganti_pw_siswa');
-})->name('ganti_pw_siswa');
+})->name('ganti_pw_siswa'); // Ini juga bisa dihapus jika password.change digunakan
 
-use App\Http\Controllers\DashboardController;
+// --- Rute Admin (Tanpa Auth Middleware Awal) ---
+// Dashboard Admin
+Route::get('/admin.dashboard-admin', [DashboardController::class, 'index'])->name('dashboard'); // Pertimbangkan untuk mengubah nama menjadi 'admin.dashboard' dan URI ke /admin/dashboard
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard'); // Ini duplikat dari yang di atas, pilih salah satu.
 
-Route::get('/admin.dashboard-admin', [DashboardController::class, 'index'])->name('dashboard');
+// Profil Guru (dari sisi Admin)
+Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('guru.index'); // Nama rute 'guru.index' mungkin kurang jelas untuk tampilan admin
+Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('admin.profile_guru'); // Ini duplikat dari yang di atas, pilih salah satu.
 
-// routes/web.php
-use App\Http\Controllers\GuruController;
-
-Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('guru.index');
-Route::get('/admin.verifikasi', function () {
-    $tipe = 'admin';
-    return view('admin.verifikasi', compact('tipe'));
-});
-
-// routes/web.php
-use App\Http\Controllers\ProfileController; // Pastikan ini ada
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile');
-    // Ubah dari Route::post menjadi Route::put
-    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-});
-
-Route::get('/guru.daftar_hadir', function () {
-    $tipe = 'guru';
-    return view('guru.daftar_hadir', compact('tipe'));
-})->name('daftarhadir.index');
-
-Route::get('/guru.daftar_nilai', function () {
-    $tipe = 'guru';
-    return view('guru.daftar_nilai', compact('tipe'));
-})->name('daftarnilai.index');
-
-Route::get('/guru.kursus', function () {
-    $tipe = 'guru';
-    return view('guru.kursus', compact('tipe'));
-});
-
+// Profil Siswa (dari sisi Admin)
 Route::get('/admin.profile_siswa', function () {
     $tipe = 'admin';
     return view('admin.profile_siswa', compact('tipe'));
-});
+}); // Ini menggunakan closure, bisa dipindah ke SiswaController jika ada logika
+Route::get('/admin.profile_siswa', [SiswaController::class, 'index'])->name('admin.profile_siswa'); // Ini duplikat, pilih salah satu.
 
+// Guru Mata Pelajaran (dari sisi Admin)
 Route::get('/admin.guru_mapel', function () {
     $tipe = 'admin';
     return view('admin.guru_mapel', compact('tipe'));
 });
 
-use App\Http\Controllers\ProfileeController; // Pastikan Anda mengimpor controller ini
-
-// Asumsikan Anda memiliki middleware autentikasi
-Route::middleware(['auth'])->group(function () {
-    // Rute untuk menampilkan halaman profil (GET request)
-    Route::get('/siswa.profile', [ProfileeController::class, 'index'])->name('siswa.profile');
-
-    // Rute untuk menangani pengiriman form update profil (POST request)
-    Route::post('/siswa.profile', [ProfileeController::class, 'update'])->name('siswa.profile.update');
-});
-
-Route::get('/siswa.daftar_hadir', [App\Http\Controllers\DaftarHadirController::class, 'index'])->name('daftar_hadir.index');
-Route::get('/siswa.daftar_nilai', [App\Http\Controllers\DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
-Route::get('/siswa.kursus', [App\Http\Controllers\KursusController::class, 'index'])->name('kursus.index');
-
-use App\Http\Controllers\TugasController;
-
-Route::post('/guru.modal_tambah_tugas', [TugasController::class, 'index'])->name('tugas.store');
-
-use App\Http\Controllers\MateriController;
-
-Route::post('/materi/store', [MateriController::class, 'store'])->name('materi.store');
-Route::get('/materi', [MateriController::class, 'index'])->name('materi.index'); // Contoh rute untuk melihat data
-use App\Http\Controllers\KursussiswaController;
-Route::get('/kursus', [KursussiswaController::class, ' kursus.index'])->name('siswa.kursus');
-
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\LoginController;
-use Illuminate\Support\Facades\Auth;
-
-// Routes Pendaftaran
+// --- Rute Autentikasi (Pendaftaran, Login, Logout) ---
 Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/daftar', [RegisterController::class, 'register']);
 
-// Routes Login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-// Route Logout
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-use App\Http\Controllers\SiswaController;
-Route::get('/admin.profile_siswa', [SiswaController::class, 'index'])->name('admin.profile_siswa');
-Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('admin.profile_guru');
-
-
-use App\Http\Controllers\Auth\PasswordController; // Import Controller baru Anda
+// --- Rute yang Membutuhkan Autentikasi (Middleware 'auth') ---
 Route::middleware(['auth'])->group(function () {
-    // Rute untuk menampilkan form ganti password
+    // Logout
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    // Ganti Password (Untuk semua peran yang terautentikasi)
     Route::get('/ganti-sandi', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
-    // Rute untuk memproses pengiriman form ganti password
     Route::post('/ganti-sandi', [PasswordController::class, 'changePassword']);
 
-    // Rute logout (jika belum ada atau ingin memastikan ini POST)
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // Sesuaikan dengan controller logout Anda
+    // --- Rute Admin (Membutuhkan Auth) ---
+    // Verifikasi Pengguna (Guru dan Siswa)
+    Route::get('/admin.verifikasi', [AdminController::class, 'verifikasi'])->name('admin.verifikasi');
+    Route::post('/verify-user/{userId}', [AdminController::class, 'verifyUser'])->name('admin.verify-user');
+
+    // --- Rute Guru (Membutuhkan Auth) ---
+    // Profil Guru (dari sisi Guru itu sendiri)
+    Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile'); // Menggunakan nama 'guru.profile'
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update'); // Update profil umum
+
+    // Daftar Hadir Guru (view)
+    Route::get('/guru.daftar_hadir', function () {
+        $tipe = 'guru';
+        return view('guru.daftar_hadir', compact('tipe'));
+    })->name('daftarhadir.index');
+
+    // Daftar Nilai Guru (view)
+    Route::get('/guru.daftar_nilai', function () {
+        $tipe = 'guru';
+        return view('guru.daftar_nilai', compact('tipe'));
+    })->name('daftarnilai.index');
+
+    // Kursus Guru (view)
+    Route::get('/guru.kursus', function () {
+        $tipe = 'guru';
+        return view('guru.kursus', compact('tipe'));
+    });
+
+    // Tugas (untuk guru menambah tugas)
+    Route::post('/guru.modal_tambah_tugas', [TugasController::class, 'index'])->name('tugas.store'); // Index biasanya untuk GET, pertimbangkan method 'store'
+
+    // --- Rute Siswa (Membutuhkan Auth) ---
+    // Profil Siswa (dari sisi Siswa itu sendiri)
+    // Pertimbangkan untuk menggabungkan ProfileeController ke ProfileController
+    Route::get('/siswa.profile', [ProfileeController::class, 'index'])->name('siswa.profile');
+    Route::post('/siswa.profile', [ProfileeController::class, 'update'])->name('siswa.profile.update');
+
+    // Daftar Hadir Siswa
+    Route::get('/siswa.daftar_hadir', [DaftarHadirController::class, 'index'])->name('daftar_hadir.index');
+
+    // Daftar Nilai Siswa
+    Route::get('/siswa.daftar_nilai', [DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
+
+    // Kursus Siswa (view)
+    Route::get('/siswa.kursus', [KursusController::class, 'index'])->name('kursus.index'); // Ini sudah ada, tapi nama rute 'kursus.index' mungkin kurang spesifik
+    // Perbaiki: Route::get('/kursus', [KursussiswaController::class, 'kursus.index'])->name('siswa.kursus');
+    // Seharusnya: Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika KursussiswaController->index() menangani ini
 });
 
+
+// --- Rute Materi (Tergantung Akses, saat ini tidak di dalam grup auth) ---
+Route::post('/materi/store', [MateriController::class, 'store'])->name('materi.store');
+Route::get('/materi', [MateriController::class, 'index'])->name('materi.index'); // Contoh rute untuk melihat data
+
+// --- Rute Kursus Siswa (Di luar grup Auth, kemungkinan duplikat) ---
+// Perhatikan nama method 'kursus.index' ada spasi. Seharusnya hanya 'index' jika di controller.
+// Route::get('/kursus', [KursussiswaController::class, ' kursus.index'])->name('siswa.kursus');
+// Seharusnya:
+Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika kursus siswa memang perlu di luar auth

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'telepon',
         'role',
         'guru_mata_pelajaran',
+        'is_verified', // <--- TAMBAHKAN INI UNTUK VERIFIKASI ADMIN
         // Jika ada kolom lain untuk siswa (nisn, tempat_lahir, tanggal_lahir), tambahkan di sini juga
         // 'nisn',
         // 'tempat_lahir',
@@ -36,5 +37,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_verified' => 'boolean', // <--- TAMBAHKAN INI UNTUK MENGUBAHNYA MENJADI TIPE BOOLEAN
     ];
 }
