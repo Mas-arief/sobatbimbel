@@ -29,46 +29,24 @@
 
 <body class="bg-gray-50 dark:bg-gray-900">
     <div class="flex h-screen flex-col">
-        {{-- Navbar dan Sidebar dinamis --}}
+        {{-- Navbar Dinamis --}}
         <header>
             @if (isset($tipe) && $tipe === 'admin')
-            @include('components.navbarA')
-            @include('components.sidebarA')
+                @include('components.navbarA')
             @elseif (isset($tipe) && $tipe === 'guru')
-            @include('components.navbarG')
-            @include('components.sidebarG')
+                @include('components.navbarG')
             @elseif (isset($tipe) && $tipe === 'siswa')
-            @include('components.navbarS')
-            @include('components.sidebarS')
+                @include('components.navbarS')
             @endif
         </header>
 
-        <main class="flex-1 overflow-y-auto transition-all duration-200 p-4 sm:pl-64 pt-20">
+        <main class="flex-1 overflow-y-auto transition-all duration-200 p-4 pt-20">
             @yield('content')
         </main>
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const body = document.querySelector('body');
-            const sidebar = document.querySelector('.sidebar');
-            const mainContent = document.querySelector('main');
-            const sidebarToggle = document.getElementById('sidebarToggle');
-
-            if (sidebar && mainContent && sidebarToggle) {
-                sidebarToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('hidden');
-                    sidebar.classList.toggle('sm:block');
-                    mainContent.classList.toggle('sm:pl-64');
-                });
-            }
-        });
-    </script>
     <script src="https://unpkg.com/alpinejs" defer></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
 </body>
 
 </html>

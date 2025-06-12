@@ -10,7 +10,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileeController; // Pertimbangkan untuk menggabungkan dengan ProfileController
 use App\Http\Controllers\DaftarHadirController;
 use App\Http\Controllers\DaftarNilaiController;
-use App\Http\Controllers\KursusController;
+use App\Http\Controllers\KursusGuruController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\KursussiswaController;
@@ -109,23 +111,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile'); // Menggunakan nama 'guru.profile'
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update'); // Update profil umum
 
-    // Daftar Hadir Guru (view)
-    Route::get('/guru.daftar_hadir', function () {
-        $tipe = 'guru';
-        return view('guru.daftar_hadir', compact('tipe'));
-    })->name('daftarhadir.index');
+    //Route Guru
 
-    // Daftar Nilai Guru (view)
-    Route::get('/guru.daftar_nilai', function () {
-        $tipe = 'guru';
-        return view('guru.daftar_nilai', compact('tipe'));
-    })->name('daftarnilai.index');
+    Route::get('/guru/pengumpulan', [App\Http\Controllers\guru\TugasController::class, 'index'])->name('guru.pengumpulan');
+    Route::get('/tugas/{id}/edit', [App\Http\Controllers\guru\TugasController::class, 'edit'])->name('guru.tugas.edit');
 
-    // Kursus Guru (view)
-    Route::get('/guru.kursus', function () {
-        $tipe = 'guru';
-        return view('guru.kursus', compact('tipe'));
-    });
+    Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
+    // Absensi
+    Route::get('/guru.absensi', [AbsensiController::class, 'index'])->name('guru.absensi');
+    // Penilaian
+    // Penilaian
+    Route::get('/penilaian/{mapelId}', [PenilaianController::class, 'index'])->name('penilaian.index');
+    Route::post('/penilaian/store', [PenilaianController::class, 'store'])->name('penilaian.store');
+
 
     // Tugas (untuk guru menambah tugas)
     Route::post('/guru.modal_tambah_tugas', [TugasController::class, 'index'])->name('tugas.store'); // Index biasanya untuk GET, pertimbangkan method 'store'
@@ -143,7 +141,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/siswa.daftar_nilai', [DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
 
     // Kursus Siswa (view)
-    Route::get('/siswa.kursus', [KursusController::class, 'index'])->name('kursus.index'); // Ini sudah ada, tapi nama rute 'kursus.index' mungkin kurang spesifik
+    Route::get('/siswa.kursus', [KursusSiswaController::class, 'index'])->name('kursus.index'); // Ini sudah ada, tapi nama rute 'kursus.index' mungkin kurang spesifik
     // Perbaiki: Route::get('/kursus', [KursussiswaController::class, 'kursus.index'])->name('siswa.kursus');
     // Seharusnya: Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika KursussiswaController->index() menangani ini
 });

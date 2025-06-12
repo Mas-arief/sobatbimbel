@@ -39,4 +39,14 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_verified' => 'boolean', // <--- TAMBAHKAN INI UNTUK MENGUBAHNYA MENJADI TIPE BOOLEAN
     ];
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'siswa_id');
+    }
+
+    public function tugas()
+    {
+        return $this->hasMany(Tugas::class, 'user_id');
+    }
 }

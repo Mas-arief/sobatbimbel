@@ -9,7 +9,7 @@
             Sistem Informasi <br> Siswa/i Sobat Bimbel
         </div>
 
-        <ul class="space-y-3 text-sm font-medium">
+        <ul class="space-y-3 text-base font-medium">
             <!-- Halaman Utama -->
             <li>
                 <a href="{{ url('admin.dashboard-admin') }}"
@@ -54,13 +54,6 @@
                             class="flex items-center px-2 py-1 rounded hover:bg-white hover:text-[#1F1AA1] transition">
                             <i class="fas fa-user-graduate mr-2 w-4"></i>
                             <span>PROFILE SISWA</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('admin.guru_mapel') }}"
-                            class="flex items-center px-2 py-1 rounded hover:bg-white hover:text-[#1F1AA1] transition">
-                            <i class="fas fa-book mr-2 w-4"></i>
-                            <span>GURU DAN MAPEL</span>
                         </a>
                     </li>
                 </ul>
