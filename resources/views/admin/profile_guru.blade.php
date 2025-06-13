@@ -4,16 +4,6 @@
 <div class="px-4 sm:px-6 lg:px-8 mt-3">
     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-5 text-center">Manajemen Profile Guru</h1>
 
-    <div class="mb-4">
-        {{-- Tombol Kembali ke Dashboard Admin --}}
-        <a href="{{ route('admin.dashboard') }}">
-            <button class="bg-blue-800 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded shadow-md flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </button>
-        </a>
-    </div>
-
     <div class="flex justify-center">
         <div class="w-full max-w-6xl overflow-x-auto rounded-md shadow-md">
             <table class="min-w-full text-sm text-left text-black border border-gray-300 bg-gray-200">
@@ -32,29 +22,45 @@
                 <tbody class="text-center">
                     {{-- Pastikan $dataGuru diteruskan dari controller (GuruController@index) --}}
                     @forelse ($dataGuru as $guru)
-                        <tr class="border border-gray-300">
-                            <td class="px-4 py-2 border">{{ $guru->id }}</td>
-                            {{-- Mengakses properti dari objek $guru --}}
-                            <td class="px-4 py-2 border font-semibold">{{ $guru->name ?? $guru->username }}</td> {{-- Gunakan 'name' atau 'username' --}}
-                            <td class="px-4 py-2 border">{{ $guru->jenis_kelamin ?: '-' }}</td> {{-- Sesuaikan dengan nama kolom di DB Anda --}}
-                            <td class="px-4 py-2 border">{{ $guru->alamat ?: '-' }}</td>
-                            <td class="px-4 py-2 border">{{ $guru->guru_mata_pelajaran ?: '-' }}</td> {{-- Asumsi kolom 'mapel' ada di tabel 'users' --}}
-                            <td class="px-4 py-2 border">{{ $guru->email }}</td>
-                            <td class="px-4 py-2 border">{{ $guru->telepon ?: '-' }}</td> {{-- Asumsi kolom 'telepon' ada di tabel 'users' --}}
-                            <td class="px-4 py-2 border">
-                                <div class="flex justify-center gap-2">
-                                    {{-- Tombol Edit (diaktifkan kembali dengan event onclick) --}}
-                                    {{-- Tombol Hapus --}}
-                                    <button class="bg-white border border-gray-600 px-3 py-1 rounded text-sm hover:bg-gray-100 flex items-center gap-1">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                    <tr class="border border-gray-300">
+                        <td class="px-4 py-2 border">{{ $guru->id }}</td>
+                        {{-- Mengakses properti dari objek $guru --}}
+                        <td class="px-4 py-2 border font-semibold">{{ $guru->name ?? $guru->username }}</td> {{-- Gunakan 'name' atau 'username' --}}
+                        <td class="px-4 py-2 border">{{ $guru->jenis_kelamin ?: '-' }}</td> {{-- Sesuaikan dengan nama kolom di DB Anda --}}
+                        <td class="px-4 py-2 border">{{ $guru->alamat ?: '-' }}</td>
+                        <td class="px-4 py-2 border">{{ $guru->guru_mata_pelajaran ?: '-' }}</td> {{-- Asumsi kolom 'mapel' ada di tabel 'users' --}}
+                        <td class="px-4 py-2 border">{{ $guru->email }}</td>
+                        <td class="px-4 py-2 border">{{ $guru->telepon ?: '-' }}</td> {{-- Asumsi kolom 'telepon' ada di tabel 'users' --}}
+                        <td class="px-4 py-2 border">
+                            <div class="flex justify-center gap-2">
+                                <!-- Tombol Edit -->
+                                <button
+                                    type="button"
+                                    class="btn-edit bg-white border border-gray-600 px-3 py-1 rounded text-sm hover:bg-gray-100 flex items-center gap-1"
+                                    data-id="{{ $guru->id }}"
+                                    data-nama="{{ $guru->name ?? $guru->username }}"
+                                    data-tempat="{{ $guru->tempat_lahir }}"
+                                    data-tanggal="{{ $guru->tanggal_lahir }}"
+                                    data-jk="{{ $guru->jenis_kelamin }}"
+                                    data-mapel="{{ $guru->guru_mata_pelajaran }}"
+                                    data-email="{{ $guru->email }}"
+                                    data-telepon="{{ $guru->telepon }}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+
+
+                                <!-- Tombol Hapus -->
+                                <button class="bg-white border border-gray-600 px-3 py-1 rounded text-sm hover:bg-gray-100 flex items-center gap-1">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
+                            </div>
+                        </td>
+
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="9" class="px-4 py-4 text-center text-gray-500">Tidak ada data guru.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="9" class="px-4 py-4 text-center text-gray-500">Tidak ada data guru.</td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -155,4 +161,37 @@
         // location.reload(); // Hanya jika Anda ingin me-refresh halaman setelah update
     });
 </script>
+<script>
+    document.querySelectorAll('.btn-edit').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = document.getElementById('modalEditGuru');
+            modal.classList.remove('hidden');
+
+            document.getElementById('editGuruForm').setAttribute('data-id', this.dataset.id);
+            document.getElementById('editNama').value = this.dataset.nama || '';
+            document.getElementById('editTempatLahir').value = this.dataset.tempat || '';
+            document.getElementById('editTanggalLahir').value = this.dataset.tanggal || '';
+            document.getElementById('editMapel').value = this.dataset.mapel || '';
+            document.getElementById('editEmail').value = this.dataset.email || '';
+            document.getElementById('editNoHP').value = this.dataset.telepon || '';
+
+            const jk = this.dataset.jk;
+            const editJKL = document.getElementById('editJKL');
+            const editJKP = document.getElementById('editJKP');
+
+            if (jk === 'L' || jk === 'Laki-Laki') {
+                editJKL.checked = true;
+                editJKP.checked = false;
+            } else if (jk === 'P' || jk === 'Perempuan') {
+                editJKL.checked = false;
+                editJKP.checked = true;
+            } else {
+                editJKL.checked = false;
+                editJKP.checked = false;
+            }
+        });
+    });
+</script>
+
+@include('admin.modal_profile_guru')
 @endsection

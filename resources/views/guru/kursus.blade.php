@@ -57,7 +57,7 @@
                                                 <span>Tambah Materi</span>
                                             </button>
 
-                                            <p class="ml-6 text-gray-100">Materi Bahasa Indonesia - M2</p>
+                                            <p class="ml-6 text-gray-100">Materi Bahasa Indonesia</p>
 
                                             <hr class="my-2 border-gray-300 dark:border-gray-600">
 
@@ -67,7 +67,7 @@
                                                 <i class="fas fa-book"></i>
                                                 <span>Buat Tugas</span>
                                             </button>
-                                            <p class="ml-6 text-gray-100">Pengumpulan Tugas M2</p>
+                                            <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
 
                                             <a href="{{ route('guru.pengumpulan') }}"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
@@ -99,7 +99,7 @@
                                                 <span>Tambah Materi</span>
                                             </button>
 
-                                            <p class="ml-6 text-gray-100">Materi Bahasa Inggris - M2</p>
+                                            <p class="ml-6 text-gray-100">Materi Bahasa Inggris</p>
 
                                             <hr class="my-2 border-gray-300 dark:border-gray-600">
 
@@ -109,7 +109,7 @@
                                                 <i class="fas fa-book"></i>
                                                 <span>Buat Tugas</span>
                                             </button>
-                                            <p class="ml-6 text-gray-100">Pengumpulan Tugas M2</p>
+                                            <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
 
                                             <a href="{{ route('guru.pengumpulan') }}"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
@@ -141,7 +141,7 @@
                                                 <span>Tambah Materi</span>
                                             </button>
 
-                                            <p class="ml-6 text-gray-100">Materi Matematika - M2</p>
+                                            <p class="ml-6 text-gray-100">Materi Matematika</p>
 
                                             <hr class="my-2 border-gray-300 dark:border-gray-600">
 
@@ -151,7 +151,7 @@
                                                 <i class="fas fa-book"></i>
                                                 <span>Buat Tugas</span>
                                             </button>
-                                            <p class="ml-6 text-gray-100">Pengumpulan Tugas M2</p>
+                                            <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
 
                                             <a href="{{ route('guru.pengumpulan') }}"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
