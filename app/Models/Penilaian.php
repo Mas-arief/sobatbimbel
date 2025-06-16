@@ -9,18 +9,19 @@ class Penilaian extends Model
 {
     use HasFactory;
 
-    protected $table = 'penilaians';
+    protected $table = 'penilaian';
 
     protected $fillable = [
-        'user_id',
+        'siswa_id',
         'mapel_id',
+        'minggu',   // <--- TAMBAHKAN BARIS INI
         'nilai',
     ];
 
     // Relasi ke user (siswa)
-    public function user()
+    public function siswa()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'siswa_id');
     }
 
     // Relasi ke mapel

@@ -1,51 +1,90 @@
-<form method="POST" action="{{ route('absensi.store') }}">
-    @csrf
-    <input type="hidden" name="mapel_id" value="{{ $mapel->id }}">
-    <input type="hidden" name="minggu_ke" value="{{ $mingguKe }}">
+{{-- resources/views/absensi/create.blade.php --}}
+@extends('layouts.app')
 
-    <!-- Tombol Auto Ceklis -->
-    <div class="flex justify-end max-w-3xl mx-auto mb-2">
-        <button type="button" onclick="checkAll()" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded text-sm">
-            Ceklis Semua Hadir
-        </button>
-    </div>
+@section('content')
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm border-t-4 border-blue-600 mb-6">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">INPUT DAFTAR HADIR</h1>
 
-    <div class="overflow-y-auto max-h-[400px] border rounded-md w-full max-w-3xl mx-auto mt-2">
-        <table class="table-auto w-full border-collapse">
-            <thead class="bg-gray-200 sticky top-0 z-10 text-sm">
-                <tr>
-                    <th class="p-2 border text-left">Nama</th>
-                    <th class="p-2 border text-center">Kehadiran</th>
-                    <th class="p-2 border text-center">Keterangan</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($absensi as $index => $absen)
-                    <tr class="even:bg-gray-100 text-sm">
-                        <td class="p-2 border">{{ $absen->siswa->nama ?? 'Nama Tidak Ditemukan' }}
-                            <input type="hidden" name="siswa_id[{{ $index }}]" value="{{ $absen->siswa->id }}">
-                        </td>
-                        <td class="p-2 border text-center">
-                            <input type="checkbox" class="kehadiran-checkbox" name="kehadiran[{{ $index }}]" value="1" {{ $absen->kehadiran ? 'checked' : '' }}>
-                        </td>
-                        <td class="p-2 border text-center">
-                            <input type="text" name="keterangan[{{ $index }}]" value="{{ $absen->keterangan }}" class="border rounded p-1 text-sm w-full">
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+                <!-- Info Mapel dan Minggu -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-2">
+                        <span class="text-gray-700 font-medium w-20">Mapel:</span>
+                        <span class="text-gray-800">{{ $mapel->nama }}</span>
+                    </div>
+                    <div class="flex items-center mb-4">
+    <label for="minggu_ke" class="text-gray-700 font-medium w-20">Minggu Ke:</label>
+    <select name="minggu_ke" id="minggu_ke" class="px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-700">
+        @foreach ($availableWeeks as $week)
+            <option value="{{ $week }}" {{ $week == $mingguKe ? 'selected' : '' }}>
+                Minggu ke-{{ $week }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-    <div class="flex justify-end space-x-2 mt-4 max-w-3xl mx-auto">
-        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white px-3 py-1.5 rounded text-sm">
-            Simpan Absensi
-        </button>
-        <a href="{{ url()->previous() }}" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1.5 rounded text-sm">
-            Kembali
-        </a>
+                </div>
+
+                <!-- Form -->
+                <form method="POST" action="{{ route('absensi.store') }}">
+                    @csrf
+                    <input type="hidden" name="mapel_id" value="{{ $mapel->id }}">
+                    <input type="hidden" name="minggu_ke" value="{{ $mingguKe }}">
+
+                    <!-- Tabel Absensi -->
+                    <div class="bg-white rounded-lg overflow-hidden border">
+                        <table class="w-full">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b">Nama</th>
+                                    <th class="px-6 py-4 text-center text-sm font-semibold text-gray-700 border-b">Kehadiran</th>
+                                    <th class="px-6 py-4 text-center text-sm font-semibold text-gray-700 border-b">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($absensi as $index => $absen)
+                                <tr class="border-b {{ $index % 2 == 0 ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100 transition-colors">
+                                    <td class="px-6 py-4 text-gray-800">
+                                        {{ $absen->siswa->nama ?? 'Nama Siswa/i' }}
+                                        <input type="hidden" name="siswa_id[{{ $index }}]" value="{{ $absen->siswa->id }}">
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="flex justify-center">
+                                            <input type="checkbox"
+                                                class="kehadiran-checkbox w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                                                name="kehadiran[{{ $index }}]"
+                                                value="1"
+                                                {{ $absen->kehadiran ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <input type="text"
+                                            name="keterangan[{{ $index }}]"
+                                            value="{{ $absen->keterangan }}"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Masukkan keterangan...">
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Tombol Submit -->
+                    <div class="flex justify-end mt-6">
+                        <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-md transition-colors duration-200 shadow-sm">
+                            SIMPAN
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</form>
+</div>
 
 <script>
     // Auto ceklis semua siswa
@@ -53,3 +92,4 @@
         document.querySelectorAll('.kehadiran-checkbox').forEach(cb => cb.checked = true);
     }
 </script>
+@endsection

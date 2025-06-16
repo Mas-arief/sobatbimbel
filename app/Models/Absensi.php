@@ -2,19 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Absensi extends Model
 {
-    protected $table = 'absensi'; //ini penting!
+    use HasFactory;
 
+    protected $table = 'absensi'; // Nama tabel di database
     protected $fillable = [
-        'id_siswa', 'id_mapel', 'minggu_ke', 'status',
+        'id_siswa',
+        'id_mapel',
+        'minggu_ke',
+        'kehadiran',
+        'keterangan',
+    ];
+    protected $casts = [
+        'kehadiran' => 'boolean', // Memastikan 'kehadiran' disimpan sebagai boolean
     ];
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'id_siswa');
+        return $this->belongsTo(User::class, 'id_siswa');
     }
 
     public function mapel()

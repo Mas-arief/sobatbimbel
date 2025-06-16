@@ -20,54 +20,28 @@
                         <tr>
                             @for ($i = 1; $i <= 16; $i++)
                                 <th class="px-2 py-1 border border-white dark:border-gray-700">{{ $i }}</th>
-                            @endfor
+                                @endfor
                         </tr>
                     </thead>
                     <tbody class="bg-gray-100 dark:bg-gray-800">
-                        {{-- Bahasa Indonesia --}}
+                        @foreach ($mapel as $m)
                         <tr>
                             <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">
-                                Bahasa Indonesia
+                                {{ $m->nama }}
                             </th>
-                            @php
-                                $nilaiBahasaIndonesia = [80, 85, 78, 90, '', 88, '', 92, '', 86, '', '', '', 84, '', 89];
-                            @endphp
-                            @foreach ($nilaiBahasaIndonesia as $nilai)
+                            @for ($i = 1; $i <= 16; $i++)
                                 <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
-                                    {{ $nilai !== '' ? $nilai : '-' }}
+                                @php
+                                // $penilaianSiswa is grouped by mapel_id in controller
+                                // So, $penilaianSiswa->get($m->id) gives us a collection of grades for this mapel
+                                // Then we find the specific grade for the current week ($i)
+                                $nilaiDitemukan = $penilaianSiswa->get($m->id)?->where('minggu', $i)->first();
+                                @endphp
+                                {{ $nilaiDitemukan ? $nilaiDitemukan->nilai : '-' }}
                                 </td>
-                            @endforeach
+                                @endfor
                         </tr>
-
-                        {{-- Bahasa Inggris --}}
-                        <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium dark:border-gray-700 dark:text-white">
-                                Bahasa Inggris
-                            </th>
-                            @php
-                                $nilaiBahasaInggris = [75, 80, '', '', 82, '', 79, '', '', '', '', '', '', '', '', ''];
-                            @endphp
-                            @foreach ($nilaiBahasaInggris as $nilai)
-                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
-                                    {{ $nilai !== '' ? $nilai : '-' }}
-                                </td>
-                            @endforeach
-                        </tr>
-
-                        {{-- Matematika --}}
-                        <tr>
-                            <th class="px-4 py-2 border border-white text-center font-medium rounded-bl-md dark:border-gray-700 dark:text-white">
-                                Matematika
-                            </th>
-                            @php
-                                $nilaiMatematika = [90, '', 85, 88, '', '', '', 91, '', '', '', 86, '', '', 89, ''];
-                            @endphp
-                            @foreach ($nilaiMatematika as $nilai)
-                                <td class="px-2 py-1 border border-white dark:border-gray-700 dark:text-white">
-                                    {{ $nilai !== '' ? $nilai : '-' }}
-                                </td>
-                            @endforeach
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

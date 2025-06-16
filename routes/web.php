@@ -22,6 +22,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SiswaController; // Ditambahkan
 use App\Http\Controllers\Auth\PasswordController; // Ditambahkan
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,8 +54,8 @@ Route::get('/profil_siswa', function () {
     return view('profil_siswa');
 })->name('profil_siswa');
 
-Route::get('/nilai_siswa', function () {
-    return view('nilai_siswa');
+Route::middleware(['auth', 'role:siswa'])->group(function () {
+    return view('siswa.daftar_nilai');
 })->name('nilai_siswa');
 
 Route::get('/kursus_siswa', function () {
@@ -119,9 +122,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
     // Absensi
     Route::get('/guru.absensi', [AbsensiController::class, 'index'])->name('guru.absensi');
+    Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store'); // ini untuk menyimpan
     // Penilaian
-    // Penilaian
-    Route::get('/penilaian/{mapelId}', [PenilaianController::class, 'index'])->name('penilaian.index');
+    Route::get('guru.penilaian/{mapelId}', [PenilaianController::class, 'index'])->name('penilaian.index');
     Route::post('/penilaian/store', [PenilaianController::class, 'store'])->name('penilaian.store');
 
 
