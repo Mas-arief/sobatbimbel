@@ -56,9 +56,7 @@
                                             <i class="fas fa-file-pdf"></i>
                                             <span>Tambah Materi</span>
                                         </button>
-
                                         <p class="ml-6 text-gray-100">Materi Bahasa Indonesia</p>
-
                                         <hr class="my-2 border-gray-300 dark:border-gray-600">
 
                                         <button data-modal-target="modal_Tambah_Tugas"
@@ -92,13 +90,94 @@
                                         @endif
                                     </div>
                                 </template>
-                                <!-- bagian inggris dan mtk tidak diubah -->
+
+                                <template x-if="tab === 'inggris'">
+                                    <div>
+                                        <button data-modal-target="modal_Tambah_Materi"
+                                            data-modal-toggle="modal_Tambah_Materi"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-file-pdf"></i>
+                                            <span>Tambah Materi</span>
+                                        </button>
+                                        <p class="ml-6 text-gray-100">Materi Bahasa Inggris</p>
+                                        <hr class="my-2 border-gray-300 dark:border-gray-600">
+
+                                        <button data-modal-target="modal_Tambah_Tugas"
+                                            data-modal-toggle="modal_Tambah_Tugas"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-book"></i>
+                                            <span>Buat Tugas</span>
+                                        </button>
+                                        <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
+
+                                        <a href="{{ route('guru.pengumpulan') }}"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
+                                            <i class="fas fa-paperclip"></i>
+                                            <span>Pengumpulan</span>
+                                        </a>
+
+                                        <hr class="my-2 border-gray-300 dark:border-gray-600">
+
+                                        @if(isset($mapel['inggris']))
+                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + mingguAktif"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Absensi</span>
+                                        </a>
+
+                                        <a href="{{ route('penilaian.index', ['mapelId' => $mapel['inggris']->id]) }}"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-clipboard-check"></i>
+                                            <span>Penilaian</span>
+                                        </a>
+                                        @endif
+                                    </div>
+                                </template>
+
+                                <template x-if="tab === 'mtk'">
+                                    <div>
+                                        <button data-modal-target="modal_Tambah_Materi"
+                                            data-modal-toggle="modal_Tambah_Materi"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-file-pdf"></i>
+                                            <span>Tambah Materi</span>
+                                        </button>
+                                        <p class="ml-6 text-gray-100">Materi Matematika</p>
+                                        <hr class="my-2 border-gray-300 dark:border-gray-600">
+
+                                        <button data-modal-target="modal_Tambah_Tugas"
+                                            data-modal-toggle="modal_Tambah_Tugas"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-book"></i>
+                                            <span>Buat Tugas</span>
+                                        </button>
+                                        <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
+
+                                        <a href="{{ route('guru.pengumpulan') }}"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
+                                            <i class="fas fa-paperclip"></i>
+                                            <span>Pengumpulan</span>
+                                        </a>
+
+                                        <hr class="my-2 border-gray-300 dark:border-gray-600">
+
+                                        @if(isset($mapel['mtk']))
+                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + mingguAktif"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Absensi</span>
+                                        </a>
+
+                                        <a href="{{ route('penilaian.index', ['mapelId' => $mapel['mtk']->id]) }}"
+                                            class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                            <i class="fas fa-clipboard-check"></i>
+                                            <span>Penilaian</span>
+                                        </a>
+                                        @endif
+                                    </div>
+                                </template>
                             </ul>
                         </div>
-
-                        <hr class="my-2 border-gray-200 dark:border-gray-700">
-
-                        <!-- Bagian tugas tetap -->
                     </div>
                 </div>
             </div>
