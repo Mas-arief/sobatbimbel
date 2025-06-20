@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('mapel', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama_mapel');
+            $table->string('kode_mapel')->unique();
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }

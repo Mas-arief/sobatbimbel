@@ -55,19 +55,13 @@
                         <a :href="dataKursus[tab][{{ $i }}]?.pdf1" target="_blank"
                             class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition">
                             <i class="fas fa-file-pdf"></i>
-                            <span>Teori 1 (PDF)</span>
-                        </a>
-
-                        <a :href="dataKursus[tab][{{ $i }}]?.pdf2" target="_blank"
-                            class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Teori 2 (PDF)</span>
+                            <span>Materi</span>
                         </a>
 
                         <a :href="dataKursus[tab][{{ $i }}]?.video" target="_blank"
                             class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition">
-                            <i class="fas fa-play-circle"></i>
-                            <span>Materi Video</span>
+                            <i class="fas fa-book"></i>
+                            <span>Tugas pelajaran</span>
                         </a>
                     </div>
 

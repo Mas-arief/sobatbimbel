@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('materi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mapel_id')->constrained('mapel')->onDelete('cascade');
-            $table->integer('minggu');
-            $table->string('judul');
-            $table->string('file')->nullable();
+            $table->string('judul_materi');
+            $table->string('file_materi'); // path ke file yang diupload
+            $table->integer('minggu_ke'); // minggu 1-16
+            $table->unsignedBigInteger('mapel_id'); // foreign key ke mata pelajaran
+            $table->string('file_type')->nullable(); // pdf, docx, pptx
+            $table->string('original_filename')->nullable(); // nama file asli
             $table->timestamps();
+
+            // Index untuk query yang lebih cepat
+            $table->index(['minggu_ke', 'mapel_id']);
         });
     }
 

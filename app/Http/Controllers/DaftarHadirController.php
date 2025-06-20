@@ -17,7 +17,7 @@ class DaftarHadirController extends Controller
         try {
             $this->validateRequiredTables(); // Memastikan tabel ada
 
-            $mapels = Mapel::orderBy('nama')->get();
+            $mapel = Mapel::orderBy('nama')->get();
             $students = User::where('role', 'siswa')->orderBy('name')->get();
 
             $query = Absensi::with(['siswa:id,name,email', 'mapel:id,nama']);
@@ -31,8 +31,8 @@ class DaftarHadirController extends Controller
             }
 
             $attendanceData = $query->get();
-
-            return view('siswa.daftar_hadir', compact('mapels', 'students', 'attendanceData'));
+           $tipe = 'siswa';
+            return view('siswa.daftar_hadir', compact('mapel', 'students', 'attendanceData', 'tipe'));
         } catch (\Exception $e) {
             return back()->withErrors('Terjadi kesalahan saat memuat daftar hadir: ' . $e->getMessage());
         }
@@ -44,8 +44,7 @@ class DaftarHadirController extends Controller
 
         foreach ($requiredTables as $table) {
             if (!Schema::hasTable($table)) {
-                throw new \Exception("Tabel `{$table}` tidak ditemukan di database Anda. Pastikan migrasi sudah dijalankan.");
+                throw new \Exception("Tabel {$table} tidak ditemukan di database Anda. Pastikan migrasi sudah dijalankan.");
             }
-        }
-    }
+ }}
 }

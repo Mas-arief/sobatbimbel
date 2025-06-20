@@ -29,6 +29,6 @@ class KursussiswaController extends Controller
             ],
         ];
 
-        return view('nama-view-kursus', compact('dataKursus'));
+        return view('siswa.kursus', compact('dataKursus'));
     }
 }

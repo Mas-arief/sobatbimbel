@@ -4,31 +4,30 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
-    public function up()
+return new class extends Migration {
+    public function up(): void
     {
         Schema::create('absensi', function (Blueprint $table) {
-            $table->id(); // ID Absensi
-            $table->unsignedBigInteger('id_siswa'); // FK ke siswa
-            $table->unsignedBigInteger('id_mapel'); // FK ke mapel
-            $table->string('nama'); // Nama siswa (optional)
-            $table->integer('minggu_ke'); // Minggu ke berapa
-            $table->boolean('kehadiran')->default(false); // Auto centang jika hadir
-            $table->enum('keterangan', ['sakit', 'izin', 'alpha'])->nullable();
+            $table->id();
+
+            $table->unsignedBigInteger('id_siswa');
+            $table->unsignedBigInteger('id_mapel');
+
+            $table->integer('minggu_ke');
+
+            // Ubah kehadiran jadi enum (bukan boolean)
+            $table->enum('kehadiran', ['hadir', 'izin', 'sakit', 'alpha'])->default('alpha');
+
+            $table->string('keterangan')->nullable();
             $table->timestamps();
 
-            // Foreign key constraints (optional, if you have these tables)
-            $table->foreign('id_siswa')->references('id')->on('siswas')->onDelete('cascade');
-            $table->foreign('id_mapel')->references('id')->on('mapels')->onDelete('cascade');
+            $table->foreign('id_siswa')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_mapel')->references('id')->on('mapel')->onDelete('cascade');
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('absensi');
-    }
+}
 };

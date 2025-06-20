@@ -7,19 +7,18 @@ use App\Models\Mapel;
 
 class KursusGuruController extends Controller
 {
-    public function index()
-    {
-        $allMapel = Mapel::all();
+public function index()
+{
+    $allMapel = Mapel::all();
 
-        $mapel = [
-            'indo' => $allMapel->where('nama', 'Bahasa Indonesia')->first(),
-            'inggris' => $allMapel->where('nama', 'Bahasa Inggris')->first(),
-            'mtk' => $allMapel->where('nama', 'Matematika')->first(),
-        ];
+    $mapel = [
+        'indo' => $allMapel->where('nama', 'Bahasa Indonesia')->first(),
+        'inggris' => $allMapel->where('nama', 'Bahasa Inggris')->first(),
+        'mtk' => $allMapel->where('nama', 'Matematika')->first(),
+    ];
 
-        $tipe = 'guru';
+    $tipe = 'guru';
 
-        return view('guru.kursus', compact('mapel', 'tipe'));
-
-    }
+    return view('guru.kursus', compact('mapel','tipe'));
+}
 }

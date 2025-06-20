@@ -14,7 +14,7 @@ use App\Http\Controllers\KursusGuruController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\TugasController;
-use App\Http\Controllers\MateriController;
+use App\Http\Controllers\MateriController; // Ini adalah satu-satunya deklarasi use untuk MateriController
 use App\Http\Controllers\KursussiswaController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
@@ -121,8 +121,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
     // Absensi
-    Route::get('/guru.absensi', [AbsensiController::class, 'index'])->name('guru.absensi');
-    Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store'); // ini untuk menyimpan
+    Route::middleware(['auth'])->prefix('guru')->name('guru.')->group(function () {
+        Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi');
+        Route::get('/absensi/{mapel}', [AbsensiController::class, 'show'])->name('absensi.show'); // <== YANG INI
+        Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
+    });
+
     // Penilaian
     Route::get('guru.penilaian/{mapelId}', [PenilaianController::class, 'index'])->name('penilaian.index');
     Route::post('/penilaian/store', [PenilaianController::class, 'store'])->name('penilaian.store');
@@ -150,12 +154,21 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// --- Rute Materi (Tergantung Akses, saat ini tidak di dalam grup auth) ---
-Route::post('/materi/store', [MateriController::class, 'store'])->name('materi.store');
-Route::get('/materi', [MateriController::class, 'index'])->name('materi.index'); // Contoh rute untuk melihat data
 
-// --- Rute Kursus Siswa (Di luar grup Auth, kemungkinan duplikat) ---
-// Perhatikan nama method 'kursus.index' ada spasi. Seharusnya hanya 'index' jika di controller.
-// Route::get('/kursus', [KursussiswaController::class, ' kursus.index'])->name('siswa.kursus');
-// Seharusnya:
-Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika kursus siswa memang perlu di luar auth
+// Routes untuk materi
+Route::prefix('materi')->name('materi.')->group(function () {
+    Route::post('/store', [MateriController::class, 'store'])->name('store');
+    Route::get('/minggu/{minggu}/mapel/{mapel}', [MateriController::class, 'getMateriByMingguMapel'])->name('by-minggu-mapel');
+    Route::get('/download/{id}', [MateriController::class, 'download'])->name('download');
+    Route::delete('/{id}', [MateriController::class, 'destroy'])->name('destroy');
+});
+
+// Jika Anda ingin menambahkan middleware auth
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('materi')->name('materi.')->group(function () {
+        Route::post('/store', [MateriController::class, 'store'])->name('store');
+        Route::get('/minggu/{minggu}/mapel/{mapel}', [MateriController::class, 'getMateriByMingguMapel'])->name('by-minggu-mapel');
+        Route::get('/download/{id}', [MateriController::class, 'download'])->name('download');
+        Route::delete('/{id}', [MateriController::class, 'destroy'])->name('destroy');
+    });
+});
