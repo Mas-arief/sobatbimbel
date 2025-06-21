@@ -4,16 +4,6 @@
 <div class="px-4 sm:px-6 lg:px-8 mt-3">
     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-5 text-center">Manajemen Profil Siswa</h1>
 
-    <div class="mb-4">
-        {{-- Tombol Kembali ke Dashboard Admin --}}
-        <a href="{{ route('admin.dashboard') }}">
-            <button class="bg-blue-800 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded shadow-md flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </button>
-        </a>
-    </div>
-
     <div class="overflow-x-auto rounded-md shadow-md max-w-5xl mx-auto mt-4">
         <table class="w-full text-sm text-left text-black border border-gray-300 bg-gray-200">
             <thead class="bg-gray-300 text-center font-semibold">

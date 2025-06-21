@@ -15,18 +15,19 @@ class PenilaianController extends Controller
         // Ambil hanya user dengan role 'siswa'
         $siswa = User::where('role', 'siswa')->get();
 
-        // Ambil minggu dari request, default ke 1 jika tidak ada
-        $selectedMinggu = $request->input('minggu', 1);
+        // Ambil minggu dari query param (jika ada), default ke 1
+        $minggu = $request->query('minggu', 1);
 
         // Ambil semua penilaian yang relevan
         $penilaianData = Penilaian::where('mapel_id', $mapelId)
-            ->where('minggu', $selectedMinggu)
+            ->where('minggu', $minggu)
             ->get();
 
         // Buat koleksi yang dikunci oleh siswa_id untuk akses mudah di Blade
         $penilaian = $penilaianData->keyBy('siswa_id');
 
-        return view('guru.penilaian', compact('mapel', 'siswa', 'penilaian', 'selectedMinggu'));
+        $tipe = 'guru';
+        return view('guru.penilaian', compact('mapel', 'siswa', 'penilaian', 'minggu', 'tipe'));
     }
 
     public function store(Request $request)

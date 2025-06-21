@@ -17,7 +17,8 @@ class AbsensiController extends Controller
         // Ambil minggu dari query param (jika ada), default ke 1
         $minggu = $request->query('minggu', 1);
 
-        return view('guru.absensi', compact('mapel', 'siswa', 'minggu'));
+        $tipe = 'guru';
+        return view('guru.absensi', compact('mapel', 'siswa', 'minggu', 'tipe'));
     }
 
     public function store(Request $request)

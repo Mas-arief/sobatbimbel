@@ -25,9 +25,10 @@ class AdminController extends Controller
             ->where('is_verified', false)
             ->get(); // <-- Ini juga harus mengembalikan Collection
 
+        $tipe = 'admin';
         // Lewatkan variabel $guru dan $siswa ke view
         // Pastikan variabel ini berupa Collection (hasil dari ->get())
-        return view('admin.verifikasi', compact('guru', 'siswa'));
+        return view('admin.verifikasi', compact('guru', 'siswa', 'tipe'));
     }
 
     /**

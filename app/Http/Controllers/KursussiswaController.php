@@ -29,6 +29,7 @@ class KursussiswaController extends Controller
             ],
         ];
 
-        return view('siswa.kursus', compact('dataKursus'));
+        $tipe = 'siswa';
+        return view('siswa.kursus', compact('dataKursus', 'tipe'));
     }
 }
