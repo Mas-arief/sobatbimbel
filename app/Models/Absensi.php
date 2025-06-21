@@ -21,5 +21,5 @@ class Absensi extends Model
 
     public function mapel() {
         return $this->belongsTo(Mapel::class, 'id_mapel');
-}
+    }
 }

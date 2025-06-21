@@ -19,6 +19,7 @@ public function index()
 
     $tipe = 'guru';
 
-    return view('guru.kursus', compact('mapel','tipe'));
+    return view('guru.kursus', compact('mapel', 'tipe'));
 }
+
 }

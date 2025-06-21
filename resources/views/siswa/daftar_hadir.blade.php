@@ -20,7 +20,7 @@
                         <tr>
                             @for ($i = 1; $i <= 16; $i++)
                                 <th class="px-2 py-1 border border-white dark:border-gray-700">{{ $i }}</th>
-                                @endfor
+                            @endfor
                         </tr>
                     </thead>
                     <tbody class="bg-gray-100 dark:bg-gray-800">
@@ -32,35 +32,35 @@
                             </th>
                             @for ($i = 1; $i <= 16; $i++)
                                 @php
-                                $attendance=$attendanceData
-                                ->where('id_siswa', $siswaId)
-                                ->where('id_mapel', $m->id)
-                                ->where('minggu_ke', $i)
-                                ->first();
+                                    $attendance = $attendanceData
+                                        ->where('id_siswa', $siswaId)
+                                        ->where('id_mapel', $m->id)
+                                        ->where('minggu_ke', $i)
+                                        ->first();
 
-                                $status = '-';
-                                $bgColor = 'bg-gray-100';
+                                    $status = '-';
+                                    $bgColor = 'bg-gray-100';
 
-                                if ($attendance) {
-                                if ($attendance->kehadiran) {
-                                $status = 'Hadir';
-                                $bgColor = 'bg-green-100 text-green-800';
-                                } else {
-                                $status = $attendance->keterangan ?? 'Alpha';
-                                if (strtolower($attendance->keterangan ?? '') == 'sakit') {
-                                $bgColor = 'bg-yellow-100 text-yellow-800';
-                                } elseif (strtolower($attendance->keterangan ?? '') == 'izin') {
-                                $bgColor = 'bg-blue-100 text-blue-800';
-                                } else {
-                                $bgColor = 'bg-red-100 text-red-800';
-                                }
-                                }
-                                }
+                                    if ($attendance) {
+                                        if ($attendance->kehadiran) {
+                                            $status = 'Hadir';
+                                            $bgColor = 'bg-green-100 text-green-800';
+                                        } else {
+                                            $status = $attendance->keterangan ?? 'Alpha';
+                                            if (strtolower($attendance->keterangan ?? '') == 'sakit') {
+                                                $bgColor = 'bg-yellow-100 text-yellow-800';
+                                            } elseif (strtolower($attendance->keterangan ?? '') == 'izin') {
+                                                $bgColor = 'bg-blue-100 text-blue-800';
+                                            } else {
+                                                $bgColor = 'bg-red-100 text-red-800';
+                                            }
+                                        }
+                                    }
                                 @endphp
                                 <td class="px-2 py-1 border border-white dark:border-gray-700 {{ $bgColor }}">
                                     {{ $status }}
                                 </td>
-                                @endfor
+                            @endfor
                         </tr>
                         @endforeach
                     </tbody>

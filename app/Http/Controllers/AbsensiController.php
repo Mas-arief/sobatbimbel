@@ -38,5 +38,5 @@ class AbsensiController extends Controller
         }
 
         return redirect()->back()->with('success', 'Absensi berhasil disimpan.');
-}
+    }
 }

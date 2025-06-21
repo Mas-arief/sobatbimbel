@@ -44,7 +44,8 @@ class DaftarHadirController extends Controller
 
         foreach ($requiredTables as $table) {
             if (!Schema::hasTable($table)) {
-                throw new \Exception("Tabel {$table} tidak ditemukan di database Anda. Pastikan migrasi sudah dijalankan.");
+                throw new \Exception("Tabel `{$table}` tidak ditemukan di database Anda. Pastikan migrasi sudah dijalankan.");
             }
- }}
+        }
+    }
 }
