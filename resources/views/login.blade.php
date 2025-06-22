@@ -12,7 +12,44 @@
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm">
+    <style>
+        @keyframes floatingFade {
+            0% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+
+            25% {
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateY(0px);
+                opacity: 0.8;
+            }
+
+            75% {
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+        }
+
+        .animate-floating-fade {
+            animation: floatingFade 15s ease-in-out infinite;
+        }
+    </style>
+
+    <!-- background animasi -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <img src="{{ asset('images/4.png') }}" alt="Background"
+            class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
+    </div>
+
+    <div class="relative z-10 bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm ">
         <h2 class="text-2xl font-bold text-center mb-6">MASUK</h2>
 
         {{-- Menampilkan pesan sukses (misalnya, setelah registrasi) --}}
@@ -77,11 +114,11 @@
             </div>
 
             <button type="submit"
-                class="w-full bg-white text-blue-900 font-bold py-2 rounded-xl hover:bg-gray-100 transition duration-300">
+                class="w-full bg-white text-blue-900 font-bold py-2 rounded-xl hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
                 MASUK
             </button>
 
-            <p class="text-center mt-4 text-sm text-white">
+            <p class="text-center mt-4 text-sm text-white transition duration-300">
                 Belum punya akun?
                 <a href="{{ route('register') }}" class="font-semibold text-blue-300 hover:underline">Daftar</a>
             </p>

@@ -12,7 +12,7 @@
                         </path>
                     </svg>
                 </button>
-                <img src="{{ asset('images/sb putih1.png') }}" class="h-8 me-3" alt="Logo" />
+                <img src="{{ asset('images/sb-putih1.png') }}" class="h-8 me-3" alt="Logo" />
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">SOBAT BIMBEL</span>
             </div>
             <div class="flex items-center">

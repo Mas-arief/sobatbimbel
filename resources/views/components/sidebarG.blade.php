@@ -12,7 +12,7 @@
             <!-- Profile -->
             <li>
                 <a href="{{ url('guru.profile') }}"
-                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition">
+                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition duration-300 ease-in-out transform hover:scale-105">
                     <i class="fas fa-user"></i>
                     <span class="ml-3">PROFIL</span>
                 </a>
@@ -21,7 +21,7 @@
             <!-- Kursus -->
             <li>
                 <a href="{{ url('guru.kursus') }}"
-                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition">
+                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition duration-300 ease-in-out transform hover:scale-105">
                     <i class="fas fa-book-open"></i>
                     <span class="ml-3">KURSUS</span>
                 </a>

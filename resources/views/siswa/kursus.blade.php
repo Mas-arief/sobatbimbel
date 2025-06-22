@@ -10,22 +10,25 @@
     </div>
 
     <div class="mt-5 flex justify-center space-x-6">
-        <button @click="tab = 'indo'"
-            :class="{ 'bg-blue-900 text-white': tab === 'indo', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'indo' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">
-            Bahasa Indonesia
-        </button>
-        <button @click="tab = 'inggris'"
-            :class="{ 'bg-blue-900 text-white': tab === 'inggris', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'inggris' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">
-            Bahasa Inggris
-        </button>
-        <button @click="tab = 'mtk'"
-            :class="{ 'bg-blue-900 text-white': tab === 'mtk', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'mtk' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">
-            Matematika
-        </button>
-    </div>
+            <button @click="tab = 'indo'" :class="tab === 'indo' 
+                ? 'bg-white text-[#1F1AA1] shadow-2xl'
+                : 'bg-blue-700 text-white hover:bg-blue-800'"
+                class="py-4 px-8 rounded-full font-semibold transition duration-500 ease-in-out transform hover:scale-105">
+                Bahasa Indonesia
+            </button>
+            <button @click="tab = 'inggris'" :class="tab === 'inggris' 
+                ? 'bg-white text-[#1F1AA1] shadow-2xl'
+                : 'bg-blue-700 text-white hover:bg-blue-800'"
+                class="py-4 px-8 rounded-full font-semibold transition duration-500 ease-in-out transform hover:scale-105">
+                Bahasa Inggris
+            </button>
+            <button @click="tab = 'mtk'" :class="tab === 'mtk' 
+                ? 'bg-white text-[#1F1AA1] shadow-2xl'
+                : 'bg-blue-700 text-white hover:bg-blue-800'"
+                class="py-4 px-8 rounded-full font-semibold transition duration-500 ease-in-out transform hover:scale-105">
+                Matematika
+            </button>
+        </div>
 
     <div class="space-y-6 mt-10 max-w-4xl mx-auto text-lg" x-data="kursusData()">
         @for ($i = 1; $i <= 16; $i++)

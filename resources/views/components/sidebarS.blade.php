@@ -12,7 +12,7 @@
             <!-- Profile -->
             <li>
                 <a href="{{ url('/siswa.profile') }}"
-                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition">
+                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition duration-300 ease-in-out transform hover:scale-105">
                     <i class="fas fa-user"></i>
                     <span class="ml-3">PROFIL</span>
                 </a>
@@ -21,7 +21,7 @@
             <!-- Daftar Hadir -->
             <li>
                 <a href="{{ url('/siswa.daftar_hadir') }}"
-                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition">
+                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition duration-300 ease-in-out transform hover:scale-105">
                     <i class="fas fa-calendar-check"></i>
                     <span class="ml-3">DAFTAR HADIR</span>
                 </a>
@@ -30,7 +30,7 @@
             <!-- Nilai -->
             <li>
                 <a href="{{ url('/siswa.daftar_nilai') }}"
-                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition">
+                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition duration-300 ease-in-out transform hover:scale-105">
                     <i class="fas fa-clipboard-list"></i>
                     <span class="ml-3">NILAI</span>
                 </a>
@@ -39,7 +39,7 @@
             <!-- Kursus -->
             <li>
                 <a href="{{ url('/siswa.kursus') }}"
-                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition">
+                    class="flex items-center p-2 rounded-lg hover:bg-white hover:text-[#1F1AA1] transition duration-300 ease-in-out transform hover:scale-105">
                     <i class="fas fa-book-open"></i>
                     <span class="ml-3">KURSUS</span>
                 </a>

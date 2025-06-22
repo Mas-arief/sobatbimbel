@@ -1,7 +1,45 @@
 @extends('layouts.navbar')
 
 @section('content')
-    <div class="px-4 sm:px-6 lg:px-8 mt-3">
+
+    <style>
+        @keyframes floatingFade {
+            0% {
+                transform: translateX(0px);
+                opacity: 0;
+            }
+
+            25% {
+                opacity: 1.5;
+            }
+
+            50% {
+                transform: translateX(0px);
+                opacity: 4;
+            }
+
+            75% {
+                opacity: 1.5;
+            }
+
+            100% {
+                transform: translateX(0px);
+                opacity: 0;
+            }
+        }
+
+        .animate-floating-fade {
+            animation: floatingFade 15s ease-in-out infinite;
+        }
+    </style>
+
+    <!-- background animasi -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <img src="{{ asset('images/9.png') }}" alt="Background"
+            class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
+    </div>
+
+    <div class="relative z-10 px-4 sm:px-6 lg:px-8 mt-3">
         <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center rounded-lg py-2">VERIFIKASI</h1>
 
         {{-- Notifikasi (session messages from Laravel backend) --}}
@@ -25,7 +63,7 @@
 
         {{-- Bagian Guru --}}
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-left">Daftar Guru Menunggu Verifikasi</h2>
+            <h4 class="text-xl font-semibold text-gray-700 mb-4 text-left">Daftar Guru Menunggu Verifikasi</h4>
         </div>
         <div class="flex justify-center">
             <div class="w-full max-w-5xl overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">
@@ -35,7 +73,7 @@
 
         {{-- Bagian Siswa --}}
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-2xl font-semibold text-gray-700 mt-6 mb-4 text-left">Daftar Siswa Menunggu Verifikasi</h2>
+            <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-4 text-left">Daftar Siswa Menunggu Verifikasi</h4>
         </div>
         <div class="flex justify-center">
             <div class="w-full max-w-5xl overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">

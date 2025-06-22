@@ -9,10 +9,47 @@
         integrity="sha512-yzK+xOuhvEfrF9D3MGoUczFayVmEr0mTwqkqMZWTtfJLPbOP+6FfqDloTfByywvqlwDZcKQhOj9MYj8+1qJZPQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Daftar Akun</title>
+    <style>
+        @keyframes floatingFade {
+            0% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+
+            25% {
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateY(0px);
+                opacity: 0.8;
+            }
+
+            75% {
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+        }
+
+        .animate-floating-fade {
+            animation: floatingFade 15s ease-in-out infinite;
+        }
+    </style>
 </head>
 
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-10 p-4">
-    <div class="bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm">
+
+    <!-- background animasi -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <img src="{{ asset('images/4.png') }}" alt="Background"
+            class="absolute top-0 left-0 w-full h-full object-cover scale-110 opacity-5 animate-floating-fade" />
+    </div>
+
+    <div class="relative z-10 bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm transition duration-300 ease-in-out transform hover:scale-105">
         <h2 class="text-2xl font-bold text-center mb-6">DAFTAR</h2>
         <form action="{{ route('register') }}" method="POST">
             @csrf
@@ -117,7 +154,8 @@
             </div>
 
             <button type="submit"
-                class="w-full bg-white text-blue-900 font-bold py-2 rounded-xl hover:bg-gray-100 transition duration-300">DAFTAR</button>
+                class="w-full bg-white text-blue-900 font-bold py-2 rounded-xl hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
+                DAFTAR</button>
 
             <p class="text-center mt-4 text-sm text-white">
                 Sudah punya akun?
