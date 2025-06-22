@@ -1,10 +1,47 @@
-@extends('layouts.app')
+@extends('layouts.app') {{-- Pastikan ini adalah layout yang benar --}}
 
 @section('title', 'Kursus')
 
 @section('content')
 
-<div x-data="{ tab: 'indo', materiOpen: null, tugasOpen: null, open: null }" class="min-h-screen">
+<style>
+    @keyframes floatingFade {
+        0% {
+            transform: translateY(0px);
+            opacity: 0.5;
+        }
+
+        25% {
+            opacity: 1;
+        }
+
+        50% {
+            transform: translateY(0px);
+            opacity: 1; /* Diperbaiki: nilai opacity maksimum adalah 1 */
+        }
+
+        75% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(0px);
+            opacity: 0.5;
+        }
+    }
+
+    .animate-floating-fade {
+        animation: floatingFade 15s ease-in-out infinite;
+    }
+</style>
+
+{{-- Background animasi --}}
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+    <img src="{{ asset('images/10.png') }}" alt="Background" {{-- Pastikan path gambar ini benar --}}
+        class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
+</div>
+
+<div x-data="{ tab: 'indo', materiOpen: null, tugasOpen: null, open: null }" class="min-h-screen relative z-10"> {{-- Tambahkan relative z-10 untuk konten utama --}}
     <div class="mt-8 sm:mt-16 md:mt-3 px-4 sm:px-6 lg:px-8">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-left">KURSUS</h1>
     </div>
@@ -55,7 +92,7 @@
                                 <template x-for="materiItem in dataKursus[tab][{{ $i }}].materi" :key="materiItem.id">
                                     <a :href="materiItem.file_url" target="_blank"
                                         class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
-                                        <i class="fas fa-file-pdf"></i>
+                                        <i class="fas fa-file-pdf"></i> {{-- Membutuhkan Font Awesome --}}
                                         <span x-text="materiItem.judul"></span>
                                     </a>
                                 </template>
@@ -87,7 +124,8 @@
                     </div>
 
                     <div class="mt-4">
-                        <a href="{{ route('siswa.pengumpulan_tugas') }}"
+                        {{-- PERBAIKAN: Menggunakan url() helper dan template literal untuk parameter query --}}
+                        <a :href="`{{ url('/siswa/pengumpulan_tugas') }}?mapel_slug=${tab}&minggu_ke={{ $i }}`"
                             class="inline-block px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded shadow text-sm font-semibold transition">
                             <i class="fas fa-upload mr-2"></i> Kumpulkan Tugas Minggu {{ $i }}
                         </a>

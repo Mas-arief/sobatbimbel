@@ -117,10 +117,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guru/pengumpulan', [TugasController::class, 'index'])->name('guru.pengumpulan'); // dari blok pertama
     Route::get('/tugas/{id}/edit', [TugasController::class, 'edit'])->name('guru.tugas.edit'); // dari blok pertama
 
-    // Rute dari blok kedua dengan namespace spesifik
-    Route::get('/guru/pengumpulan', [App\Http\Controllers\guru\TugasController::class, 'index'])->name('guru.pengumpulan');
-    Route::get('/tugas/{id}/edit', [App\Http\Controllers\guru\TugasController::class, 'edit'])->name('guru.tugas.edit');
-
 
     Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
     // Absensi
@@ -153,7 +149,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Kursus Siswa (view)
     Route::get('/siswa.kursus', [KursusSiswaController::class, 'index'])->name('kursus.index');
-    Route::get('/siswa/pengumpulan-tugas', [PengumpulanTugasController::class, 'index'])->name('siswa.pengumpulan_tugas'); // dari blok pertama
+     Route::get('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'index'])->name('pengumpulan_tugas');
+    // Rute POST untuk menyimpan file tugas yang diunggah
+    Route::post('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'store'])->name('pengumpulan_tugas.store');
 
     // Perbaiki: Route::get('/kursus', [KursussiswaController::class, 'kursus.index'])->name('siswa.kursus');
     // Seharusnya: Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika KursussiswaController->index() menangani ini

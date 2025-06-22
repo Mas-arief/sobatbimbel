@@ -70,7 +70,7 @@
                                         <option value="hadir">Hadir</option>
                                         <option value="izin">Izin</option>
                                         <option value="sakit">Sakit</option>
-                                        <option value="alpa">Alpa</option>
+                                        <option value="alpha">Alpha</option>
                                     </select>
                                 </td>
                             </tr>
@@ -79,7 +79,7 @@
                 </table>
 
                 <div class="flex justify-end space-x-2">
-                    <a href="{{ url()->previous() }}"
+                    <a href="{{ url()->previous() == url()->current() ? route('guru.kursus') : url()->previous() }}"
                         class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200 z-20">
                         Kembali
                     </a>

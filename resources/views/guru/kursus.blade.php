@@ -153,13 +153,13 @@ class="min-h-screen">
 
                                         <hr class="my-2 border-gray-300 dark:border-gray-600">
 
-                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['indo']->id) }}' + '?minggu=' + mingguAktif"
+                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['indo']->id) }}' + '?minggu=' + i"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm">
                                             <i class="fas fa-calendar-alt"></i>
                                             <span>Absensi</span>
                                         </a>
 
-                                        <a href="{{ route('penilaian.index', ['mapelId' => $mapel['indo']->id]) }}"
+                                        <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['indo']->id]) }}' + '?minggu=' + i"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm">
                                             <i class="fas fa-clipboard-check"></i>
                                             <span>Penilaian</span>
@@ -199,13 +199,13 @@ class="min-h-screen">
 
                                         <hr class="my-2 border-gray-300 dark:border-gray-600">
 
-                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + mingguAktif"
+                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + i"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm">
                                             <i class="fas fa-calendar-alt"></i>
                                             <span>Absensi</span>
                                         </a>
 
-                                        <a href="{{ route('penilaian.index', ['mapelId' => $mapel['inggris']->id]) }}"
+                                        <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['inggris']->id]) }}' + '?minggu=' + i"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm">
                                             <i class="fas fa-clipboard-check"></i>
                                             <span>Penilaian</span>
@@ -243,13 +243,13 @@ class="min-h-screen">
 
                                         <hr class="my-2 border-gray-300 dark:border-gray-600">
 
-                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + mingguAktif"
+                                        <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + i"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm">
                                             <i class="fas fa-calendar-alt"></i>
                                             <span>Absensi</span>
                                         </a>
 
-                                        <a href="{{ route('penilaian.index', ['mapelId' => $mapel['mtk']->id]) }}"
+                                        <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['mtk']->id]) }}' + '?minggu=' + i"
                                             class="flex items-center space-x-2 text-white hover:underline text-sm">
                                             <i class="fas fa-clipboard-check"></i>
                                             <span>Penilaian</span>

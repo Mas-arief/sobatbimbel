@@ -35,7 +35,7 @@
         }
     </style>
 
-    <!-- background animasi -->
+    {{-- background animasi --}}
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <img src="{{ asset('images/6.png') }}" alt="Background"
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
@@ -51,7 +51,8 @@
             <form action="{{ route('penilaian.store') }}" method="POST" class="mt-6 space-y-4">
                 @csrf
                 <input type="hidden" name="mapel_id" value="{{ $mapel->id }}">
-                <input type="hidden" name="minggu_ke" value="{{ $minggu }}">
+                {{-- PENTING: Ubah 'minggu_ke' menjadi 'minggu' agar konsisten dengan controller dan DB --}}
+                <input type="hidden" name="minggu" value="{{ $minggu }}">
 
                 <table class="w-full text-center border">
                     <thead class="bg-gray-100">
@@ -66,6 +67,7 @@
                                 <td class="p-2">{{ $s->name }}</td>
                                 <td class="p-2">
                                     <input type="number" name="nilai[{{ $s->id }}]" placeholder="Angka" min="0" max="100"
+                                        {{-- Ini akan menampilkan nilai yang sudah ada (jika ada) --}}
                                         value="{{ $penilaian->get($s->id)?->nilai }}"
                                         class="w-24 border rounded px-2 py-1 text-center text-sm dark:bg-gray-700 dark:text-white dark:border-gray-600">
                                 </td>
@@ -75,7 +77,9 @@
                 </table>
 
                 <div class="flex justify-end space-x-2">
-                    <a href="{{ url()->previous() }}"
+                    {{-- Perbaikan: Tambahkan fallback jika url()->previous() adalah halaman saat ini --}}
+                    {{-- Mengasumsikan ada route 'guru.dashboard' atau 'guru.mapel.index' sebagai fallback yang lebih umum --}}
+                    <a href="{{ url()->previous() == url()->current() ? route('guru.kursus') : url()->previous() }}"
                         class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200">
                         Kembali
                     </a>

@@ -16,12 +16,14 @@ return new class extends Migration {
             $table->integer('minggu_ke');
 
             // Ubah kehadiran jadi enum (bukan boolean)
+            // PASTIKAN NAMA 'alpha' KONSISTEN DENGAN YANG DIKIRIM DARI FORM
             $table->enum('kehadiran', ['hadir', 'izin', 'sakit', 'alpha'])->default('alpha');
 
             $table->string('keterangan')->nullable();
             $table->timestamps();
 
             $table->foreign('id_siswa')->references('id')->on('users')->onDelete('cascade');
+            // Pastikan nama tabel mapel Anda adalah 'mapels' atau 'mapel' (sesuai database)
             $table->foreign('id_mapel')->references('id')->on('mapel')->onDelete('cascade');
         });
     }
