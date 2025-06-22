@@ -23,6 +23,9 @@ return new class extends Migration
 
             // Index untuk query yang lebih cepat
             $table->index(['minggu_ke', 'mapel_id']);
+
+            // Jika Anda memiliki tabel 'mapel' dan ingin relasi FK, tambahkan ini:
+            // $table->foreign('mapel_id')->references('id')->on('mapel')->onDelete('cascade');
         });
     }
 

@@ -4,17 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{-- BARIS INI YANG HARUS DITAMBAHKAN --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'SOBAT BIMBEL')</title>
 
+    {{-- Peringatan TailwindCSS CDN: Disarankan untuk tidak digunakan di produksi.
+         Anda bisa mengabaikan ini untuk pengembangan, tetapi untuk produksi sebaiknya instal Tailwind sebagai PostCSS plugin. --}}
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -35,27 +37,33 @@
         {{-- Navbar dan Sidebar dinamis --}}
         <header>
             @if (isset($tipe) && $tipe === 'admin')
-            @include('components.navbarA')
-            @include('components.sidebarA')
+                @include('components.navbarA')
+                @include('components.sidebarA')
             @elseif (isset($tipe) && $tipe === 'guru')
-            @include('components.navbarG')
-            @include('components.sidebarG')
+                @include('components.navbarG')
+                @include('components.sidebarG')
             @elseif (isset($tipe) && $tipe === 'siswa')
-            @include('components.navbarS')
-            @include('components.sidebarS')
+                @include('components.navbarS')
+                @include('components.sidebarS')
             @endif
         </header>
 
-        <main class="flex-1 overflow-y-auto transition-all duration-200 p-4 sm:pl-64 pt-20">
+        <main class="flex-1 overflow-y-auto transition-all duration-200 p-4 @if(isset($tipe) && $tipe !== 'siswa') sm:pl-64 @endif pt-20">
             @yield('content')
         </main>
 
     </div>
 
+    {{-- SCRIPTS UTAMA: Letakkan di sini untuk performa terbaik dan menghindari konflik --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+
+    {{-- Penting: Muat plugin Alpine.js Collapse SEBELUM Alpine.js inti --}}
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    {{-- Script kustom Anda --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const body = document.querySelector('body');
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('main');
             const sidebarToggle = document.getElementById('sidebarToggle');
@@ -69,8 +77,8 @@
             }
         });
     </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+    {{-- Ini akan me-render semua script yang didefinisikan di @section('scripts') di view lain --}}
+    @yield('scripts')
 </body>
 
 </html>

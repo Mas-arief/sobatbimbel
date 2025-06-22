@@ -14,11 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            AdminUserSeeder::class, // Memastikan AdminUserSeeder dipanggil
-            // Jika Anda memiliki seeder lain (misalnya StudentSeeder, TeacherSeeder),
-            // pastikan untuk menambahkannya di sini juga:
-            // StudentSeeder::class,
-            // TeacherSeeder::class,
+            AdminUserSeeder::class,
+            MapelSeeder::class,
         ]);
     }
 }

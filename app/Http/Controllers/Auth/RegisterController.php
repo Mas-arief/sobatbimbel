@@ -19,14 +19,10 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        // 1. Validate the incoming request data
         $this->validator($request->all())->validate();
 
-        // 2. Create the new user with is_verified set to false
         $user = $this->create($request->all());
 
-        // 3. Instead of logging in, redirect to login with a success message
-        // The message will inform the user about admin verification.
         return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Akun Anda akan diverifikasi oleh admin. Mohon tunggu.');
     }
 
@@ -47,10 +43,7 @@ class RegisterController extends Controller
             'alamat' => ['nullable', 'string', 'max:255'],
             'jenis_kelamin' => ['nullable', Rule::in(['Laki-laki', 'Perempuan'])],
             'telepon' => ['nullable', 'string', 'max:20'],
-            // Add validation for 'nisn' and 'kelas' if they are submitted from the form
-            // 'nisn' => ['nullable', 'string', 'max:20', 'unique:users'],
-            // 'kelas' => ['nullable', 'string', 'max:50'],
-        ]);
+        ]); // <--- Perbaikan ada di sini: menutup array dengan ']' dan panggilan method dengan ');'
     }
 
     /**
@@ -71,9 +64,7 @@ class RegisterController extends Controller
             'jenis_kelamin' => $data['jenis_kelamin'] ?? null,
             'telepon' => $data['telepon'] ?? null,
             'is_verified' => false, // <--- PENTING: Set ke false secara default
-            // 'nisn' => $data['nisn'] ?? null,
-            // 'kelas' => $data['kelas'] ?? null,
-            'guru_mata_pelajaran' => null, // Ini umumnya diisi admin untuk guru
+            'mapel_id' => null, // Ini umumnya diisi admin untuk guru
         ]);
     }
 }

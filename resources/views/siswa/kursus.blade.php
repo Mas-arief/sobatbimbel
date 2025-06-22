@@ -4,44 +4,40 @@
 
 @section('content')
 
-<div x-data="{ tab: 'indo', materiOpen: null, tugasOpen: null }" class="min-h-screen">
+<div x-data="{ tab: 'indo', materiOpen: null, tugasOpen: null, open: null }" class="min-h-screen">
     <div class="mt-8 sm:mt-16 md:mt-3 px-4 sm:px-6 lg:px-8">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-left">KURSUS</h1>
     </div>
 
     <div class="mt-5 flex justify-center space-x-6">
-            <button @click="tab = 'indo'" :class="tab === 'indo' 
-                ? 'bg-white text-[#1F1AA1] shadow-2xl'
-                : 'bg-blue-700 text-white hover:bg-blue-800'"
-                class="py-4 px-8 rounded-full font-semibold transition duration-500 ease-in-out transform hover:scale-105">
-                Bahasa Indonesia
-            </button>
-            <button @click="tab = 'inggris'" :class="tab === 'inggris' 
-                ? 'bg-white text-[#1F1AA1] shadow-2xl'
-                : 'bg-blue-700 text-white hover:bg-blue-800'"
-                class="py-4 px-8 rounded-full font-semibold transition duration-500 ease-in-out transform hover:scale-105">
-                Bahasa Inggris
-            </button>
-            <button @click="tab = 'mtk'" :class="tab === 'mtk' 
-                ? 'bg-white text-[#1F1AA1] shadow-2xl'
-                : 'bg-blue-700 text-white hover:bg-blue-800'"
-                class="py-4 px-8 rounded-full font-semibold transition duration-500 ease-in-out transform hover:scale-105">
-                Matematika
-            </button>
-        </div>
+        <button @click="tab = 'indo'"
+            :class="{ 'bg-blue-900 text-white': tab === 'indo', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'indo' }"
+            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">
+            Bahasa Indonesia
+        </button>
+        <button @click="tab = 'inggris'"
+            :class="{ 'bg-blue-900 text-white': tab === 'inggris', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'inggris' }"
+            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">
+            Bahasa Inggris
+        </button>
+        <button @click="tab = 'mtk'"
+            :class="{ 'bg-blue-900 text-white': tab === 'mtk', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'mtk' }"
+            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">
+            Matematika
+        </button>
+    </div>
 
-    <div class="space-y-6 mt-10 max-w-4xl mx-auto text-lg" x-data="kursusData()">
+    {{-- Alpine.js data initialization from PHP --}}
+    <div class="space-y-6 mt-10 max-w-4xl mx-auto text-lg" x-data="kursusData({{ $jsonDataKursus }})">
         @for ($i = 1; $i <= 16; $i++)
-            <div x-data="{ open: null }">
+        <div x-data="{ open: null }">
             <div class="bg-blue-800 text-white rounded-lg mb-2 dark:bg-blue-700">
                 <div class="p-5 flex items-center justify-between cursor-pointer"
                     @click="open = (open === {{ $i }} ? null : {{ $i }})">
                     <div class="flex items-center space-x-2">
                         <svg :class="{ 'transform rotate-90': open === {{ $i }} }"
-                            class="w-4 h-4 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="M9 5l7 7-7 7" />
+                            class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                         <span>MINGGU {{ $i }}</span>
                     </div>
@@ -54,18 +50,20 @@
 
                     <div class="space-y-4">
                         <h4 class="font-bold text-md text-gray-200 dark:text-gray-200">Materi:</h4>
-
-                        <a :href="dataKursus[tab][{{ $i }}]?.pdf1" target="_blank"
-                            class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Materi</span>
-                        </a>
-
-                        <a :href="dataKursus[tab][{{ $i }}]?.video" target="_blank"
-                            class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition">
-                            <i class="fas fa-book"></i>
-                            <span>Tugas pelajaran</span>
-                        </a>
+                        <template x-if="dataKursus[tab] && dataKursus[tab][{{ $i }}] && dataKursus[tab][{{ $i }}].materi.length > 0">
+                            <div>
+                                <template x-for="materiItem in dataKursus[tab][{{ $i }}].materi" :key="materiItem.id">
+                                    <a :href="materiItem.file_url" target="_blank"
+                                        class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span x-text="materiItem.judul"></span>
+                                    </a>
+                                </template>
+                            </div>
+                        </template>
+                        <template x-if="!dataKursus[tab] || !dataKursus[tab][{{ $i }}] || dataKursus[tab][{{ $i }}].materi.length === 0">
+                            <p class="text-gray-300">Belum ada materi untuk minggu ini.</p>
+                        </template>
                     </div>
 
                     <hr class="my-4 border-gray-200 dark:border-gray-700">
@@ -73,29 +71,23 @@
                     <div class="space-y-2">
                         <h4 class="font-bold text-md text-gray-200 dark:text-gray-200">Tugas:</h4>
                         <ul class="list-disc list-inside space-y-1">
-                            <template x-if="tab === 'indo' && dataKursus.indo[{{ $i }}]">
-                                <li>
-                                    <a href="#" class="text-blue-400 hover:underline dark:text-blue-300"
-                                        @click.prevent="tugasOpen = {{ $i }}">
-                                        <span x-text="dataKursus.indo[{{ $i }}].tugas"></span>
-                                    </a>
-                                    <div x-show="tugasOpen === {{ $i }}" x-collapse
-                                        class="mt-2 text-gray-300 dark:text-gray-400">
-                                        <p>Kerjakan soal berikut:</p>
-                                        <ol class="list-decimal list-inside">
-                                            <template x-for="item in dataKursus.indo[{{ $i }}].tugas_deskripsi"
-                                                :key="item">
-                                                <li x-text="item"></li>
-                                            </template>
-                                        </ol>
-                                    </div>
-                                </li>
+                            <template x-if="dataKursus[tab] && dataKursus[tab][{{ $i }}] && dataKursus[tab][{{ $i }}].tugas.length > 0">
+                                <template x-for="tugasItem in dataKursus[tab][{{ $i }}].tugas" :key="tugasItem.id">
+                                    <li>
+                                        <a :href="tugasItem.file_url" target="_blank" class="text-blue-400 hover:underline dark:text-blue-300">
+                                            <span x-text="tugasItem.judul"></span> (Deadline: <span x-text="new Date(tugasItem.deadline).toLocaleDateString()"></span>)
+                                        </a>
+                                    </li>
+                                </template>
+                            </template>
+                            <template x-if="!dataKursus[tab] || !dataKursus[tab][{{ $i }}] || dataKursus[tab][{{ $i }}].tugas.length === 0">
+                                <p class="text-gray-300">Belum ada tugas untuk minggu ini.</p>
                             </template>
                         </ul>
                     </div>
 
                     <div class="mt-4">
-                        <a href="{{ url('siswa.pengumpulan_tugas') }}"
+                        <a href="{{ route('siswa.pengumpulan_tugas') }}"
                             class="inline-block px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded shadow text-sm font-semibold transition">
                             <i class="fas fa-upload mr-2"></i> Kumpulkan Tugas Minggu {{ $i }}
                         </a>
@@ -103,16 +95,19 @@
 
                 </div>
             </div>
+        </div>
+        @endfor
     </div>
-    @endfor
-</div>
 </div>
 
 <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.data('kursusData', () => ({
-            dataKursus: ($dataKursus)
-        }))
-    })
+        Alpine.data('kursusData', (initialData) => ({
+            dataKursus: initialData,
+            init() {
+                console.log('Data Kursus:', this.dataKursus); // Debugging
+            }
+        }));
+    });
 </script>
 @endsection

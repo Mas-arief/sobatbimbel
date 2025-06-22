@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Mapel;
+use Illuminate\Support\Facades\DB; // Import DB facade
 
 class MapelSeeder extends Seeder
 {
@@ -13,32 +13,19 @@ class MapelSeeder extends Seeder
      */
     public function run(): void
     {
-        $mapel = [
-            [
-                'id' => 1,
-                'nama_mapel' => 'Bahasa Indonesia',
-                'kode_mapel' => 'INDO',
-                'deskripsi' => 'Mata pelajaran Bahasa Indonesia'
-            ],
-            [
-                'id' => 2,
-                'nama_mapel' => 'Bahasa Inggris',
-                'kode_mapel' => 'ENG',
-                'deskripsi' => 'Mata pelajaran Bahasa Inggris'
-            ],
-            [
-                'id' => 3,
-                'nama_mapel' => 'Matematika',
-                'kode_mapel' => 'MTK',
-                'deskripsi' => 'Mata pelajaran Matematika'
-            ]
+        // Data mata pelajaran yang ingin Anda masukkan
+        $mapels = [
+            ['nama' => 'Bahasa Indonesia'],
+            ['nama' => 'Bahasa Inggris'],
+            ['nama' => 'Matematika'],
+            // Tambahkan mata pelajaran lain jika diperlukan
         ];
 
-        foreach ($mapel as $data) {
-            Mapel::updateOrCreate(
-                ['id' => $data['id']],
-                $data
-            );
+        foreach ($mapels as $mapel) {
+            // Memeriksa apakah mapel sudah ada untuk menghindari duplikasi
+            // Anda bisa menggunakan findOrCreate atau updateOrCreate jika model Mapel sudah ada
+            // Atau cukup insert jika Anda yakin tabel kosong atau ingin duplikasi
+            DB::table('mapel')->insertOrIgnore($mapel);
         }
     }
 }

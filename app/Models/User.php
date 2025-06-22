@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tugas::class, 'user_id');
     }
+    public function mapel()
+{
+    return $this->belongsTo(Mapel::class, 'mapel_id');
+}
 }

@@ -18,11 +18,12 @@ class AdminUserSeeder extends Seeder
         if (User::where('username', 'admin')->doesntExist()) {
             User::create([
                 'username' => 'admin',
+                'name' => 'Administrator', // <-- TAMBAHKAN BARIS INI
                 'email' => 'admin@example.com',
                 'password' => Hash::make('12345678'),
                 'role' => 'admin',
-                'email_verified_at' => now(), // Opsional, tambahkan jika Anda ingin email juga terverifikasi
-                'is_verified' => true,      // <-- PENTING: Set ini menjadi TRUE untuk admin
+                'email_verified_at' => now(),
+                'is_verified' => true,
             ]);
             $this->command->info('Akun admin berhasil dibuat dan diverifikasi secara otomatis!');
         } else {

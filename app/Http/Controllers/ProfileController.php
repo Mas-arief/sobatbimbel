@@ -2,59 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Mapel; // Pastikan Anda mengimpor model Mapel
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // Penting: Import Auth
-use Illuminate\Validation\Rule; // Penting: Import Rule untuk validasi unique
+use Illuminate\Support\Facades\Auth; // Jika profil guru adalah profil user yang sedang login
 
 class ProfileController extends Controller
 {
-    /**
-     * Menampilkan dashboard untuk guru (opsional, jika ada dashboard terpisah).
-     */
-    public function dashboard()
+    public function showProfile() // Jika ini profil user yang sedang login
     {
-        // Jika dashboard guru sama dengan profil, bisa langsung redirect atau panggil showProfile
-        return $this->showProfile();
-    }
-
-    /**
-     * Menampilkan profil guru yang sedang login.
-     */
-    public function showProfile()
-    {
-        $user = Auth::user(); // Dapatkan user yang sedang login
-        $tipe = $user->role; // Mendefinisikan $tipe agar tidak ada error compact()
-        return view('guru.profile', compact('user', 'tipe'));
-    }
-
-    /**
-     * Memperbarui profil guru (Hanya untuk field yang boleh diubah guru).
-     * guru_mata_pelajaran TIDAK DIUBAH DI SINI.
-     */
-    public function updateProfile(Request $request)
-    {
+        // Mendapatkan user yang sedang login
         $user = Auth::user();
 
+        // Jika Anda ingin menampilkan profil guru lain berdasarkan ID, ubah seperti ini:
+        // public function showProfile($id) {
+        //    $user = User::with('mapel')->findOrFail($id);
+        // }
+
+        // Pastikan Anda memuat relasi 'mapel' jika user memiliki mapel
+        $user->load('mapel');
+
+        // Ambil daftar semua mata pelajaran untuk dropdown di modal
+        $mapelList = Mapel::all();
+$tipe = $user->role;
+        // Teruskan $user dan $mapelList ke view
+        return view('guru.profile', compact('user', 'mapelList', 'tipe'));
+    }
+
+    // ... metode lain jika ada (misal updateProfile)
+    public function updateProfile(Request $request, $id)
+    {
+        // Validasi data
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'alamat' => ['nullable', 'string', 'max:255'],
-            'jenis_kelamin' => ['nullable', Rule::in(['Laki-laki', 'Perempuan'])], // Sesuaikan dengan nilai di DB
-            'telepon' => ['nullable', 'string', 'max:20'],
-            // 'mapel' (guru_mata_pelajaran) tidak divalidasi atau diupdate di sini, sesuai permintaan.
+            'name' => 'required|string|max:255',
+            'alamat' => 'nullable|string|max:255',
+            'mapel_id' => 'nullable|exists:mapel,id', // Pastikan mapel_id ada di tabel mapel
+            'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
+            'telepon' => 'nullable|string|max:20',
+            'email' => 'required|email|unique:users,email,' . $id,
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'telepon' => $request->telepon,
-        ]);
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->alamat = $request->alamat;
+        $user->mapel_id = $request->mapel_id; // Simpan mapel_id
+        $user->jenis_kelamin = $request->jenis_kelamin;
+        $user->telepon = $request->telepon;
+        $user->email = $request->email;
+        $user->save();
 
-        // Pastikan 'guru.profile' adalah nama route yang benar ke showProfile
-        return redirect()->route('guru.profile')->with('success', 'Profil Anda berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
     }
 }

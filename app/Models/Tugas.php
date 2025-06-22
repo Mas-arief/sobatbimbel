@@ -2,26 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Tugas extends Model
 {
     use HasFactory;
 
-    protected $table = 'tugas';
+    // Tentukan nama tabel jika tidak sesuai konvensi Laravel (plural dari nama model)
+    // protected $table = 'nama_tabel_tugas_anda';
 
     protected $fillable = [
-        'user_id',         // id siswa
-        'judul_tugas',
-        'nilai',
-        'tanggal_kumpul',
+        'mapel_id',
+        'judul', // Sesuai kolom DB
+        'file_path', // Sesuai kolom DB
+        'deadline', // Sesuai kolom DB
+        'minggu',   // Sesuai kolom DB
+        'user_id',
     ];
 
-    protected $dates = ['tanggal_kumpul'];
-
-    public function siswa()
+    // Definisi relasi jika ada (misal dengan model Mapel dan User)
+    public function mapel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Mapel::class);
+    }
+
+    public function guru()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // Asumsi guru adalah User
     }
 }

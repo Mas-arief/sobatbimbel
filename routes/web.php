@@ -21,9 +21,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SiswaController; // Ditambahkan
 use App\Http\Controllers\Auth\PasswordController; // Ditambahkan
-
-
-
+use App\Http\Controllers\PengumpulanTugasController; // Ditambahkan dari blok pertama
 
 /*
 |--------------------------------------------------------------------------
@@ -74,19 +72,18 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('adm
 // Profil Guru (dari sisi Admin)
 Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('guru.index'); // Nama rute 'guru.index' mungkin kurang jelas untuk tampilan admin
 Route::get('/admin.profile_guru', [GuruController::class, 'index'])->name('admin.profile_guru'); // Ini duplikat dari yang di atas, pilih salah satu.
+Route::put('/admin/guru/{id}/atur-mapel', [GuruController::class, 'aturMapel'])->name('admin.guru.aturMapel');
+Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('admin.guru.destroy'); // Menghapus guru
 
-// Profil Siswa (dari sisi Admin)
-Route::get('/admin.profile_siswa', function () {
-    $tipe = 'admin';
-    return view('admin.profile_siswa', compact('tipe'));
-}); // Ini menggunakan closure, bisa dipindah ke SiswaController jika ada logika
-Route::get('/admin.profile_siswa', [SiswaController::class, 'index'])->name('admin.profile_siswa'); // Ini duplikat, pilih salah satu.
+Route::get('/admin.profile_siswa', [SiswaController::class, 'index'])->name('admin.profile_siswa');
+Route::delete('/admin/siswa/{id}', [SiswaController::class, 'destroy'])->name('admin.siswa.destroy');
 
-// Guru Mata Pelajaran (dari sisi Admin)
+// Guru Mata Pelajaran (dari sisi Admin) - dari blok kedua
 Route::get('/admin.guru_mapel', function () {
     $tipe = 'admin';
     return view('admin.guru_mapel', compact('tipe'));
 });
+
 
 // --- Rute Autentikasi (Pendaftaran, Login, Logout) ---
 Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -112,12 +109,18 @@ Route::middleware(['auth'])->group(function () {
     // --- Rute Guru (Membutuhkan Auth) ---
     // Profil Guru (dari sisi Guru itu sendiri)
     Route::get('/guru.profile', [ProfileController::class, 'showProfile'])->name('guru.profile'); // Menggunakan nama 'guru.profile'
-    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update'); // Update profil umum
+    Route::put('/guru/profile/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update'); // Update profil umum (dari blok pertama)
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update'); // Update profil umum (dari blok kedua, akan menimpa rute dengan nama yang sama)
 
     //Route Guru
+    Route::post('/guru/materi', [MateriController::class, 'store'])->name('guru.materi.store'); // dari blok pertama
+    Route::get('/guru/pengumpulan', [TugasController::class, 'index'])->name('guru.pengumpulan'); // dari blok pertama
+    Route::get('/tugas/{id}/edit', [TugasController::class, 'edit'])->name('guru.tugas.edit'); // dari blok pertama
 
+    // Rute dari blok kedua dengan namespace spesifik
     Route::get('/guru/pengumpulan', [App\Http\Controllers\guru\TugasController::class, 'index'])->name('guru.pengumpulan');
     Route::get('/tugas/{id}/edit', [App\Http\Controllers\guru\TugasController::class, 'edit'])->name('guru.tugas.edit');
+
 
     Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
     // Absensi
@@ -133,7 +136,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Tugas (untuk guru menambah tugas)
-    Route::post('/guru.modal_tambah_tugas', [TugasController::class, 'index'])->name('tugas.store'); // Index biasanya untuk GET, pertimbangkan method 'store'
+    Route::post('/guru/tugas', [App\Http\Controllers\TugasController::class, 'store'])->name('guru.tugas.store'); // dari blok pertama
+    Route::post('/guru.modal_tambah_tugas', [TugasController::class, 'index'])->name('tugas.store'); // dari blok kedua (Index biasanya untuk GET, pertimbangkan method 'store')
 
     // --- Rute Siswa (Membutuhkan Auth) ---
     // Profil Siswa (dari sisi Siswa itu sendiri)
@@ -148,14 +152,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/siswa.daftar_nilai', [DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
 
     // Kursus Siswa (view)
-    Route::get('/siswa.kursus', [KursusSiswaController::class, 'index'])->name('kursus.index'); // Ini sudah ada, tapi nama rute 'kursus.index' mungkin kurang spesifik
+    Route::get('/siswa.kursus', [KursusSiswaController::class, 'index'])->name('kursus.index');
+    Route::get('/siswa/pengumpulan-tugas', [PengumpulanTugasController::class, 'index'])->name('siswa.pengumpulan_tugas'); // dari blok pertama
+
     // Perbaiki: Route::get('/kursus', [KursussiswaController::class, 'kursus.index'])->name('siswa.kursus');
     // Seharusnya: Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika KursussiswaController->index() menangani ini
 });
 
 
-
-// Routes untuk materi
+// Routes untuk materi (bagian pertama)
 Route::prefix('materi')->name('materi.')->group(function () {
     Route::post('/store', [MateriController::class, 'store'])->name('store');
     Route::get('/minggu/{minggu}/mapel/{mapel}', [MateriController::class, 'getMateriByMingguMapel'])->name('by-minggu-mapel');
@@ -163,7 +168,7 @@ Route::prefix('materi')->name('materi.')->group(function () {
     Route::delete('/{id}', [MateriController::class, 'destroy'])->name('destroy');
 });
 
-// Jika Anda ingin menambahkan middleware auth
+// Jika Anda ingin menambahkan middleware auth (bagian pertama)
 Route::middleware(['auth'])->group(function () {
     Route::prefix('materi')->name('materi.')->group(function () {
         Route::post('/store', [MateriController::class, 'store'])->name('store');

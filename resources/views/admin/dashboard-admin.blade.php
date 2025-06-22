@@ -11,16 +11,16 @@
             }
 
             25% {
-                opacity: 4;
+                opacity: 0.3; /* Mengurangi opacity dari 4 agar lebih halus */
             }
 
             50% {
                 transform: translateX(-10px);
-                opacity: 7;
+                opacity: 0.6; /* Mengurangi opacity dari 7 agar lebih halus */
             }
 
             75% {
-                opacity: 5;
+                opacity: 0.3; /* Mengurangi opacity dari 5 agar lebih halus */
             }
 
             100% {
@@ -48,10 +48,10 @@
                 <div
                     class="w-64 h-64 bg-[#1F1AA1] text-white rounded-2xl flex flex-col justify-center items-center shadow-md px-4 py-6 transition duration-300 ease-in-out transform hover:scale-105">
                     <h5 class="text-lg font-semibold mb-2">DATA PENDAFTARAN</h5>
-                    {{-- Ini akan menampilkan jumlah user dengan role 'siswa' --}}
-                    <p class="text-4xl font-bold mb-2">{{ $totalSiswa ?? 0 }}</p>
-                    <p class="text-sm mb-4 text-center">TOTAL PENDAFTARAN</p>
-                    <a href="{{ url('admin.verifikasi') }}"
+                    {{-- PERBAIKAN DI SINI: Menampilkan jumlah user yang belum diverifikasi --}}
+                    <p class="text-4xl font-bold mb-2">{{ $totalUnverifiedUsers ?? 0 }}</p>
+                    <p class="text-sm mb-4 text-center">TOTAL PENDAFTARAN BARU</p> {{-- Ubah teks agar lebih jelas --}}
+                    <a href="{{ route('admin.verifikasi') }}" {{-- Gunakan route() helper --}}
                         class="bg-white text-[#1F1AA1] text-sm font-semibold px-4 py-1 rounded-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
                         LIHAT
                     </a>
@@ -60,10 +60,9 @@
                 <div
                     class="w-64 h-64 bg-[#1F1AA1] text-white rounded-2xl flex flex-col justify-center items-center shadow-md px-4 py-6 transition duration-300 ease-in-out transform hover:scale-105">
                     <h5 class="text-lg font-semibold mb-2">DATA SISWA</h5>
-                    {{-- Ini akan menampilkan jumlah user dengan role 'siswa' --}}
                     <p class="text-4xl font-bold mb-2">{{ $totalSiswa ?? 0 }}</p>
                     <p class="text-sm mb-4 text-center">TOTAL AKUN SISWA</p>
-                    <a href="{{ url('admin.profile_siswa') }}"
+                    <a href="{{ route('admin.profile_siswa') }}" {{-- Gunakan route() helper dan nama rute yang benar --}}
                         class="bg-white text-[#1F1AA1] text-sm font-semibold px-4 py-1 rounded-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
                         LIHAT
                     </a>
@@ -72,10 +71,9 @@
                 <div
                     class="w-64 h-64 bg-[#1F1AA1] text-white rounded-2xl flex flex-col justify-center items-center shadow-md px-4 py-6 transition duration-300 ease-in-out transform hover:scale-105">
                     <h5 class="text-lg font-semibold mb-2">DATA GURU</h5>
-                    {{-- Ini akan menampilkan jumlah user dengan role 'guru' --}}
                     <p class="text-4xl font-bold mb-2">{{ $totalGuru ?? 0 }}</p>
                     <p class="text-sm mb-4 text-center">TOTAL AKUN GURU</p>
-                    <a href="{{ url('admin.profile_guru') }}"
+                    <a href="{{ route('admin.profile_guru') }}" {{-- Gunakan route() helper dan nama rute yang benar --}}
                         class="bg-white text-[#1F1AA1] text-sm font-semibold px-4 py-1 rounded-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
                         LIHAT
                     </a>

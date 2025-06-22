@@ -1,5 +1,6 @@
 <?php
 
+// database/migrations/0001_01_01_000000_create_users_table.php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,20 +9,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Pastikan ini adalah Schema::create
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique(); // Tambahkan ini jika Anda menggunakan username
-            $table->string('name')->nullable(); // Ini bisa dihapus jika tidak diperlukan, tapi harus diurus di migrasi lain atau sebagai nullable
+            $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('siswa'); // Tambahkan ini jika Anda punya kolom role
             $table->rememberToken();
             $table->timestamps();
+            // Hapus semua baris $table->string('username'), $table->text('alamat'),
+            // $table->enum('jenis_kelamin'), $table->string('telepon'),
+            // $table->enum('role'), $table->boolean('is_verified'),
+            // dan terutama $table->foreignId('mapel_id') dari SINI.
         });
 
-        // Biasanya migrasi ini juga membuat tabel lain seperti password_reset_tokens dan sessions
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -40,8 +41,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
