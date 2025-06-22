@@ -112,10 +112,16 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/guru/profile/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update'); // Update profil umum (dari blok pertama)
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update'); // Update profil umum (dari blok kedua, akan menimpa rute dengan nama yang sama)
 
-    //Route Guru
-    Route::post('/guru/materi', [MateriController::class, 'store'])->name('guru.materi.store'); // dari blok pertama
-    Route::get('/guru/pengumpulan', [TugasController::class, 'index'])->name('guru.pengumpulan'); // dari blok pertama
-    Route::get('/tugas/{id}/edit', [TugasController::class, 'edit'])->name('guru.tugas.edit'); // dari blok pertama
+   // Route Guru
+Route::post('/guru/materi', [MateriController::class, 'store'])->name('guru.materi.store');
+Route::get('/guru/pengumpulan', [PengumpulanTugasController::class, 'rekapGuru'])->name('guru.pengumpulan');
+// Route GET untuk edit
+Route::get('/tugas/{id}/edit', [TugasController::class, 'edit'])->name('guru.tugas.edit');
+
+// Route PUT untuk update nilai
+Route::put('/tugas/{id}', [TugasController::class, 'update'])->name('guru.tugas.update');
+
+
 
 
     Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
@@ -148,30 +154,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/siswa.daftar_nilai', [DaftarNilaiController::class, 'index'])->name('daftar_nilai.index');
 
     // Kursus Siswa (view)
-    Route::get('/siswa.kursus', [KursusSiswaController::class, 'index'])->name('kursus.index');
+    Route::get('/siswa.kursus', [KursusSiswaController::class, 'index'])->name('siswa.kursus.index');
      Route::get('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'index'])->name('pengumpulan_tugas');
     // Rute POST untuk menyimpan file tugas yang diunggah
-    Route::post('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'store'])->name('pengumpulan_tugas.store');
+    Route::post('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'store'])->name('siswa.pengumpulan_tugas.store');
 
     // Perbaiki: Route::get('/kursus', [KursussiswaController::class, 'kursus.index'])->name('siswa.kursus');
     // Seharusnya: Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika KursussiswaController->index() menangani ini
-});
-
-
-// Routes untuk materi (bagian pertama)
-Route::prefix('materi')->name('materi.')->group(function () {
-    Route::post('/store', [MateriController::class, 'store'])->name('store');
-    Route::get('/minggu/{minggu}/mapel/{mapel}', [MateriController::class, 'getMateriByMingguMapel'])->name('by-minggu-mapel');
-    Route::get('/download/{id}', [MateriController::class, 'download'])->name('download');
-    Route::delete('/{id}', [MateriController::class, 'destroy'])->name('destroy');
-});
-
-// Jika Anda ingin menambahkan middleware auth (bagian pertama)
-Route::middleware(['auth'])->group(function () {
-    Route::prefix('materi')->name('materi.')->group(function () {
-        Route::post('/store', [MateriController::class, 'store'])->name('store');
-        Route::get('/minggu/{minggu}/mapel/{mapel}', [MateriController::class, 'getMateriByMingguMapel'])->name('by-minggu-mapel');
-        Route::get('/download/{id}', [MateriController::class, 'download'])->name('download');
-        Route::delete('/{id}', [MateriController::class, 'destroy'])->name('destroy');
-    });
 });

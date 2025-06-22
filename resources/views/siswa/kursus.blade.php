@@ -125,7 +125,7 @@
 
                     <div class="mt-4">
                         {{-- PERBAIKAN: Menggunakan url() helper dan template literal untuk parameter query --}}
-                        <a :href="`{{ url('/siswa/pengumpulan_tugas') }}?mapel_slug=${tab}&minggu_ke={{ $i }}`"
+                        <a :href="`{{ url('/siswa.pengumpulan_tugas') }}?mapel_slug=${tab}&minggu_ke={{ $i }}`"
                             class="inline-block px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded shadow text-sm font-semibold transition">
                             <i class="fas fa-upload mr-2"></i> Kumpulkan Tugas Minggu {{ $i }}
                         </a>

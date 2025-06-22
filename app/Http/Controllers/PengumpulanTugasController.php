@@ -139,4 +139,16 @@ class PengumpulanTugasController extends Controller
             return redirect()->back()->with('error', 'Gagal mengunggah tugas. Silakan coba lagi.');
         }
     }
+     public function rekapGuru()
+{
+    // Ambil semua data pengumpulan tugas, termasuk relasi ke siswa dan tugas
+    $tugas = \App\Models\PengumpulanTugas::with(['siswa', 'tugas'])->get();
+
+    return view('guru.pengumpulan', compact('tugas'));
+}
+
+public function siswa()
+{
+    return $this->belongsTo(\App\Models\User::class, 'siswa_id');
+}
 }

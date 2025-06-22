@@ -1,90 +1,100 @@
-@extends('layouts.app') {{-- Pastikan ini adalah layout yang benar --}}
-
-@section('title', 'Pengumpulan Tugas')
+@extends('layouts.app')
 
 @section('content')
-@include('siswa.modal_kumpul_tugas')
+<div class="max-w-6xl mx-auto px-4 py-4">
 
-<div class="text-white p-2 bg-blue-800">
-    <div class="container mx-auto flex justify-start items-center">
-        {{-- Tombol kembali, mengarahkan ke halaman kursus siswa --}}
-        <a href="{{ route('siswa.kursus.index') }}">
-            <button class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded shadow-md">
-                Kembali
-            </button>
-        </a>
+    {{-- Tombol Kembali --}}
+    <a href="{{ route('siswa.kursus.index') }}"
+       class="inline-block mb-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-1.5 px-3 rounded text-sm">
+        ⬅ Kembali
+    </a>
+
+    {{-- Judul Halaman --}}
+    <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4 flex items-center justify-center gap-2">
+        📚 <span>Pengumpulan Tugas</span>
+    </h2>
+
+    {{-- Kontainer Dua Kolom --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        {{-- Kiri: Detail Tugas + Status --}}
+        <div class="space-y-4">
+            {{-- Detail Tugas --}}
+            <div class="bg-white border border-gray-200 shadow rounded-lg p-4">
+                <h3 class="text-base font-semibold text-gray-700 mb-2 flex items-center gap-2">📘 Detail Tugas</h3>
+                <ul class="text-sm text-gray-700 space-y-1">
+                    <li><strong>Mata Pelajaran:</strong> {{ $mapel->nama }}</li>
+                    <li><strong>Minggu Ke:</strong> {{ $mingguKe }}</li>
+                    <li><strong>Judul Tugas:</strong> {{ $tugas->judul }}</li>
+                    <li><strong>Deskripsi:</strong> {{ $tugas->deskripsi ?? '-' }}</li>
+                    <li><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($tugas->deadline)->format('d M Y H:i') }}</li>
+                </ul>
+            </div>
+
+            {{-- Status Pengumpulan --}}
+            <div class="bg-white border border-gray-200 shadow rounded-lg p-4">
+                <h3 class="text-base font-semibold text-gray-700 mb-2 flex items-center gap-2">📄 Status Anda</h3>
+                @if ($pengumpulanTugas)
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>
+                            <strong>Status:</strong> {{ $pengumpulanTugas->status }}
+                            @if ($pengumpulanTugas->nilai !== null)
+                                <span class="text-green-600 font-medium">(Sudah Dinilai)</span>
+                            @else
+                                <span class="text-yellow-600 font-medium">(Menunggu Penilaian)</span>
+                            @endif
+                        </li>
+                        <li><strong>Nilai:</strong> {{ $pengumpulanTugas->nilai ?? '-' }}</li>
+                        <li><strong>File:</strong>
+                            <a href="{{ asset('storage/' . $pengumpulanTugas->file_path) }}"
+                               class="text-blue-600 underline" target="_blank">Lihat File</a>
+                        </li>
+                        <li><strong>Keterangan:</strong> {{ $pengumpulanTugas->keterangan_siswa ?? '-' }}</li>
+                    </ul>
+                @else
+                    <p class="text-red-500 text-sm">Anda belum mengumpulkan tugas ini.</p>
+                @endif
+            </div>
+        </div>
+
+        {{-- Kanan: Form Upload --}}
+        <div class="bg-white border border-gray-200 shadow rounded-lg p-4 h-full">
+            <h3 class="text-base font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                📤 <span>{{ $pengumpulanTugas ? 'Perbarui Tugas' : 'Unggah Tugas' }}</span>
+            </h3>
+
+            <form action="{{ route('siswa.pengumpulan_tugas.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3">
+                @csrf
+                <input type="hidden" name="mapel_id" value="{{ $mapel->id }}">
+                <input type="hidden" name="tugas_id" value="{{ $tugas->id }}">
+                <input type="hidden" name="minggu_ke" value="{{ $mingguKe }}">
+
+                {{-- File --}}
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-700" for="file_tugas">🗂️ File Tugas</label>
+                    <input type="file" name="file_tugas" accept=".pdf,.docx,.jpg,.jpeg,.png,.zip"
+                           class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm" {{ $pengumpulanTugas ? '' : 'required' }}>
+                    <p class="text-xs text-gray-500 mt-1">Format: PDF, DOCX, JPG, PNG, ZIP. Max 2MB.</p>
+                    @error('file_tugas') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Keterangan --}}
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-700" for="keterangan">📝 Keterangan</label>
+                    <textarea name="keterangan" rows="3" class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm">{{ old('keterangan') }}</textarea>
+                    @error('keterangan') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Tombol --}}
+                <div>
+                    <button type="submit"
+                            class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded">
+                        {{ $pengumpulanTugas ? '🔄 Perbarui Tugas' : '⬆️ Unggah Tugas' }}
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+
 </div>
-
-<h1 class="text-2xl font-bold text-center mt-6 mb-6">Pengumpulan Tugas</h1>
-
-<div class="max-w-xl mx-auto p-6 bg-white shadow-md border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Detail Tugas</h2>
-    <div class="space-y-3 text-gray-700 dark:text-gray-300">
-        <p><strong>Mata Pelajaran:</strong> {{ $mapel->nama ?? 'N/A' }}</p>
-        <p><strong>Minggu Ke:</strong> {{ $mingguKe ?? 'N/A' }}</p>
-        <p><strong>Judul Tugas:</strong> {{ $tugas->judul ?? 'N/A' }}</p>
-        <p><strong>Deskripsi:</strong> {{ $tugas->deskripsi ?? 'N/A' }}</p>
-        <p><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($tugas->deadline ?? 'N/A')->format('d M Y H:i') }}</p>
-        @if($tugas && $tugas->file_url)
-            <p><strong>File Tugas:</strong> <a href="{{ Storage::url($tugas->file_url) }}" target="_blank" class="text-blue-500 hover:underline">Lihat File</a></p>
-        @endif
-    </div>
-
-    <hr class="my-6 border-gray-300 dark:border-gray-600">
-
-    <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Status Pengumpulan Anda</h2>
-    <table class="w-full text-left table-auto border-collapse">
-        <tbody>
-            <tr class="border-b border-gray-200 dark:border-gray-700">
-                <td class="p-4 font-medium text-gray-700 dark:text-gray-300">Status Pengumpulan</td>
-                <td class="p-4 text-gray-900 dark:text-white">
-                    {{ $pengumpulanTugas->status ?? 'Belum diunggah' }}
-                    @if($pengumpulanTugas && $pengumpulanTugas->status === 'submitted')
-                        <span class="text-yellow-600 dark:text-yellow-400 font-semibold">(Menunggu Penilaian)</span>
-                    @elseif($pengumpulanTugas && $pengumpulanTugas->status === 'graded')
-                        <span class="text-green-600 dark:text-green-400 font-semibold">(Sudah Dinilai)</span>
-                    @endif
-                </td>
-            </tr>
-            <tr class="border-b border-gray-200 dark:border-gray-700">
-                <td class="p-4 font-medium text-gray-700 dark:text-gray-300">Nilai</td>
-                <td class="p-4 text-gray-900 dark:text-white">
-                    {{ $pengumpulanTugas->nilai ?? '-' }}
-                </td>
-            </tr>
-            <tr class="border-b border-gray-200 dark:border-gray-700">
-                <td class="p-4 font-medium text-gray-700 dark:text-gray-300">File Anda</td>
-                <td class="p-4 text-gray-900 dark:text-white">
-                    @if($pengumpulanTugas && $pengumpulanTugas->file_path)
-                        <a href="{{ Storage::url($pengumpulanTugas->file_path) }}" target="_blank" class="text-blue-500 hover:underline">Lihat File Anda</a>
-                    @else
-                        -
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <td class="p-4 font-medium text-gray-700 dark:text-gray-300">Keterangan Anda</td>
-                <td class="p-4 text-gray-900 dark:text-white">
-                    {{ $pengumpulanTugas->keterangan_siswa ?? '-' }}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="flex justify-center mt-6">
-    <button data-modal-target="unggahModal" data-modal-toggle="unggahModal"
-        class="bg-blue-900 hover:bg-blue-800 text-white text-sm font-bold py-2 px-6 rounded shadow-md"
-        {{-- Tambahkan data attribute tugas-id untuk JS di modal --}}
-        data-tugas-id="{{ $tugas->id ?? '' }}"> {{-- Pastikan $tugas ada sebelum mengakses id --}}
-        UNGGAH TUGAS
-    </button>
-</div>
-
-<script>
-    // Pastikan variabel tugasId tersedia untuk modal jika halaman dimuat ulang
-    const currentTugasIdFromPhp = "{{ $tugas->id ?? '' }}";
-</script>
 @endsection
-s
