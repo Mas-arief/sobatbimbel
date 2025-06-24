@@ -89,13 +89,18 @@ class PengumpulanTugasController extends Controller
 
         try {
             // 2. Simpan File ke Storage
+            // MENGGUNAKAN DISK 'public' SECARA EKSPLISIT
             $filePath = $file->storeAs(
-                'public/pengumpulan_tugas/' . $mapelId . '/' . $mingguKe . '/' . $userId,
-                $file->getClientOriginalName()
+                'pengumpulan_tugas/' . $mapelId . '/' . $mingguKe . '/' . $userId,
+                $file->getClientOriginalName(),
+                'public' // MENENTUKAN DISK 'public'
             );
 
-            // Ganti 'public/' dengan string kosong agar path relatif untuk database
-            $relativePath = str_replace('public/', '', $filePath);
+            // Path relatif untuk database (tidak perlu mengganti 'public/' karena sudah di disk public)
+            // Cukup hapus 'public/' dari $filePath jika $filePath mengembalikan path lengkap dengan nama disk.
+            // Namun, storeAs dengan disk 'public' biasanya sudah mengembalikan path relatif terhadap root disk tersebut.
+            // Jadi, $filePath harusnya sudah siap untuk disimpan ke DB.
+            $relativePath = $filePath; // Menggunakan langsung $filePath karena sudah relatif terhadap disk 'public'
 
             // 3. Simpan data ke Database menggunakan updateOrCreate
             $pengumpulanTugas = PengumpulanTugas::updateOrCreate(
@@ -124,9 +129,9 @@ class PengumpulanTugasController extends Controller
             $mapelSlugForRedirect = $mapelNameMapping[$currentMapel->nama] ?? null;
 
             if (!$mapelSlugForRedirect) {
-                 Log::error("Gagal mendapatkan mapel_slug untuk redirect setelah unggah tugas. Mapel ID: {$mapelId}.");
-                 // Fallback jika mapelSlug tidak ditemukan, redirect ke halaman kursus
-                 return redirect()->route('siswa.kursus.index')->with('error', 'Tugas berhasil diunggah, tetapi terjadi kesalahan saat mengarahkan kembali. Silakan navigasi manual.');
+                Log::error("Gagal mendapatkan mapel_slug untuk redirect setelah unggah tugas. Mapel ID: {$mapelId}.");
+                // Fallback jika mapelSlug tidak ditemukan, redirect ke halaman kursus
+                return redirect()->route('siswa.kursus.index')->with('error', 'Tugas berhasil diunggah, tetapi terjadi kesalahan saat mengarahkan kembali. Silakan navigasi manual.');
             }
 
             return redirect()->route('siswa.pengumpulan_tugas', [
@@ -139,16 +144,12 @@ class PengumpulanTugasController extends Controller
             return redirect()->back()->with('error', 'Gagal mengunggah tugas. Silakan coba lagi.');
         }
     }
-     public function rekapGuru()
-{
-    // Ambil semua data pengumpulan tugas, termasuk relasi ke siswa dan tugas
-    $tugas = \App\Models\PengumpulanTugas::with(['siswa', 'tugas'])->get();
 
-    return view('guru.pengumpulan', compact('tugas'));
-}
+    public function rekapGuru()
+    {
+        // Ambil semua data pengumpulan tugas, termasuk relasi ke siswa dan tugas
+        $tugas = \App\Models\PengumpulanTugas::with(['siswa', 'tugas'])->get();
 
-public function siswa()
-{
-    return $this->belongsTo(\App\Models\User::class, 'siswa_id');
-}
+        return view('guru.pengumpulan', compact('tugas'));
+    }
 }

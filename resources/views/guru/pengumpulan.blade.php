@@ -35,10 +35,20 @@
                         <td class="px-4 py-2 border">{{ $item->tugas->judul ?? '-' }}</td>
                         <td class="px-4 py-2 border">{{ $item->nilai ?? '-' }}</td>
                         <td class="px-4 py-2 border">
-                            <a href="{{ route('guru.tugas.edit', $item->id) }}"
-                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                                Edit
-                            </a>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-2">
+                                <a href="{{ route('guru.tugas.edit', $item->id) }}"
+                                   class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                                    Edit
+                                </a>
+                                @if ($item->file_path)
+                                    <a href="{{ Storage::url($item->file_path) }}" target="_blank"
+                                       class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                                        Lihat File
+                                    </a>
+                                @else
+                                    <span class="text-gray-500 text-xs">Belum ada file</span>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @empty
