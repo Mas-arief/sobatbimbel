@@ -3,31 +3,13 @@
 @section('title', 'Input Absensi')
 
 @section('content')
-
     <style>
         @keyframes floatingFade {
-            0% {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-
-            25% {
-                opacity: 0.1;
-            }
-
-            50% {
-                transform: translateY(-10px);
-                opacity: 0.3;
-            }
-
-            75% {
-                opacity: 0.1;
-            }
-
-            100% {
-                transform: translateY(0px);
-                opacity: 0;
-            }
+            0% { transform: translateY(30px); opacity: 0; }
+            25% { opacity: 0.1; }
+            50% { transform: translateY(-10px); opacity: 0.3; }
+            75% { opacity: 0.1; }
+            100% { transform: translateY(0px); opacity: 0; }
         }
 
         .animate-floating-fade {
@@ -38,7 +20,7 @@
     <!-- background animasi -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <img src="{{ asset('images/8.png') }}" alt="Background"
-            class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
+             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
     <!-- konten utama -->
@@ -48,6 +30,12 @@
 
             <p><strong>Mapel:</strong> {{ $mapel->nama }}</p>
             <p><strong>Minggu Ke:</strong> Minggu ke-{{ $minggu }}</p>
+
+            @if(session('success'))
+                <div class="bg-green-500 text-white p-2 rounded mb-4 text-sm text-center">
+                    {{ session('success') }}
+                </div>
+            @endif
 
             <form action="{{ route('guru.absensi.store') }}" method="POST" class="mt-6 space-y-4">
                 @csrf
@@ -63,14 +51,17 @@
                     </thead>
                     <tbody>
                         @foreach($siswa as $s)
+                            @php
+                                $kehadiranSiswa = old("kehadiran.{$s->id}", $absensiTersimpan[$s->id]->kehadiran ?? 'hadir');
+                            @endphp
                             <tr class="border-t">
                                 <td class="p-2">{{ $s->name }}</td>
                                 <td class="p-2">
                                     <select name="kehadiran[{{ $s->id }}]" class="w-full border rounded">
-                                        <option value="hadir">Hadir</option>
-                                        <option value="izin">Izin</option>
-                                        <option value="sakit">Sakit</option>
-                                        <option value="alpha">Alpha</option>
+                                        <option value="hadir" {{ $kehadiranSiswa === 'hadir' ? 'selected' : '' }}>Hadir</option>
+                                        <option value="izin" {{ $kehadiranSiswa === 'izin' ? 'selected' : '' }}>Izin</option>
+                                        <option value="sakit" {{ $kehadiranSiswa === 'sakit' ? 'selected' : '' }}>Sakit</option>
+                                        <option value="alpha" {{ $kehadiranSiswa === 'alpha' ? 'selected' : '' }}>Alpha</option>
                                     </select>
                                 </td>
                             </tr>
@@ -79,12 +70,12 @@
                 </table>
 
                 <div class="flex justify-end space-x-2">
-                    <a href="{{ url()->previous() == url()->current() ? route('guru.kursus') : url()->previous() }}"
-                        class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200 z-20">
+                    <a href="{{ route('guru.kursus') }}"
+                        class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200">
                         Kembali
-                    </a>
+                      </a>
                     <button type="submit"
-                        class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200 z-20">
+                            class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200 z-20">
                         Simpan
                     </button>
                 </div>

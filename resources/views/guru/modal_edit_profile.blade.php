@@ -34,14 +34,12 @@
                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                     </div>
                     <div class="mb-4">
-                        <label for="editMapel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mata Pelajaran</label>
-                        <select name="mapel_id" id="editMapel"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-                            @foreach ($mapelList as $mapel) {{-- Pastikan $mapelList tersedia dari controller --}}
-                                <option value="{{ $mapel->id }}">{{ $mapel->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mata Pelajaran</label>
+                    <div class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm dark:bg-gray-700 dark:text-white">
+                               {{ $user->mapel->nama ?? 'Belum Ditentukan' }}
+                      </div>
+                   </div>
+
                     <div class="mb-4">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Kelamin</label>
                         <div class="flex items-center">

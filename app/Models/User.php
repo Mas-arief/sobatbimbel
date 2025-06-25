@@ -13,8 +13,8 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'username', // Pastikan kolom ini juga ada di migrasi
-        'name', // Ini default 'name' dari Laravel, bisa juga Anda ubah jadi 'nama_lengkap' jika mau
+        'username',
+        'name',
         'email',
         'password',
         'alamat',
@@ -22,11 +22,9 @@ class User extends Authenticatable
         'telepon',
         'role',
         'guru_mata_pelajaran',
-        'is_verified', // <--- TAMBAHKAN INI UNTUK VERIFIKASI ADMIN
-        // Jika ada kolom lain untuk siswa (nisn, tempat_lahir, tanggal_lahir), tambahkan di sini juga
-        // 'nisn',
-        // 'tempat_lahir',
-        // 'tanggal_lahir',
+        'is_verified',
+        'custom_identifier',
+        'mapel_id',
     ];
 
     protected $hidden = [
@@ -37,8 +35,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_verified' => 'boolean', // <--- TAMBAHKAN INI UNTUK MENGUBAHNYA MENJADI TIPE BOOLEAN
+        'is_verified' => 'boolean',
     ];
+
+    // Generate custom_identifier hanya untuk siswa dan guru
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            if (!$user->custom_identifier && in_array($user->role, ['siswa', 'guru'])) {
+                $prefix = $user->role === 'siswa' ? 'SBS' : 'SBG';
+
+                $last = self::where('role', $user->role)
+                            ->whereNotNull('custom_identifier')
+                            ->orderByDesc('id')
+                            ->first();
+
+                $number = 1;
+                if ($last && preg_match('/\d+$/', $last->custom_identifier, $matches)) {
+                    $number = (int) $matches[0] + 1;
+                }
+
+                $user->custom_identifier = $prefix . $number;
+            }
+        });
+    }
 
     public function absensi()
     {
@@ -49,8 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tugas::class, 'user_id');
     }
+
     public function mapel()
-{
-    return $this->belongsTo(Mapel::class, 'mapel_id');
-}
+    {
+        return $this->belongsTo(Mapel::class, 'mapel_id');
+    }
 }

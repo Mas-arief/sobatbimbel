@@ -128,7 +128,7 @@ Route::put('/tugas/{id}', [TugasController::class, 'update'])->name('guru.tugas.
     // Absensi
     Route::middleware(['auth'])->prefix('guru')->name('guru.')->group(function () {
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi');
-        Route::get('/absensi/{mapel}', [AbsensiController::class, 'show'])->name('absensi.show'); // <== YANG INI
+        Route::get('/absensi/{mapelId}', [AbsensiController::class, 'show'])->name('absensi.show'); // <== YANG INI
         Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
     });
 

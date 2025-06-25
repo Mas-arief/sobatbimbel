@@ -45,8 +45,7 @@
 
             <div class="p-4 rounded-lg">
                 <div class="overflow-x-auto rounded-md shadow-md">
-                    <table
-                        class="w-full text-sm text-center text-black border border-white dark:text-white dark:border-gray-700">
+                    <table class="w-full text-sm text-center text-black border border-white dark:text-white dark:border-gray-700">
                         <thead class="bg-gray-300 text-black dark:bg-gray-700 dark:text-gray-300">
                             <tr>
                                 <th rowspan="2"
@@ -84,18 +83,21 @@
                                             $bgColor = 'bg-gray-100';
 
                                             if ($attendance) {
-                                                if ($attendance->kehadiran) {
-                                                    $status = 'Hadir';
-                                                    $bgColor = 'bg-green-100 text-green-800';
-                                                } else {
-                                                    $status = $attendance->keterangan ?? 'Alpha';
-                                                    if (strtolower($attendance->keterangan ?? '') == 'sakit') {
-                                                        $bgColor = 'bg-yellow-100 text-yellow-800';
-                                                    } elseif (strtolower($attendance->keterangan ?? '') == 'izin') {
+                                                $status = ucfirst($attendance->kehadiran);
+                                                switch ($attendance->kehadiran) {
+                                                    case 'hadir':
+                                                        $bgColor = 'bg-green-100 text-green-800';
+                                                        break;
+                                                    case 'izin':
                                                         $bgColor = 'bg-blue-100 text-blue-800';
-                                                    } else {
+                                                        break;
+                                                    case 'sakit':
+                                                        $bgColor = 'bg-yellow-100 text-yellow-800';
+                                                        break;
+                                                    case 'alpha':
+                                                    default:
                                                         $bgColor = 'bg-red-100 text-red-800';
-                                                    }
+                                                        break;
                                                 }
                                             }
                                         @endphp

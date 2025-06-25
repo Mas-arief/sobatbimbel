@@ -59,7 +59,7 @@
                 <div>
                     <label class="block text-sm font-medium text-black mb-1">ID</label>
                     <div class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 text-sm">
-                        {{ $user->id ?? 'N/A' }}
+                        {{ $user->custom_identifier  ?? 'N/A' }}
                     </div>
                 </div>
 

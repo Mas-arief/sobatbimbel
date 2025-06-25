@@ -3,34 +3,36 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User; // Make sure to import the User model
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
+    /**
+     * Menampilkan form pendaftaran.
+     */
     public function showRegistrationForm()
     {
-        return view('daftar'); // Pastikan ini mengarah ke file Blade Anda
+        return view('daftar'); // arahkan ke resources/views/daftar.blade.php
     }
 
+    /**
+     * Menangani permintaan registrasi.
+     */
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
 
-        $user = $this->create($request->all());
+        $this->create($request->all());
 
-        return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Akun Anda akan diverifikasi oleh admin. Mohon tunggu.');
+        return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Akun Anda akan diverifikasi oleh admin.');
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * Validasi data registrasi.
      */
     protected function validator(array $data)
     {
@@ -39,18 +41,15 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'string', Rule::in(['siswa', 'guru'])], // 'admin' should not be an option for public registration
+            'role' => ['required', 'string', Rule::in(['siswa', 'guru'])], // admin tidak boleh daftar manual
             'alamat' => ['nullable', 'string', 'max:255'],
             'jenis_kelamin' => ['nullable', Rule::in(['Laki-laki', 'Perempuan'])],
             'telepon' => ['nullable', 'string', 'max:20'],
-        ]); // <--- Perbaikan ada di sini: menutup array dengan ']' dan panggilan method dengan ');'
+        ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
+     * Membuat user baru.
      */
     protected function create(array $data)
     {
@@ -63,8 +62,8 @@ class RegisterController extends Controller
             'alamat' => $data['alamat'] ?? null,
             'jenis_kelamin' => $data['jenis_kelamin'] ?? null,
             'telepon' => $data['telepon'] ?? null,
-            'is_verified' => false, // <--- PENTING: Set ke false secara default
-            'mapel_id' => null, // Ini umumnya diisi admin untuk guru
+            'is_verified' => false,
+            'mapel_id' => null, // Admin akan mengisi ini nanti untuk guru
         ]);
     }
 }

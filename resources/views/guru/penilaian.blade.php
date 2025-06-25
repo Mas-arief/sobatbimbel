@@ -79,10 +79,10 @@
                 <div class="flex justify-end space-x-2">
                     {{-- Perbaikan: Tambahkan fallback jika url()->previous() adalah halaman saat ini --}}
                     {{-- Mengasumsikan ada route 'guru.dashboard' atau 'guru.mapel.index' sebagai fallback yang lebih umum --}}
-                    <a href="{{ url()->previous() == url()->current() ? route('guru.kursus') : url()->previous() }}"
+                   <a href="{{ route('guru.kursus') }}"
                         class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200">
                         Kembali
-                    </a>
+                      </a>
                     <button type="submit"
                         class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded text-sm font-medium shadow-md transition duration-200">
                         Simpan
