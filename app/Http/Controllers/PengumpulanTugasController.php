@@ -62,8 +62,9 @@ class PengumpulanTugasController extends Controller
             return redirect()->route('siswa.kursus.index')->with('error', 'Tugas atau mata pelajaran tidak ditemukan untuk minggu ini. Pastikan tugas sudah dibuat.');
         }
 
+        $tipe = 'siswa';
         // --- Pastikan variabel 'mingguKe' (camelCase) digunakan di compact() ---
-        return view('siswa.pengumpulan_tugas', compact('mapel', 'mingguKe', 'tugas', 'pengumpulanTugas'));
+        return view('siswa.pengumpulan_tugas', compact('mapel', 'mingguKe', 'tugas', 'pengumpulanTugas', 'tipe'));
     }
 
     /**
@@ -150,6 +151,7 @@ class PengumpulanTugasController extends Controller
         // Ambil semua data pengumpulan tugas, termasuk relasi ke siswa dan tugas
         $tugas = \App\Models\PengumpulanTugas::with(['siswa', 'tugas'])->get();
 
-        return view('guru.pengumpulan', compact('tugas'));
+        $tipe='guru';
+        return view('guru.pengumpulan', compact('tugas', 'tipe'));
     }
 }

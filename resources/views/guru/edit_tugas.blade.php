@@ -3,7 +3,7 @@
 @section('title', 'Edit Nilai Tugas')
 
 @section('content')
-<div class="max-w-2xl mx-auto mt-6 bg-white p-4 rounded shadow">
+<div class="relative z-10 max-w-2xl mx-auto mt-6 bg-white p-4 rounded shadow">
     <h2 class="text-lg font-semibold mb-4">Edit Nilai - {{ $pengumpulan->siswa->nama ?? '-' }}</h2>
 
     <form method="POST" action="{{ route('guru.tugas.update', $pengumpulan->id) }}">

@@ -6,32 +6,15 @@
 
     <style>
         @keyframes floatingFade {
-            0% {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-
-            25% {
-                opacity: 0.1;
-            }
-
-            50% {
-                transform: translateY(-10px);
-                opacity: 0.2;
-            }
-
-            75% {
-                opacity: 0.1;
-            }
-
-            100% {
-                transform: translateY(0px);
-                opacity: 0;
-            }
+            0% { transform: translateY(30px); opacity: 0.2; }
+            25% { opacity: 0.5; }
+            50% { transform: translateY(-10px); opacity: 0.8; }
+            75% { opacity: 0.5; }
+            100% { transform: translateY(0px); opacity: 0.2; }
         }
 
         .animate-floating-fade {
-            animation: floatingFade 10s ease-in-out infinite;
+            animation: floatingFade 15s ease-in-out infinite;
         }
     </style>
 
@@ -41,8 +24,8 @@
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
-    <div class="relative z-10 flex justify-center mt-10 w-full px-4">
-        <div class="w-full max-w-3xl">
+    <div class="relative z-10 flex justify-center mt-8 w-full px-4">
+        <div class="w-full max-w-4xl">
             <h2 class="text-2xl font-bold mb-4 text-center">INPUT NILAI</h2>
 
             <p><strong>Mapel:</strong> {{ $mapel->nama }}</p>

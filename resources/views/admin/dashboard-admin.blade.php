@@ -7,25 +7,25 @@
         @keyframes floatingFade {
             0% {
                 transform: translateX(30px);
-                opacity: 0;
+                opacity: 0.6;
             }
 
             25% {
-                opacity: 0.3; /* Mengurangi opacity dari 4 agar lebih halus */
+                opacity: 1; /* Mengurangi opacity dari 4 agar lebih halus */
             }
 
             50% {
                 transform: translateX(-10px);
-                opacity: 0.6; /* Mengurangi opacity dari 7 agar lebih halus */
+                opacity: 2; /* Mengurangi opacity dari 7 agar lebih halus */
             }
 
             75% {
-                opacity: 0.3; /* Mengurangi opacity dari 5 agar lebih halus */
+                opacity: 1; /* Mengurangi opacity dari 5 agar lebih halus */
             }
 
             100% {
                 transform: translateX(0px);
-                opacity: 0;
+                opacity: 0.6;
             }
         }
 

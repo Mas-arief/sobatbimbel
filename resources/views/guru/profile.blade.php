@@ -41,10 +41,10 @@
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
-    <div class="px-4 sm:px-6 lg:px-8 mt-3">
+    <div class="relative z-10px-4 sm:px-6 lg:px-8 mt-3">
     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-1">Profil Guru</h1>
 
-    <div class="flex justify-center">
+    <div class="relative z-10 flex justify-center">
         {{-- Form ini hanya untuk menampilkan data. Tombol di bawah akan membuka modal edit. --}}
         <form class="w-full max-w-3xl space-y-2">
             @if(session('success'))

@@ -39,7 +39,7 @@
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
-    <div class="px-4 sm:px-6 lg:px-8 mt-3">
+    <div class="relative z-10 px-4 sm:px-6 lg:px-8 mt-3">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-5 text-center">Manajemen Profil Siswa</h1>
 
         <div class="overflow-x-auto rounded-md shadow-md max-w-5xl mx-auto mt-4">
@@ -69,7 +69,7 @@
                 <tbody class="text-center">
                     @forelse ($dataSiswa as $siswa)
                         <tr class="border border-gray-300">
-                            <td class="px-4 py-2 border">{{ $siswa->id }}</td>
+                            <td class="px-4 py-2 border">{{ $siswa->custom_identifier }}</td>
                             <td class="px-4 py-2 border font-semibold">{{ $siswa->name ?: $siswa->username }}</td>
                             <td class="px-4 py-2 border">{{ $siswa->jenis_kelamin ?: '-' }}</td>
                             <td class="px-4 py-2 border">{{ $siswa->alamat ?: '-' }}</td>
@@ -82,7 +82,7 @@
                                     @csrf
                                     @method('DELETE') {{-- Method spoofing untuk DELETE request --}}
                                     <button type="submit"
-                                        class="bg-white border border-gray-600 px-3 py-1 rounded text-sm hover:bg-gray-100 flex items-center gap-1 text-red-600">
+                                        class="bg-white border border-gray-600 px-3 py-1 rounded text-sm hover:bg-gray-100 flex items-center gap-1">
                                         <i class="fas fa-trash"></i> Hapus
                                     </button>
                                 </form>

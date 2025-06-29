@@ -40,7 +40,7 @@
     </div>
 
     <div class="relative z-10 px-4 sm:px-6 lg:px-8 mt-3">
-        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center rounded-lg py-2">VERIFIKASI</h1>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-500 mb-8 text-center rounded-lg py-2">VERIFIKASI</h1>
 
         {{-- Notifikasi (session messages from Laravel backend) --}}
         @if(session('success'))
@@ -63,9 +63,9 @@
 
         {{-- Bagian Guru --}}
         <div class="max-w-5xl mx-auto">
-            <h4 class="text-xl font-semibold text-gray-700 mb-4 text-left">Daftar Guru Menunggu Verifikasi</h4>
+            <h4 class="text-xl font-semibold text-gray-950 mb-4 text-left">Daftar Guru Menunggu Verifikasi</h4>
         </div>
-        <div class="flex justify-center">
+        <div class="flex justify-center transition duration-300 ease-in-out transform hover:scale-105">
             <div class="w-full max-w-5xl overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">
                 @include('admin.partials.verifikasi-table', ['users' => $guru])
             </div>
@@ -73,9 +73,9 @@
 
         {{-- Bagian Siswa --}}
         <div class="max-w-5xl mx-auto">
-            <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-4 text-left">Daftar Siswa Menunggu Verifikasi</h4>
+            <h4 class="text-xl font-semibold text-gray-950 mt-6 mb-4 text-left">Daftar Siswa Menunggu Verifikasi</h4>
         </div>
-        <div class="flex justify-center">
+        <div class="flex justify-center transition duration-300 ease-in-out transform hover:scale-105">
             <div class="w-full max-w-5xl overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">
                 @include('admin.partials.verifikasi-table', ['users' => $siswa])
             </div>
@@ -86,7 +86,7 @@
         <div id="messageModal"
             class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden z-50 p-4">
             <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center border border-gray-300">
-                <p id="modalMessage" class="text-lg font-semibold text-gray-800 mb-6"></p>
+                <p id="modalMessage" class="text-lg font-semibold text-gray-950 mb-6"></p>
                 <button id="closeModal"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200">Tutup</button>
             </div>

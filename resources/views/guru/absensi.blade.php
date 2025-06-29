@@ -5,11 +5,11 @@
 @section('content')
     <style>
         @keyframes floatingFade {
-            0% { transform: translateY(30px); opacity: 0; }
-            25% { opacity: 0.1; }
-            50% { transform: translateY(-10px); opacity: 0.3; }
-            75% { opacity: 0.1; }
-            100% { transform: translateY(0px); opacity: 0; }
+            0% { transform: translateY(30px); opacity: 0.2; }
+            25% { opacity: 0.5; }
+            50% { transform: translateY(-10px); opacity: 1; }
+            75% { opacity: 0.5; }
+            100% { transform: translateY(0px); opacity: 0.2; }
         }
 
         .animate-floating-fade {
@@ -24,8 +24,8 @@
     </div>
 
     <!-- konten utama -->
-    <div class="flex justify-center mt-10 w-full px-4 relative z-10">
-        <div class="w-full max-w-3xl">
+    <div class="flex justify-center mt-8 w-full px-4 relative z-10">
+        <div class="w-full max-w-4xl">
             <h2 class="text-2xl font-bold mb-4 text-center">INPUT DAFTAR HADIR</h2>
 
             <p><strong>Mapel:</strong> {{ $mapel->nama }}</p>

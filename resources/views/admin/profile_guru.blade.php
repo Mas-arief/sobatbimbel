@@ -39,10 +39,10 @@
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
-    <div class="px-4 sm:px-6 lg:px-8 mt-3">
+    <div class="relative z-10 px-4 sm:px-6 lg:px-8 mt-3">
     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-5 text-center">Manajemen Profil Guru</h1>
 
-    <div class="flex justify-center">
+    <div class="relative z-10 flex justify-center">
         <div class="w-full max-w-6xl overflow-x-auto rounded-md shadow-md">
             @if(session('success'))
                 <div class="bg-green-500 text-white p-2 rounded text-sm mb-4">
@@ -66,7 +66,7 @@
                 <tbody class="text-center">
                     @forelse ($dataGuru as $guru)
                     <tr class="border border-gray-300">
-                        <td class="px-4 py-2 border">{{ $guru->id }}</td>
+                        <td class="px-4 py-2 border">{{ $guru->custom_identifier }}</td>
                         <td class="px-4 py-2 border font-semibold">{{ $guru->name ?? $guru->username }}</td>
                         <td class="px-4 py-2 border">{{ $guru->jenis_kelamin ?: '-' }}</td>
                         <td class="px-4 py-2 border">{{ $guru->alamat ?: '-' }}</td>

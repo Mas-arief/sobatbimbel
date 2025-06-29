@@ -1,18 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.navbar')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 py-4">
-
-    {{-- Tombol Kembali --}}
-    <a href="{{ route('siswa.kursus.index') }}"
-       class="inline-block mb-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-1.5 px-3 rounded text-sm">
-        ⬅ Kembali
-    </a>
+<div class="relative z-10 max-w-6xl mx-auto px-4 py-4">
 
     {{-- Judul Halaman --}}
     <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4 flex items-center justify-center gap-2">
         📚 <span>Pengumpulan Tugas</span>
     </h2>
+
+    {{-- Tombol Kembali --}}
+    <a href="{{ route('siswa.kursus.index') }}"
+       class="inline-block mb-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-1.5 px-4 rounded text-sm transition duration-300 ease-in-out transform hover:scale-105">
+        ⬅ Kembali
+    </a>
 
     {{-- Kontainer Dua Kolom --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -88,7 +88,7 @@
                 {{-- Tombol --}}
                 <div>
                     <button type="submit"
-                            class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded">
+                            class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
                         {{ $pengumpulanTugas ? '🔄 Perbarui Tugas' : '⬆️ Unggah Tugas' }}
                     </button>
                 </div>

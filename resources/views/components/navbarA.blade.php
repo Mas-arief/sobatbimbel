@@ -18,7 +18,7 @@
             </div>
             <div class="flex items-center">
                 <div class="flex items-center ms-3">
-                    <span class="text-white font-medium hidden sm:inline pr-4">Selamat Datang, Admin!</span>
+                    <span class="text-white font-medium hidden sm:inline pr-4"><strong>Selamat Datang, Admin!</strong></span>
                     <div>
                         <button type="button"
                             class="flex text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
