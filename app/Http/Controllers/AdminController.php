@@ -3,37 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Pastikan Anda mengimpor model User dengan benar
+use App\Models\User;
 
 class AdminController extends Controller
 {
     /**
      * Menampilkan halaman verifikasi admin.
-     * Mengambil data guru dan siswa yang menunggu verifikasi.
      *
      * @return \Illuminate\View\View
      */
     public function verifikasi()
     {
-
         $guru = User::where('role', 'guru')
             ->where('is_verified', false)
-            ->get(); // <-- Ini harus mengembalikan Collection
+            ->get();
 
-        // Ambil user yang berperan sebagai 'siswa' dan belum diverifikasi
         $siswa = User::where('role', 'siswa')
             ->where('is_verified', false)
-            ->get(); // <-- Ini juga harus mengembalikan Collection
+            ->get();
 
         $tipe = 'admin';
-        // Lewatkan variabel $guru dan $siswa ke view
-        // Pastikan variabel ini berupa Collection (hasil dari ->get())
+
         return view('admin.verifikasi', compact('guru', 'siswa', 'tipe'));
     }
 
     /**
-     * Menangani proses verifikasi (menerima atau menolak) user melalui API.
-     * Ini adalah bagian yang dipanggil oleh JavaScript Anda.
+     * Verifikasi individual user (dari tombol terima/tolak).
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $userId
@@ -55,11 +50,31 @@ class AdminController extends Controller
             $user->is_verified = true;
             $user->save();
             $message = 'Pengguna ' . $user->name . ' berhasil diverifikasi.';
-        } else { // 'reject'
+        } else {
             $user->delete();
             $message = 'Pengguna ' . $user->name . ' telah ditolak dan dihapus.';
         }
 
         return response()->json(['message' => $message]);
+    }
+
+    /**
+     * Verifikasi semua guru dan siswa sekaligus.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function verifikasiSemua()
+    {
+        try {
+            User::whereIn('role', ['guru', 'siswa'])
+                ->where(function ($query) {
+                    $query->whereNull('is_verified')->orWhere('is_verified', false);
+                })
+                ->update(['is_verified' => true]);
+
+            return redirect()->back()->with('success', 'Semua guru dan siswa berhasil diverifikasi.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memverifikasi semua: ' . $e->getMessage());
+        }
     }
 }

@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
     // Verifikasi Pengguna (Guru dan Siswa)
     Route::get('/admin.verifikasi', [AdminController::class, 'verifikasi'])->name('admin.verifikasi');
     Route::post('/verify-user/{userId}', [AdminController::class, 'verifyUser'])->name('admin.verify-user');
+    Route::post('/admin/verifikasi-semua', [AdminController::class, 'verifikasiSemua'])->name('admin.verifikasi.semua');
 
     // --- Rute Guru (Membutuhkan Auth) ---
     // Profil Guru (dari sisi Guru itu sendiri)
@@ -162,3 +163,4 @@ Route::put('/tugas/{id}', [TugasController::class, 'update'])->name('guru.tugas.
     // Perbaiki: Route::get('/kursus', [KursussiswaController::class, 'kursus.index'])->name('siswa.kursus');
     // Seharusnya: Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika KursussiswaController->index() menangani ini
 });
+

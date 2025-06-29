@@ -14,28 +14,11 @@
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
     <style>
         @keyframes floatingFade {
-            0% {
-                transform: translateY(0px);
-                opacity: 0.2;
-            }
-
-            25% {
-                opacity: 0.4;
-            }
-
-            50% {
-                transform: translateY(0px);
-                opacity: 0.8;
-            }
-
-            75% {
-                opacity: 0.4;
-            }
-
-            100% {
-                transform: translateY(0px);
-                opacity: 0.2;
-            }
+            0% { transform: translateY(0px); opacity: 0.2; }
+            25% { opacity: 0.4; }
+            50% { transform: translateY(0px); opacity: 0.8; }
+            75% { opacity: 0.4; }
+            100% { transform: translateY(0px); opacity: 0.2; }
         }
 
         .animate-floating-fade {
@@ -49,22 +32,22 @@
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
-    <div class="relative z-10 bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm ">
+    <div class="relative z-10 bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm">
         <h2 class="text-2xl font-bold text-center mb-6">MASUK</h2>
 
-        {{-- Menampilkan pesan sukses (misalnya, setelah registrasi) --}}
+        {{-- Pesan sukses --}}
         @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <div id="successAlert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 transition-opacity duration-700 ease-in-out">
                 <strong class="font-bold">Sukses!</strong>
                 <span class="block sm:inline">{{ session('success') }}</span>
             </div>
         @endif
 
-        {{-- Menampilkan pesan error validasi (termasuk error 'belum diverifikasi' dari LoginController) --}}
+        {{-- Pesan error validasi --}}
         @if ($errors->any())
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                 <strong class="font-bold">Oops!</strong>
-                <span class="block sm:inline">{{ $errors->first() }}</span> {{-- Hanya menampilkan pesan pertama --}}
+                <span class="block sm:inline">{{ $errors->first() }}</span>
             </div>
         @endif
 
@@ -124,6 +107,19 @@
             </p>
         </form>
     </div>
+
+    <!-- Script untuk menghilangkan alert -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const alertBox = document.getElementById('successAlert');
+            if (alertBox) {
+                setTimeout(() => {
+                    alertBox.style.opacity = '0';
+                    setTimeout(() => alertBox.remove(), 700);
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 
 </html>

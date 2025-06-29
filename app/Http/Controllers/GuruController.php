@@ -8,31 +8,44 @@ use App\Models\Mapel;
 
 class GuruController extends Controller
 {
-    public function index() // Ini akan menampilkan daftar guru untuk admin
+    /**
+     * Tampilkan daftar guru yang sudah diverifikasi untuk admin.
+     */
+    public function index(Request $request)
     {
-        // === PERBAIKAN DI SINI: Gunakan paginate() untuk efisiensi data besar ===
-        $dataGuru = User::where('role', 'guru')->with('mapel')->paginate(10); // Ambil 10 guru per halaman
-        // Anda bisa menyesuaikan angka 10 sesuai kebutuhan performa dan desain UI Anda
+        $query = User::where('role', 'guru')
+                     ->where('is_verified', true); // Hanya guru yang sudah diverifikasi
 
-        $mapelList = Mapel::all(); // Mengambil semua mata pelajaran untuk dropdown di modal
-        $tipe = 'admin'; // Variabel 'tipe' ini akan tersedia di view, jika digunakan
+        // Pencarian berdasarkan ID kustom atau nama
+        if ($request->has('search') && $request->search !== null) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('custom_identifier', 'like', "%{$search}%")
+                  ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+
+        $dataGuru = $query->with('mapel')->paginate(10); // Paginasi dan relasi mapel
+        $mapelList = Mapel::all(); // Ambil semua mata pelajaran
+        $tipe = 'admin'; // Digunakan di view jika diperlukan
 
         return view('admin.profile_guru', compact('dataGuru', 'mapelList', 'tipe'));
     }
 
-    public function aturMapel(Request $request, $id) // Admin mengedit mapel guru
+    /**
+     * Admin mengatur mapel yang diajarkan oleh guru.
+     */
+    public function aturMapel(Request $request, $id)
     {
         $request->validate([
-            // Pastikan nama tabel di 'exists' sesuai dengan nama tabel di database Anda
-            // Jika nama tabelnya 'mapel' (seperti yang Anda gunakan), itu sudah benar
-            'mapel_id' => 'nullable|exists:mapel,id', // Diubah menjadi nullable karena guru bisa saja tidak memiliki mapel_id
+            'mapel_id' => 'nullable|exists:mapel,id',
         ], [
             'mapel_id.exists' => 'Mata pelajaran yang dipilih tidak valid.'
         ]);
 
         $guru = User::findOrFail($id);
 
-        // Tambahkan pengecekan role untuk keamanan
+        // Pastikan hanya guru yang bisa diubah
         if ($guru->role !== 'guru') {
             return redirect()->back()->with('error', 'User yang Anda coba perbarui bukan seorang guru.');
         }
@@ -43,9 +56,12 @@ class GuruController extends Controller
         return redirect()->back()->with('success', 'Mata pelajaran guru berhasil diperbarui.');
     }
 
-    public function destroy($id) // Admin menghapus guru
+    /**
+     * Admin menghapus akun guru.
+     */
+    public function destroy($id)
     {
-        // Gunakan where('role', 'guru') untuk memastikan hanya guru yang dapat dihapus melalui rute ini
+        // Pastikan yang dihapus adalah guru
         $guru = User::where('role', 'guru')->findOrFail($id);
 
         $guru->delete();
