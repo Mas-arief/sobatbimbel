@@ -50,7 +50,7 @@
                     <h5 class="text-lg font-semibold mb-2">DATA PENDAFTARAN</h5>
                     {{-- PERBAIKAN DI SINI: Menampilkan jumlah user yang belum diverifikasi --}}
                     <p class="text-4xl font-bold mb-2">{{ $totalUnverifiedUsers ?? 0 }}</p>
-                    <p class="text-sm mb-4 text-center">TOTAL PENDAFTARAN BARU</p> {{-- Ubah teks agar lebih jelas --}}
+                    <p class="text-sm mb-4 text-center">TOTAL DATA PENDAFTARAN BARU</p> {{-- Ubah teks agar lebih jelas --}}
                     <a href="{{ route('admin.verifikasi') }}" {{-- Gunakan route() helper --}}
                         class="bg-white text-[#1F1AA1] text-sm font-semibold px-4 py-1 rounded-md hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
                         LIHAT

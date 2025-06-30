@@ -1,5 +1,5 @@
 <table class="min-w-full text-base text-gray-800">
-    <thead class="text-sm uppercase bg-gray-100 text-center font-semibold text-gray-700">
+    <thead class="text-sm uppercase bg-gray-100 text-center font-semibold text-gray-700 ">
         <tr>
             <th class="px-6 py-3 border-b border-gray-200">ID</th>
             <th class="px-6 py-3 border-b border-gray-200">Nama</th>

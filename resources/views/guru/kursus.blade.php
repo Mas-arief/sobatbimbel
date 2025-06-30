@@ -77,21 +77,21 @@
         @if(isset($mapel['indo']))
         <button @click="tab = 'indo'"
             :class="{ 'bg-blue-900 text-white': tab === 'indo', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'indo' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">Bahasa Indonesia
+            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Bahasa Indonesia
         </button>
         @endif
 
         @if(isset($mapel['inggris']))
         <button @click="tab = 'inggris'"
             :class="{ 'bg-blue-900 text-white': tab === 'inggris', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'inggris' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">Bahasa Inggris
+            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Bahasa Inggris
         </button>
         @endif
 
         @if(isset($mapel['mtk']))
         <button @click="tab = 'mtk'"
             :class="{ 'bg-blue-900 text-white': tab === 'mtk', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'mtk' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200">Matematika
+            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Matematika
         </button>
         @endif
     </div>
@@ -99,7 +99,7 @@
         <div class="space-y-6 mt-10 max-w-4xl mx-auto text-lg">
             <template x-for="i in 16" :key="i">
                 <div x-data="{ open: null }">
-                    <div class="bg-blue-800 text-white rounded-lg mb-2 dark:bg-blue-700">
+                    <div class="bg-blue-800 text-white rounded-lg mb-2 dark:bg-blue-700 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
                         <div class="p-5 flex items-center justify-between cursor-pointer"
                             @click="open = (open === i ? null : i); mingguAktif = i;">
                             <div class="flex items-center space-x-2">
@@ -133,7 +133,7 @@
                                                     <span>Tambah Materi</span>
                                                 </button>
                                                 <p class="ml-6 text-gray-100">Materi Bahasa Indonesia</p>
-                                                <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
                                                     @click="setTugasModalValues({{ $mapel['indo']->id }}, i);"
@@ -149,7 +149,7 @@
                                                     <span>Pengumpulan</span>
                                                 </a>
 
-                                                <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <a x-bind:href="'{{ route('guru.absensi.show', $mapel['indo']->id) }}' + '?minggu=' + i"
                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
@@ -178,7 +178,7 @@
                                                     <span>Tambah Materi</span>
                                                 </button>
                                                 <p class="ml-6 text-gray-100">Materi Bahasa Inggris</p>
-                                                <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
                                                     @click="setTugasModalValues({{ $mapel['inggris']->id }}, i);"
@@ -194,7 +194,7 @@
                                                     <span>Pengumpulan</span>
                                                 </a>
 
-                                                <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + i"
                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
@@ -222,6 +222,8 @@
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
+                                                <p class="ml-6 text-gray-100">Materi Maematika</p>
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
                                                     @click="setTugasModalValues({{ $mapel['mtk']->id }}, i);"
@@ -237,7 +239,7 @@
                                                     <span>Pengumpulan</span>
                                                 </a>
 
-                                                <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + i"
                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">

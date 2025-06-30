@@ -40,37 +40,35 @@
     @endif
 
     {{-- Tombol kembali --}}
-    <div class="mt-6 flex justify-end max-w-5xl mx-auto">
+    <div class="max-w-5xl mx-auto mt-6 flex justify-between items-center">
         <a href="{{ route('dashboard') }}"
             class="inline-flex items-center bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
             <i class="fas fa-arrow-left mr-3"></i> Kembali ke Dashboard
         </a>
-    </div>
 
-    {{-- Tombol Verifikasi Semua --}}
-    <div class="max-w-5xl mx-auto mt-6 flex justify-end">
+        {{-- Tombol Verifikasi Semua --}}
         <form method="POST" action="{{ route('admin.verifikasi.semua') }}"
               onsubmit="return confirm('Yakin ingin memverifikasi semua guru dan siswa?');">
             @csrf
             <button type="submit"
-                    class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition duration-300">
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition duration-300 ease-in-out transform hover:scale-105">
                 <i class="fas fa-check-double mr-2"></i> Verifikasi Semua
             </button>
         </form>
     </div>
 
     {{-- Daftar Guru --}}
-    <div class="max-w-5xl mx-auto mt-10">
+    <div class="max-w-5xl mx-auto mt-8">
         <h4 class="text-xl font-semibold text-gray-700 mb-4">Daftar Guru Menunggu Verifikasi</h4>
-        <div class="w-full overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">
+        <div class="w-full overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white duration-300 ease-in-out transform hover:scale-105">
             @include('admin.partials.verifikasi-table', ['users' => $guru])
         </div>
     </div>
 
     {{-- Daftar Siswa --}}
-    <div class="max-w-5xl mx-auto mt-10">
+    <div class="max-w-5xl mx-auto mt-6">
         <h4 class="text-xl font-semibold text-gray-700 mb-4">Daftar Siswa Menunggu Verifikasi</h4>
-        <div class="w-full overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white">
+        <div class="w-full overflow-x-auto shadow-lg rounded-xl border border-gray-300 bg-white duration-300 ease-in-out transform hover:scale-105">
             @include('admin.partials.verifikasi-table', ['users' => $siswa])
         </div>
     </div>
@@ -81,7 +79,7 @@
         <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center border border-gray-300">
             <p id="modalMessage" class="text-lg font-semibold text-gray-800 mb-6"></p>
             <button id="closeModal"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-200">
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105">
                 Tutup
             </button>
         </div>

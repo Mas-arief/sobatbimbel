@@ -1,3 +1,33 @@
+<style>
+    .shine-text {
+        position: relative;
+        display: inline-block;
+        font-weight: bold;
+        color: white;
+        background-image: linear-gradient(90deg,
+                white 0%,
+                white 30%,
+                #1F1AA1 50%,
+                white 70%,
+                white 100%);
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: sweep-light 7s linear infinite;
+    }
+
+    @keyframes sweep-light {
+        0% {
+            background-position: 200% center;
+        }
+
+        100% {
+            background-position: -200% center;
+        }
+    }
+</style>
+
 <nav class="fixed top-0 z-50 w-full bg-[#1F1AA1] border-b border-[#1F1AA1]">
     <div class="px-3 py-4 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
@@ -13,45 +43,12 @@
                     </svg>
                 </button>
                 <img src="{{ asset('images/sb-putih1.png') }}" class="h-8 me-3" alt="Logo" />
-                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">SOBAT BIMBEL</span>
+                <span class="self-center text-xl font-bold sm:text-2xl whitespace-nowrap text-white">SOBAT BIMBEL</span>
             </div>
             <div class="flex items-center">
                 <div class="flex items-center ms-3 ">
                     {{-- Menampilkan nama siswa yang login --}}
-                    <span class="text-white font-medium hidden sm:inline pr-4">Selamat Datang, {{ Auth::user()->name ?? 'Siswa' }}!</span>
-                    <div>
-                        <button type="button"
-                            class="flex text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                            aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                            <span class="sr-only">Open user menu</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-8 bg-transparent">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="z-50 hidden my-4 text-base list-none bg-[#1F1AA1] divide-y divide-white rounded-sm shadow-sm"
-                        id="dropdown-user">
-                        <ul class="py-1 text-center" role="none">
-                            <li>
-                                {{-- Pastikan menggunakan route('password.change') --}}
-                                <a href="{{ route('password.change') }}"
-                                    class="block px-4 py-2 text-sm text-white hover:bg-blue-800 hover:text-white"
-                                    role="menuitem">GANTI KATA SANDI</a>
-                            </li>
-                            <hr>
-                            <li>
-                                {{-- Logout dengan form POST --}}
-                                <form action="{{ route('logout') }}" method="POST" class="w-full">
-                                    @csrf
-                                    <button type="submit"
-                                        class="block w-full text-left px-4 py-2 text-sm text-white hover:bg-blue-800 hover:text-white"
-                                        role="menuitem">KELUAR</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                    <span class="text-white font-bold hidden sm:inline pr-4 shine-text">Selamat Datang, {{ Auth::user()->name ?? 'Siswa' }}!</span>
                 </div>
             </div>
         </div>

@@ -6,31 +6,11 @@
 
     <style>
         @keyframes floatingFade {
-            0% {
-                transform: translateY(0px);
-                opacity: 1;
-            }
-
-            25% {
-                opacity: 1.;
-            }
-
-            50% {
-                transform: translateY(0px);
-                opacity: 2;
-                /* Diperbaiki: nilai opacity maksimum adalah 1 */
-            }
-
-            75% {
-                opacity: 1.5;
-            }
-
-            100% {
-                transform: translateY(0px);
-                opacity: 1;
-            }
-        }
-
+            0% { transform: translateY(0px); opacity: 1; }
+            25% { opacity: 1.;}
+            50% { transform: translateY(0px); opacity: 2;}
+            75% { opacity: 1.5;}
+            100% { transform: translateY(0px); opacity: 1;}}
         .animate-floating-fade {
             animation: floatingFade 15s ease-in-out infinite;
         }

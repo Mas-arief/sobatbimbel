@@ -28,7 +28,7 @@
             class="absolute top-0 left-0 w-full h-full object-cover scale-110 opacity-5 animate-floating-fade" />
     </div>
 
-    <div class="relative z-10 bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm transition duration-300 ease-in-out transform hover:scale-105">
+    <div class="relative z-10 bg-blue-900 text-white p-8 rounded-3xl w-full max-w-sm">
         <h2 class="text-2xl font-bold text-center mb-6">DAFTAR</h2>
 
         {{-- Pesan Sukses --}}
