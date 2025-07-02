@@ -35,7 +35,7 @@
 
     <!-- background animasi -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <img src="{{ asset('images/10.png') }}" alt="Background"
+        <img src="{{ asset('images/7.png') }}" alt="Background"
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 

@@ -1,6 +1,44 @@
 @extends('layouts.navbar')
 
 @section('content')
+
+ <style>
+        @keyframes floatingFade {
+            0% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+
+            25% {
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translateY(0px);
+                opacity: 1.5;
+            }
+
+            75% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+        }
+
+        .animate-floating-fade {
+            animation: floatingFade 15s ease-in-out infinite;
+        }
+    </style>
+
+    <!-- background animasi -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <img src="{{ asset('images/9.png') }}" alt="Background"
+            class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
+    </div>
+
 <div class="relative z-10 max-w-6xl mx-auto px-4 py-4">
 
     {{-- Judul Halaman --}}

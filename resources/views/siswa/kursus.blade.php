@@ -6,19 +6,38 @@
 
     <style>
         @keyframes floatingFade {
-            0% { transform: translateY(0px); opacity: 1; }
-            25% { opacity: 1.;}
-            50% { transform: translateY(0px); opacity: 2;}
-            75% { opacity: 1.5;}
-            100% { transform: translateY(0px); opacity: 1;}}
+            0% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+
+            25% {
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translateY(0px);
+                opacity: 1.5;
+            }
+
+            75% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(0px);
+                opacity: 0.2;
+            }
+        }
+
         .animate-floating-fade {
             animation: floatingFade 15s ease-in-out infinite;
         }
     </style>
 
-    {{-- Background animasi --}}
+    <!-- background animasi -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <img src="{{ asset('images/10.png') }}" alt="Background" {{-- Pastikan path gambar ini benar --}}
+        <img src="{{ asset('images/9.png') }}" alt="Background"
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
@@ -29,21 +48,21 @@
         </div>
 
         <div class="mt-5 flex justify-center space-x-6">
-            <button @click="tab = 'indo'" :class="tab === 'indo' 
+            <button @click="tab = 'indo'" :class="tab === 'indo'
                 ? 'bg-white text-[#1F1AA1] shadow-[0_4px_12px_rgba(0,0,0,0.3)]'
                 : 'bg-blue-700 text-white hover:bg-blue-800 shadow-[0_4px_12px_rgba(0,0,0,0.3)]'"
                 class="py-4 px-8 rounded-full font-semibold font-poppins transition duration-500 ease-in-out transform hover:scale-105">
                 Bahasa Indonesia
             </button>
 
-            <button @click="tab = 'inggris'" :class="tab === 'inggris' 
+            <button @click="tab = 'inggris'" :class="tab === 'inggris'
                 ? 'bg-white text-[#1F1AA1] shadow-[0_4px_12px_rgba(0,0,0,0.3)]'
                 : 'bg-blue-700 text-white hover:bg-blue-800 shadow-[0_4px_12px_rgba(0,0,0,0.3)]'"
                 class="py-4 px-8 rounded-full font-semibold font-nunito transition duration-500 ease-in-out transform hover:scale-105">
                 Bahasa Inggris
             </button>
 
-            <button @click="tab = 'mtk'" :class="tab === 'mtk' 
+            <button @click="tab = 'mtk'" :class="tab === 'mtk'
                 ? 'bg-white text-[#1F1AA1] shadow-[0_4px_12px_rgba(0,0,0,0.3)]'
                 : 'bg-blue-700 text-white hover:bg-blue-800 shadow-[0_4px_12px_rgba(0,0,0,0.3)]'"
                 class="py-4 px-8 rounded-full font-semibold font-inter transition duration-500 ease-in-out transform hover:scale-105">

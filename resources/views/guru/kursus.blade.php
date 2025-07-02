@@ -3,6 +3,27 @@
 @section('title', 'Kursus')
 
 @section('content')
+    {{-- Custom Styles for Background Animation --}}
+    <style>
+        @keyframes floatingFade {
+            0% { transform: translateY(0px); opacity: 0.5; }
+            25% { opacity: 0.7; }
+            50% { transform: translateY(5px); opacity: 0.9; } /* Slight vertical movement */
+            75% { opacity: 0.7; }
+            100% { transform: translateY(0px); opacity: 0.5; }
+        }
+        .animate-floating-fade {
+            animation: floatingFade 15s ease-in-out infinite;
+        }
+    </style>
+
+    {{-- Background animasi --}}
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        {{-- Ensure the image path is correct in your Laravel setup --}}
+        <img src="{{ asset('images/10.png') }}" alt="Background"
+            class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
+    </div>
+
     <div x-data="{
         tab: '{{ $defaultTab ?? 'indo' }}', // Memberikan nilai default jika $defaultTab tidak ada
         mingguAktif: 1, // Untuk menyimpan minggu yang sedang aktif/terbuka accordion-nya
@@ -68,33 +89,63 @@
                 }
             }, 0); // Jeda singkat untuk memastikan DOM siap
         }
-    }" class="min-h-screen">
+    }" class="min-h-screen relative z-10"> {{-- Added relative z-10 to ensure content is above background --}}
         <div class="mt-8 sm:mt-16 md:mt-3 px-4 sm:px-6 lg:px-8">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-left">KURSUS</h1>
         </div>
 
+        {{-- Flash Messages --}}
+        @if (session('success'))
+            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.500ms
+                x-init="setTimeout(() => show = false, 3000)"
+                class="mt-4 px-4 py-3 rounded-md bg-green-500 text-white text-center max-w-4xl mx-auto shadow-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.500ms
+                x-init="setTimeout(() => show = false, 3000)"
+                class="mt-4 px-4 py-3 rounded-md bg-red-500 text-white text-center max-w-4xl mx-auto shadow-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.500ms
+                x-init="setTimeout(() => show = false, 5000)"
+                class="mt-4 px-4 py-3 rounded-md bg-red-500 text-white max-w-4xl mx-auto shadow-lg">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        {{-- End Flash Messages --}}
+
         <div class="mt-5 flex justify-center space-x-6">
-        @if(isset($mapel['indo']))
-        <button @click="tab = 'indo'"
-            :class="{ 'bg-blue-900 text-white': tab === 'indo', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'indo' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Bahasa Indonesia
-        </button>
-        @endif
+            @if(isset($mapel['indo']))
+            <button @click="tab = 'indo'"
+                :class="{ 'bg-blue-900 text-white': tab === 'indo', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'indo' }"
+                class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Bahasa Indonesia
+            </button>
+            @endif
 
-        @if(isset($mapel['inggris']))
-        <button @click="tab = 'inggris'"
-            :class="{ 'bg-blue-900 text-white': tab === 'inggris', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'inggris' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Bahasa Inggris
-        </button>
-        @endif
+            @if(isset($mapel['inggris']))
+            <button @click="tab = 'inggris'"
+                :class="{ 'bg-blue-900 text-white': tab === 'inggris', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'inggris' }"
+                class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Bahasa Inggris
+            </button>
+            @endif
 
-        @if(isset($mapel['mtk']))
-        <button @click="tab = 'mtk'"
-            :class="{ 'bg-blue-900 text-white': tab === 'mtk', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'mtk' }"
-            class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Matematika
-        </button>
-        @endif
-    </div>
+            @if(isset($mapel['mtk']))
+            <button @click="tab = 'mtk'"
+                :class="{ 'bg-blue-900 text-white': tab === 'mtk', 'bg-blue-700 text-white hover:bg-blue-800': tab !== 'mtk' }"
+                class="py-4 px-8 rounded-full font-semibold transition-colors duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">Matematika
+            </button>
+            @endif
+        </div>
 
         <div class="space-y-6 mt-10 max-w-4xl mx-auto text-lg">
             <template x-for="i in 16" :key="i">
