@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,11 +19,9 @@
             animation: floatingFade 15s ease-in-out infinite;
         }
     </style>
-
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-transparent">
-
     {{-- Background --}}
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <img src="{{ asset('images/8.png') }}" alt="Background"
@@ -33,12 +30,32 @@
 
     <div class="relative z-10 text-white p-12 rounded-3xl w-full max-w-md bg-transparent">
         <h2 class="text-3xl font-bold text-center mb-6 text-blue-900">GANTI KATA SANDI</h2>
-        <form action="ganti_password.php" method="POST">
-            
+
+        {{-- Pesan sukses --}}
+        @if (session('success'))
+            <div class="text-green-600 text-center mb-4 font-semibold">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Tampilkan error --}}
+        @if ($errors->any())
+            <div class="text-red-600 text-sm mb-4">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li class="mb-1">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="/ganti_sandi" method="POST">
+            @csrf
+
             <!-- Kata Sandi Lama -->
             <div class="relative mb-6">
-                <label for="new_password" class="block text-gray-700 text-base font-medium mb-2">Kata Sandi Baru</label>
-                <input type="password" id="new_password" name="new_password" placeholder="Kata Sandi Lama"
+                <label for="current_password" class="block text-gray-700 text-base font-medium mb-2">Kata Sandi Lama</label>
+                <input type="password" id="current_password" name="current_password" placeholder="Kata Sandi Lama"
                     class="w-full pl-10 pr-4 py-3 rounded-full text-gray-700 placeholder-gray-400 bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:scale-105"
                     required />
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
@@ -48,17 +65,29 @@
 
             <!-- Kata Sandi Baru -->
             <div class="relative mb-6">
-                <label for="confirm_new_password" class="block text-gray-700 text-base font-medium mb-2">Konfirmasi Kata
-                    Sandi Baru</label>
-                <input type="password" id="confirm_new_password" name="confirm_new_password"
-                    placeholder="Kata Sandi Baru"
+                <label for="password" class="block text-gray-700 text-base font-medium mb-2">Kata Sandi Baru</label>
+                <input type="password" id="password" name="password" placeholder="Kata Sandi Baru"
                     class="w-full pl-10 pr-4 py-3 rounded-full text-gray-700 placeholder-gray-400 bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:scale-105"
                     required />
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                     <i class="fas fa-lock"></i>
                 </span>
             </div>
-            <p class="text-gray-700 text-sm italic text-center mb-4">*Kata sandi harus terdiri dari minimal 8 karakter</p>
+
+            <!-- Konfirmasi Kata Sandi Baru -->
+            <div class="relative mb-6">
+                <label for="password_confirmation" class="block text-gray-700 text-base font-medium mb-2">Konfirmasi Kata Sandi Baru</label>
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                    placeholder="Konfirmasi Kata Sandi Baru"
+                    class="w-full pl-10 pr-4 py-3 rounded-full text-gray-700 placeholder-gray-400 bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:scale-105"
+                    required />
+                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </div>
+
+            <p class="text-gray-700 text-sm italic text-center mb-4">*Kata sandi minimal 8 karakter & berbeda dari sebelumnya</p>
+
             <!-- Tombol Ganti -->
             <button type="submit"
                 class="w-1/2 bg-blue-800 text-white font-bold py-2 px-6 rounded-xl hover:bg-blue-900 transition duration-300 mx-auto block text-sm ease-in-out transform hover:scale-105">
@@ -67,5 +96,4 @@
         </form>
     </div>
 </body>
-
 </html>

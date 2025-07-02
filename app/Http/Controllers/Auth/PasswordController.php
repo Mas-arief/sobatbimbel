@@ -17,7 +17,7 @@ class PasswordController extends Controller
      */
     public function showChangePasswordForm()
     {
-        return view('auth.change-password');
+        return view('ganti_sandi');
     }
 
     /**
@@ -47,6 +47,6 @@ class PasswordController extends Controller
         ]);
 
         // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Kata sandi Anda berhasil diperbarui!');
+        return redirect('/login')->with('success', 'Kata sandi Anda berhasil diperbarui!');
     }
 }

@@ -39,11 +39,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// --- Rute Static yang Tidak Diatur Melalui Controller (Pertimbangkan untuk memindahkan ke controller jika ada logika) ---
-Route::get('/ganti_sandi', function () {
-    return view('ganti_sandi');
-})->name('ganti_sandi'); // Ini bisa dihapus jika password.change digunakan secara eksklusif
-
 Route::get('/daftar_hadir', function () {
     return view('daftar_hadir');
 })->name('daftar_hadir');
@@ -59,10 +54,6 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 Route::get('/kursus_siswa', function () {
     return view('kursus_siswa');
 })->name('kursus_siswa');
-
-Route::get('/ganti_pw_siswa', function () {
-    return view('ganti_pw_siswa');
-})->name('ganti_pw_siswa'); // Ini juga bisa dihapus jika password.change digunakan
 
 // --- Rute Admin (Tanpa Auth Middleware Awal) ---
 // Dashboard Admin
@@ -98,8 +89,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Ganti Password (Untuk semua peran yang terautentikasi)
-    Route::get('/ganti-sandi', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
-    Route::post('/ganti-sandi', [PasswordController::class, 'changePassword']);
+    Route::get('/ganti_sandi', [PasswordController::class, 'showChangePasswordForm']);
+    Route::post('/ganti_sandi', [PasswordController::class, 'changePassword']);
 
     // --- Rute Admin (Membutuhkan Auth) ---
     // Verifikasi Pengguna (Guru dan Siswa)
