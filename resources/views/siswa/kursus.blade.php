@@ -35,14 +35,13 @@
         }
     </style>
 
-    <!-- background animasi -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <img src="{{ asset('images/9.png') }}" alt="Background"
             class="absolute w-full h-full object-cover opacity-5 animate-floating-fade" />
     </div>
 
-    <div x-data="{ tab: 'indo', materiOpen: null, tugasOpen: null, open: null }" class="min-h-screen relative z-10"> {{--
-        Tambahkan relative z-10 untuk konten utama --}}
+    {{-- PERBAIKAN: Inisialisasi tab dari PHP jika ada --}}
+    <div x-data="{ tab: '{{ $initialTab ?? 'indo' }}', materiOpen: null, tugasOpen: null, open: null }" class="min-h-screen relative z-10">
         <div class="mt-8 sm:mt-16 md:mt-3 px-4 sm:px-6 lg:px-8">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-left">KURSUS</h1>
         </div>
@@ -100,6 +99,7 @@
                                     x-if="dataKursus[tab] && dataKursus[tab][{{ $i }}] && dataKursus[tab][{{ $i }}].materi.length > 0">
                                     <div>
                                         <template x-for="materiItem in dataKursus[tab][{{ $i }}].materi" :key="materiItem.id">
+                                            {{-- Memastikan URL download materi benar --}}
                                             <a :href="materiItem.file_url" target="_blank"
                                                 class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
                                                 <i class="fas fa-file-pdf"></i> {{-- Membutuhkan Font Awesome --}}
@@ -118,15 +118,16 @@
 
                             <div class="space-y-2">
                                 <h4 class="font-bold text-md text-gray-200 dark:text-gray-200">Tugas:</h4>
-                                <ul class="list-disc list-inside space-y-1">
+                                <ul class="list-none space-y-1">
                                     <template
                                         x-if="dataKursus[tab] && dataKursus[tab][{{ $i }}] && dataKursus[tab][{{ $i }}].tugas.length > 0">
                                         <template x-for="tugasItem in dataKursus[tab][{{ $i }}].tugas" :key="tugasItem.id">
                                             <li>
+                                                {{-- Memastikan URL download tugas benar --}}
                                                 <a :href="tugasItem.file_url" target="_blank"
-                                                    class="text-blue-400 hover:underline dark:text-blue-300">
+                                                    class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
                                                     <span x-text="tugasItem.judul"></span> (Deadline: <span
-                                                        x-text="new Date(tugasItem.deadline).toLocaleDateString()"></span>)
+                                                        x-text="new Date(tugasItem.deadline).toLocaleDateString('id-ID')"></span>)
                                                 </a>
                                             </li>
                                         </template>
@@ -139,8 +140,8 @@
                             </div>
 
                             <div class="mt-4">
-                                {{-- PERBAIKAN: Menggunakan url() helper dan template literal untuk parameter query --}}
-                                <a :href="`{{ url('/siswa.pengumpulan_tugas') }}?mapel_slug=${tab}&minggu_ke={{ $i }}`"
+                                {{-- PERBAIKAN: Menggunakan helper route() dengan parameter yang dinamis --}}
+                                <a :href="`{{ route('pengumpulan_tugas') }}?mapel_slug=${tab}&minggu_ke={{ $i }}`"
                                     class="inline-block px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded shadow text-sm font-semibold transition">
                                     <i class="fas fa-upload mr-2"></i> Kumpulkan Tugas Minggu {{ $i }}
                                 </a>
@@ -159,6 +160,12 @@
                 dataKursus: initialData,
                 init() {
                     console.log('Data Kursus:', this.dataKursus); // Debugging
+                    // Inisialisasi tab dari URL jika ada
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const tabParam = urlParams.get('tab');
+                    if (tabParam) {
+                        this.tab = tabParam;
+                    }
                 }
             }));
         });

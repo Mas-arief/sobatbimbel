@@ -25,16 +25,15 @@
     </div>
 
     <div x-data="{
-        tab: '{{ $defaultTab ?? 'indo' }}', // Memberikan nilai default jika $defaultTab tidak ada
-        mingguAktif: 1, // Untuk menyimpan minggu yang sedang aktif/terbuka accordion-nya
+        tab: '{{ $defaultTab ?? 'indo' }}',
+        mingguAktif: 1,
 
-        // Fungsi untuk mengatur nilai modal Buat Tugas
         setTugasModalValues: function(mapelId, minggu) {
-            this.mingguAktif = minggu; // Update mingguAktif jika diperlukan
+            this.mingguAktif = minggu;
             setTimeout(() => {
                 const mapelInput = document.getElementById('mapel_id_tugas');
                 const mingguHiddenInput = document.getElementById('minggu_ke_tugas_hidden');
-                const mingguSelect = document.getElementById('minggu_ke_select'); // Input teks readonly
+                const mingguSelect = document.getElementById('minggu_ke_select');
 
                 if (mapelInput) {
                     mapelInput.value = mapelId;
@@ -56,16 +55,15 @@
                 } else {
                     console.error('Tugas: Element with ID minggu_ke_select not found.');
                 }
-            }, 0); // Jeda singkat untuk memastikan DOM siap
+            }, 0);
         },
 
-        // Fungsi untuk mengatur nilai modal Tambah Materi
         setMateriModalValues: function(mapelId, minggu) {
-            this.mingguAktif = minggu; // Update mingguAktif jika diperlukan
+            this.mingguAktif = minggu;
             setTimeout(() => {
                 const mapelInput = document.getElementById('mapel_id_materi');
                 const mingguHiddenInput = document.getElementById('minggu_ke_materi_hidden');
-                const mingguSelect = document.getElementById('minggu_ke_materi_select'); // Input teks readonly
+                const mingguSelect = document.getElementById('minggu_ke_materi_select');
 
                 if (mapelInput) {
                     mapelInput.value = mapelId;
@@ -87,9 +85,9 @@
                 } else {
                     console.error('Materi: Element with ID minggu_ke_materi_select not found.');
                 }
-            }, 0); // Jeda singkat untuk memastikan DOM siap
+            }, 0);
         }
-    }" class="min-h-screen relative z-10"> {{-- Added relative z-10 to ensure content is above background --}}
+    }" class="min-h-screen relative z-10">
         <div class="mt-8 sm:mt-16 md:mt-3 px-4 sm:px-6 lg:px-8">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-left">KURSUS</h1>
         </div>
@@ -171,47 +169,64 @@
 
                             <div class="space-y-2">
                                 <h4 class="font-bold text-md text-gray-200 dark:text-gray-200">Materi:</h4>
-                                <ul class="list-disc list-inside space-y-1">
+                                <ul class="list-none space-y-1">
                                     {{-- KONDISI UNTUK TAB BAHASA INDONESIA --}}
                                     <template x-if="tab === 'indo'">
                                         @if(isset($mapel['indo']))
                                             <div>
                                                 <button data-modal-target="modalTambahMateri"
                                                     data-modal-toggle="modalTambahMateri"
-                                                    @click="setMateriModalValues({{ $mapel['indo']->id }}, i);"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    @click="setMateriModalValues({{ $mapel['indo']->id }}, i);">
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
-                                                <p class="ml-6 text-gray-100">Materi Bahasa Indonesia</p>
+                                                {{-- Display materials for Bahasa Indonesia --}}
+                                                @php
+                                                    $indoMaterials = $materials['Bahasa Indonesia'][request('minggu') ?? 1] ?? collect();
+                                                @endphp
+                                                <template x-for="material in {{ json_encode($materials['Bahasa Indonesia'] ?? []) }}[i] || []" :key="material.id">
+                                                    <li>
+                                                        <a :href="'{{ url('guru/materi/download') }}/' + material.id" class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
+                                                            <i :class="{
+                                                                'fas fa-file-pdf': material.file_type === 'pdf',
+                                                                'fas fa-file-word': material.file_type === 'doc' || material.file_type === 'docx',
+                                                                'fas fa-file-powerpoint': material.file_type === 'ppt' || material.file_type === 'pptx',
+                                                            }"></i>
+                                                            <span x-text="material.judul_materi"></span>
+                                                        </a>
+                                                        <button @click.prevent="deleteMateri(material.id, 'indo')" class="text-red-400 hover:text-red-600 ml-2 text-xs">Hapus</button>
+                                                    </li>
+                                                </template>
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
-                                                    @click="setTugasModalValues({{ $mapel['indo']->id }}, i);"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    @click="setTugasModalValues({{ $mapel['indo']->id }}, i);">
                                                     <i class="fas fa-book"></i>
                                                     <span>Buat Tugas</span>
                                                 </button>
-                                                <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
+                                                {{-- Display tasks for Bahasa Indonesia --}}
+                                                <template x-for="task in {{ json_encode($tasks['Bahasa Indonesia'] ?? []) }}[i] || []" :key="task.id">
+                                                    <li>
+                                                        <a :href="'{{ url('guru/tugas/download') }}/' + task.id" class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
+                                                            <i class="fas fa-file-alt"></i>
+                                                            <span x-text="task.judul"></span>
+                                                            <span class="text-xs ml-2">(Deadline: <span x-text="task.deadline"></span>)</span>
+                                                        </a>
+                                                        <button @click.prevent="deleteTugas(task.id, 'indo')" class="text-red-400 hover:text-red-600 ml-2 text-xs">Hapus</button>
+                                                    </li>
+                                                </template>
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a href="{{ route('guru.pengumpulan') }}"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
+                                                <a href="{{ route('guru.pengumpulan') }}">
                                                     <i class="fas fa-paperclip"></i>
                                                     <span>Pengumpulan</span>
                                                 </a>
 
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['indo']->id) }}' + '?minggu=' + i"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['indo']->id) }}' + '?minggu=' + i">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>Absensi</span>
-                                                </a>
-
-                                                <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['indo']->id]) }}' + '?minggu=' + i"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
-                                                    <i class="fas fa-clipboard-check"></i>
-                                                    <span>Penilaian</span>
                                                 </a>
                                             </div>
                                         @endif
@@ -223,40 +238,54 @@
                                             <div>
                                                 <button data-modal-target="modalTambahMateri"
                                                     data-modal-toggle="modalTambahMateri"
-                                                    @click="setMateriModalValues({{ $mapel['inggris']->id }}, i);"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    @click="setMateriModalValues({{ $mapel['inggris']->id }}, i);">
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
-                                                <p class="ml-6 text-gray-100">Materi Bahasa Inggris</p>
+                                                {{-- Display materials for Bahasa Inggris --}}
+                                                <template x-for="material in {{ json_encode($materials['Bahasa Inggris'] ?? []) }}[i] || []" :key="material.id">
+                                                    <li>
+                                                        <a :href="'{{ url('guru/materi/download') }}/' + material.id" class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
+                                                            <i :class="{
+                                                                'fas fa-file-pdf': material.file_type === 'pdf',
+                                                                'fas fa-file-word': material.file_type === 'doc' || material.file_type === 'docx',
+                                                                'fas fa-file-powerpoint': material.file_type === 'ppt' || material.file_type === 'pptx',
+                                                            }"></i>
+                                                            <span x-text="material.judul_materi"></span>
+                                                        </a>
+                                                        <button @click.prevent="deleteMateri(material.id, 'inggris')" class="text-red-400 hover:text-red-600 ml-2 text-xs">Hapus</button>
+                                                    </li>
+                                                </template>
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
-                                                    @click="setTugasModalValues({{ $mapel['inggris']->id }}, i);"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    @click="setTugasModalValues({{ $mapel['inggris']->id }}, i);">
                                                     <i class="fas fa-book"></i>
                                                     <span>Buat Tugas</span>
                                                 </button>
-                                                <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
+                                                {{-- Display tasks for Bahasa Inggris --}}
+                                                <template x-for="task in {{ json_encode($tasks['Bahasa Inggris'] ?? []) }}[i] || []" :key="task.id">
+                                                    <li>
+                                                        <a :href="'{{ url('guru/tugas/download') }}/' + task.id" class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
+                                                            <i class="fas fa-file-alt"></i>
+                                                            <span x-text="task.judul"></span>
+                                                            <span class="text-xs ml-2">(Deadline: <span x-text="task.deadline"></span>)</span>
+                                                        </a>
+                                                        <button @click.prevent="deleteTugas(task.id, 'inggris')" class="text-red-400 hover:text-red-600 ml-2 text-xs">Hapus</button>
+                                                    </li>
+                                                </template>
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a href="{{ route('guru.pengumpulan') }}"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
+                                                <a href="{{ route('guru.pengumpulan') }}">
                                                     <i class="fas fa-paperclip"></i>
                                                     <span>Pengumpulan</span>
                                                 </a>
 
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + i"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + i">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>Absensi</span>
-                                                </a>
-
-                                                <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['inggris']->id]) }}' + '?minggu=' + i"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
-                                                    <i class="fas fa-clipboard-check"></i>
-                                                    <span>Penilaian</span>
                                                 </a>
                                             </div>
                                         @endif
@@ -268,42 +297,55 @@
                                             <div>
                                                 <button data-modal-target="modalTambahMateri"
                                                     data-modal-toggle="modalTambahMateri"
-                                                    @click="setMateriModalValues({{ $mapel['mtk']->id }}, i);"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    @click="setMateriModalValues({{ $mapel['mtk']->id }}, i);">
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
-                                                <p class="ml-6 text-gray-100">Materi Maematika</p>
+                                                {{-- Display materials for Matematika --}}
+                                                <template x-for="material in {{ json_encode($materials['Matematika'] ?? []) }}[i] || []" :key="material.id">
+                                                    <li>
+                                                        <a :href="'{{ url('guru/materi/download') }}/' + material.id" class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
+                                                            <i :class="{
+                                                                'fas fa-file-pdf': material.file_type === 'pdf',
+                                                                'fas fa-file-word': material.file_type === 'doc' || material.file_type === 'docx',
+                                                                'fas fa-file-powerpoint': material.file_type === 'ppt' || material.file_type === 'pptx',
+                                                            }"></i>
+                                                            <span x-text="material.judul_materi"></span>
+                                                        </a>
+                                                        <button @click.prevent="deleteMateri(material.id, 'mtk')" class="text-red-400 hover:text-red-600 ml-2 text-xs">Hapus</button>
+                                                    </li>
+                                                </template>
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
-                                                    @click="setTugasModalValues({{ $mapel['mtk']->id }}, i);"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    @click="setTugasModalValues({{ $mapel['mtk']->id }}, i);">
                                                     <i class="fas fa-book"></i>
                                                     <span>Buat Tugas</span>
                                                 </button>
-                                                <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
+                                                {{-- Display tasks for Matematika --}}
+                                                <template x-for="task in {{ json_encode($tasks['Matematika'] ?? []) }}[i] || []" :key="task.id">
+                                                    <li>
+                                                        <a :href="'{{ url('guru/tugas/download') }}/' + task.id" class="flex items-center space-x-2 px-4 py-2 bg-white text-blue-700 font-semibold rounded shadow hover:bg-gray-100 transition mb-2">
+                                                            <i class="fas fa-file-alt"></i>
+                                                            <span x-text="task.judul"></span>
+                                                            <span class="text-xs ml-2">(Deadline: <span x-text="task.deadline"></span>)</span>
+                                                        </a>
+                                                        <button @click.prevent="deleteTugas(task.id, 'mtk')" class="text-red-400 hover:text-red-600 ml-2 text-xs">Hapus</button>
+                                                    </li>
+                                                </template>
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a href="{{ route('guru.pengumpulan') }}"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
+                                                <a href="{{ route('guru.pengumpulan') }}">
                                                     <i class="fas fa-paperclip"></i>
                                                     <span>Pengumpulan</span>
                                                 </a>
 
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + i"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + i">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>Absensi</span>
                                                 </a>
-
-                                                <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['mtk']->id]) }}' + '?minggu=' + i"
-                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
-                                                    <i class="fas fa-clipboard-check"></i>
-                                                    <span>Penilaian</span>
-                                                </a>
-                                            </div>
                                         @endif
                                     </template>
                                 </ul>
@@ -314,6 +356,61 @@
             </template>
         </div>
     </div>
+
+    {{-- Script for handling delete --}}
+    <script>
+        function deleteMateri(id, subjectTab) {
+            if (confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
+                fetch(`/guru/materi/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.reload(); // Reload the page to reflect changes
+                    } else {
+                        alert('Gagal menghapus materi: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus materi.');
+                });
+            }
+        }
+
+        function deleteTugas(id, subjectTab) {
+            if (confirm('Apakah Anda yakin ingin menghapus tugas ini?')) {
+                fetch(`/guru/tugas/${id}`, { // Assuming your delete route for tasks is /guru/tugas/{id}
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.reload(); // Reload the page to reflect changes
+                    } else {
+                        alert('Gagal menghapus tugas: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus tugas.');
+                });
+            }
+        }
+    </script>
 
     {{-- Pastikan jalur ini benar sesuai dengan lokasi file modal Anda --}}
     @include('guru.modal_tambah_tugas')

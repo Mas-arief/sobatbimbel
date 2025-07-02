@@ -3,45 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Mapel; // Pastikan Anda mengimpor model Mapel
-use Illuminate\Support\Facades\Auth; // Pastikan Anda mengimpor Auth
+use App\Models\Mapel;
+use App\Models\Materi; // Import Materi model
+use App\Models\Tugas;  // Import Tugas model
+use Illuminate\Support\Facades\Auth;
 
 class KursusGuruController extends Controller
 {
     public function index()
     {
-        // Mendapatkan guru yang sedang login
         $guru = Auth::user();
+        $mapelGuru = $guru->mapel;
 
-        // Mengambil mapel yang diajar oleh guru ini
-        // Asumsi relasi user->mapel() sudah didefinisikan di model User
-        $mapelGuru = $guru->mapel; // Ini akan mengembalikan objek Mapel tunggal jika relasinya belongsTo
-
-        // Buat array $mapel yang berisi objek Mapel yang relevan
         $mapel = [];
+        $materials = [];
+        $tasks = [];
+        $defaultTab = 'indo';
+
         if ($mapelGuru) {
-            // Asumsi kolom 'nama' di tabel 'mapel' berisi 'Bahasa Indonesia', 'Bahasa Inggris', 'Matematika'
-            if ($mapelGuru->nama == 'Bahasa Indonesia') {
+            $mapelName = $mapelGuru->nama;
+            $mapelId = $mapelGuru->id;
+
+            if ($mapelName == 'Bahasa Indonesia') {
                 $mapel['indo'] = $mapelGuru;
-            } elseif ($mapelGuru->nama == 'Bahasa Inggris') {
+                $defaultTab = 'indo';
+            } elseif ($mapelName == 'Bahasa Inggris') {
                 $mapel['inggris'] = $mapelGuru;
-            } elseif ($mapelGuru->nama == 'Matematika') {
+                $defaultTab = 'inggris';
+            } elseif ($mapelName == 'Matematika') {
                 $mapel['mtk'] = $mapelGuru;
+                $defaultTab = 'mtk';
             }
+
+            // Fetch materials and tasks for the assigned mapel
+            $materials[$mapelName] = Materi::where('mapel_id', $mapelId)->get()->groupBy('minggu_ke');
+            $tasks[$mapelName] = Tugas::where('mapel_id', $mapelId)->get()->groupBy('minggu');
         }
 
-        // Tentukan tab default yang akan aktif berdasarkan mapel guru
-        $defaultTab = 'indo'; // Default, jika tidak ada mapel terhubung
-        if (isset($mapel['indo'])) {
-            $defaultTab = 'indo';
-        } elseif (isset($mapel['inggris'])) {
-            $defaultTab = 'inggris';
-        } elseif (isset($mapel['mtk'])) {
-            $defaultTab = 'mtk';
-        }
+        $tipe = 'guru';
 
-$tipe='guru';
-        // Teruskan variabel $mapel dan $defaultTab ke view
-        return view('guru.kursus', compact('mapel', 'defaultTab', 'tipe')); // Ganti 'kursus' dengan nama file view Anda
+        return view('guru.kursus', compact('mapel', 'defaultTab', 'tipe', 'materials', 'tasks'));
     }
 }

@@ -10,7 +10,7 @@ class Tugas extends Model
     use HasFactory;
 
     // Tentukan nama tabel jika tidak sesuai konvensi Laravel (plural dari nama model)
-    // protected $table = 'nama_tabel_tugas_anda';
+    protected $table = 'tugas';
 
     protected $fillable = [
         'mapel_id',

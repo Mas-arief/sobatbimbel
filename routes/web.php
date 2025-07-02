@@ -114,7 +114,11 @@ Route::get('/tugas/{id}/edit', [TugasController::class, 'edit'])->name('guru.tug
 Route::put('/tugas/{id}', [TugasController::class, 'update'])->name('guru.tugas.update');
 
 
+Route::delete('/guru/materi/{id}', [MateriController::class, 'destroy'])->name('guru.materi.destroy');
+Route::get('/guru/materi/download/{id}', [MateriController::class, 'download'])->name('guru.materi.download');
 
+Route::delete('/guru/tugas/{id}', [TugasController::class, 'destroy'])->name('guru.tugas.destroy');
+Route::get('/guru/tugas/download/{id}', [TugasController::class, 'download'])->name('guru.tugas.download');
 
     Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
     // Absensi
@@ -151,7 +155,5 @@ Route::put('/tugas/{id}', [TugasController::class, 'update'])->name('guru.tugas.
     // Rute POST untuk menyimpan file tugas yang diunggah
     Route::post('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'store'])->name('siswa.pengumpulan_tugas.store');
 
-    // Perbaiki: Route::get('/kursus', [KursussiswaController::class, 'kursus.index'])->name('siswa.kursus');
-    // Seharusnya: Route::get('/kursus', [KursussiswaController::class, 'index'])->name('siswa.kursus'); // Jika KursussiswaController->index() menangani ini
 });
 
