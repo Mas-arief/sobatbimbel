@@ -39,7 +39,7 @@
                 <thead class="bg-gray-200 text-gray-700 uppercase text-xs sticky top-0 z-10">
                     <tr>
                         <th class="px-4 py-3 border">NO</th>
-                        <th class="px-4 py-3 border">SISWA</th>
+                        <th class="px-4 py-3 border">NAMA</th>
                         <th class="px-4 py-3 border">TANGGAL KUMPUL</th>
                         <th class="px-4 py-3 border">TUGAS</th>
                         <th class="px-4 py-3 border">AKSI</th>
