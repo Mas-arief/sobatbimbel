@@ -9,12 +9,13 @@ use App\Models\PengumpulanTugas;
 use App\Models\Penilaian;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log; // Pastikan ini ada
 
 class PengumpulanTugasController extends Controller
 {
     /**
      * Menampilkan halaman pengumpulan tugas untuk minggu dan mapel tertentu.
+     * Metode ini kemungkinan besar untuk siswa.
      */
     public function index(Request $request)
     {
@@ -142,10 +143,23 @@ class PengumpulanTugasController extends Controller
 
     /**
      * Rekap tugas untuk guru.
+     * Sekarang memfilter berdasarkan parameter 'minggu' dari request.
      */
-    public function rekapGuru()
+    public function rekapGuru(Request $request)
     {
-        $tugas = PengumpulanTugas::with(['siswa', 'tugas'])->get();
+        $query = PengumpulanTugas::with(['siswa', 'tugas']);
+
+        // Filter berdasarkan minggu_ke jika ada parameter 'minggu' di URL
+        if ($request->has('minggu')) {
+            $mingguKe = (int) $request->query('minggu'); // Pastikan ini integer
+            Log::debug("Filtering rekapGuru by minggu_ke: {$mingguKe}"); // Log untuk debugging
+            $query->where('minggu_ke', $mingguKe);
+        } else {
+            Log::debug("No 'minggu' parameter found for rekapGuru. Showing all tasks.");
+        }
+
+        // Ambil data yang sudah difilter atau semua data jika tidak ada filter
+        $tugas = $query->latest()->get(); // Anda bisa juga menggunakan paginate() jika data banyak
 
         $tipe = 'guru';
         return view('guru.pengumpulan', compact('tugas', 'tipe'));
@@ -170,5 +184,22 @@ class PengumpulanTugasController extends Controller
             Log::error("Gagal menghapus pengumpulan tugas ID {$id}: " . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data.');
         }
+    }
+
+    /**
+     * Menampilkan form untuk mengedit atau memberi nilai tugas.
+     * Ini adalah placeholder; Anda mungkin perlu mengembangkannya lebih lanjut.
+     */
+    public function editTugas($siswa_id, $tugas_id, $minggu)
+    {
+        // Logika untuk mengambil data pengumpulan tugas berdasarkan siswa_id, tugas_id, dan minggu
+        $pengumpulan = PengumpulanTugas::where('siswa_id', $siswa_id)
+                                    ->where('tugas_id', $tugas_id)
+                                    ->where('minggu_ke', $minggu)
+                                    ->firstOrFail();
+
+        // Kembalikan view dengan data pengumpulan atau arahkan ke form penilaian
+        // Pastikan view 'guru.edit_tugas' ini ada dan sesuai dengan kebutuhan Anda
+        return view('guru.edit_tugas', compact('pengumpulan'));
     }
 }

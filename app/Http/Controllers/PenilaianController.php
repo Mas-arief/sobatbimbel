@@ -6,41 +6,35 @@ use Illuminate\Http\Request;
 use App\Models\Penilaian;
 use App\Models\Mapel;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
+use App\Models\PengumpulanTugas;
 
 class PenilaianController extends Controller
 {
     /**
-     * Menampilkan form input nilai untuk guru.
+     * Menampilkan form input nilai untuk semua siswa dalam 1 mapel & minggu
      */
     public function index($mapelId, Request $request)
     {
         $mapel = Mapel::findOrFail($mapelId);
-        // Ambil hanya user dengan role 'siswa'
         $siswa = User::where('role', 'siswa')->get();
-
-        // Ambil minggu dari query param (jika ada), default ke 1
         $minggu = $request->query('minggu', 1);
 
-        // Ambil semua penilaian yang relevan untuk mapel dan minggu ini
         $penilaianData = Penilaian::where('mapel_id', $mapelId)
-            ->where('minggu', $minggu) // Menggunakan kolom 'minggu'
+            ->where('minggu', $minggu)
             ->get();
 
-        // Buat koleksi yang dikunci oleh siswa_id untuk akses mudah di Blade
-        // Ini memungkinkan kita menggunakan $penilaian->get($s->id)?->nilai
         $penilaian = $penilaianData->keyBy('siswa_id');
 
-        $tipe = 'guru'; // Variabel untuk menentukan tipe user di layout
+        $tipe = 'guru';
+
         return view('guru.penilaian', compact('mapel', 'siswa', 'penilaian', 'minggu', 'tipe'));
     }
 
     /**
-     * Menyimpan atau memperbarui nilai yang dikirim oleh guru.
+     * Menyimpan atau memperbarui nilai secara massal
      */
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'mapel_id' => 'required|exists:mapel,id',
             'minggu' => 'required|integer|min:1|max:16',
@@ -52,19 +46,8 @@ class PenilaianController extends Controller
         $minggu = $request->input('minggu');
         $nilaiData = $request->input('nilai');
 
-        Log::info('Penilaian Store Request:', [
-            'mapel_id' => $mapelId,
-            'minggu' => $minggu,
-            'nilaiData' => $nilaiData,
-        ]);
-
         foreach ($nilaiData as $siswaId => $nilai) {
-            if (is_null($nilai) || $nilai === '') {
-                Log::info("Melewati nilai kosong untuk Siswa ID: {$siswaId}.");
-                continue;
-            }
-
-            try {
+            if ($nilai !== null && $nilai !== '') {
                 Penilaian::updateOrCreate(
                     [
                         'siswa_id' => $siswaId,
@@ -75,17 +58,59 @@ class PenilaianController extends Controller
                         'nilai' => $nilai,
                     ]
                 );
-                Log::info("Nilai untuk Siswa ID: {$siswaId} berhasil disimpan/diperbarui: {$nilai}.");
-
-            } catch (\Exception $e) {
-                Log::error("Gagal menyimpan/memperbarui nilai untuk Siswa ID: {$siswaId}. Error: " . $e->getMessage());
-                return redirect()->back()->with('error', 'Gagal menyimpan nilai. Error: ' . $e->getMessage());
             }
         }
 
-        // --- PERUBAHAN PENTING DI SINI ---
-        // Alih-alih redirect()->back(), arahkan secara eksplisit kembali ke halaman input nilai untuk minggu yang sama
         return redirect()->route('penilaian.index', ['mapelId' => $mapelId, 'minggu' => $minggu])
                          ->with('success', 'Nilai berhasil disimpan!');
     }
+
+    /**
+     * Menampilkan form edit nilai satu siswa dari halaman rekap tugas
+     */
+    public function edit($siswaId, $tugasId, $minggu)
+    {
+        $pengumpulan = PengumpulanTugas::where('siswa_id', $siswaId)
+            ->where('minggu_ke', $minggu)
+            ->firstOrFail();
+
+        $penilaian = Penilaian::where('siswa_id', $siswaId)
+            ->where('minggu', $minggu)
+            ->first();
+
+        return view('guru.edit_tugas', compact('pengumpulan', 'penilaian'));
+    }
+
+    /**
+     * Menyimpan nilai dari form edit nilai satu siswa
+     */
+    public function simpan(Request $request)
+{
+    $request->validate([
+        'siswa_id' => 'required|integer|exists:users,id',
+        'minggu' => 'required|integer|min:1|max:16',
+        'nilai' => 'required|integer|min:0|max:100',
+    ]);
+
+    // Ambil mapel_id dari model tugas
+    $tugas = \App\Models\Tugas::findOrFail($request->tugas_id);
+    $mapelId = $tugas->mapel_id;
+
+    Penilaian::updateOrCreate(
+        [
+            'siswa_id' => $request->siswa_id,
+            'minggu' => $request->minggu,
+        ],
+        [
+            'mapel_id' => $mapelId,
+            'nilai' => $request->nilai,
+        ]
+    );
+
+    return redirect()->route('guru.pengumpulan', [
+        'mapelId' => $mapelId,
+        'minggu' => $request->minggu,
+    ])->with('success', 'Nilai berhasil disimpan.');
+}
+
 }
