@@ -76,13 +76,14 @@
                     <ul class="text-sm text-gray-700 space-y-1">
                         <li>
                             <strong>Status:</strong> {{ $pengumpulanTugas->status }}
-                            @if ($pengumpulanTugas->nilai !== null)
-                                <span class="text-green-600 font-medium">(Sudah Dinilai)</span>
-                            @else
-                                <span class="text-yellow-600 font-medium">(Menunggu Penilaian)</span>
-                            @endif
+                           @if ($nilai !== null)
+    <span class="text-green-600 font-medium">(Sudah Dinilai)</span>
+@else
+    <span class="text-yellow-600 font-medium">(Menunggu Penilaian)</span>
+@endif
+
                         </li>
-                        <li><strong>Nilai:</strong> {{ $pengumpulanTugas->nilai ?? '-' }}</li>
+                        <li><strong>Nilai:</strong> {{ $nilai ?? ($pengumpulanTugas->nilai ?? '-') }}</li>
                         <li><strong>File:</strong>
                             <a href="{{ asset('storage/' . $pengumpulanTugas->file_path) }}"
                                class="text-blue-600 underline" target="_blank">Lihat File</a>

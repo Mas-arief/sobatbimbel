@@ -14,10 +14,10 @@ class Tugas extends Model
 
     protected $fillable = [
         'mapel_id',
-        'judul', // Sesuai kolom DB
-        'file_path', // Sesuai kolom DB
-        'deadline', // Sesuai kolom DB
-        'minggu',   // Sesuai kolom DB
+        'judul', 
+        'file_path',
+        'deadline',
+        'minggu',
         'user_id',
     ];
 

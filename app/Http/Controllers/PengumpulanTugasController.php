@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mapel;
-use App\Models\Tugas; // Import Model Tugas
-use App\Models\PengumpulanTugas; // Import Model PengumpulanTugas
-use Illuminate\Support\Facades\Auth; // Untuk mendapatkan id siswa yang sedang login
-use Illuminate\Support\Facades\Storage; // Untuk menyimpan file
-use Illuminate\Support\Facades\Log; // Untuk debugging
+use App\Models\Tugas;
+use App\Models\PengumpulanTugas;
+use App\Models\Penilaian;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class PengumpulanTugasController extends Controller
 {
@@ -18,15 +19,15 @@ class PengumpulanTugasController extends Controller
     public function index(Request $request)
     {
         $mapelSlug = $request->query('mapel_slug');
-        $mingguKe = $request->query('minggu_ke'); // This is 'mingguKe' (camelCase)
-        $userId = Auth::id(); // Siswa yang sedang login
+        $mingguKe = $request->query('minggu_ke');
+        $userId = Auth::id();
 
         $mapel = null;
         $tugas = null;
         $pengumpulanTugas = null;
+        $nilai = null;
 
         if ($mapelSlug) {
-            // Gunakan mapping eksplisit untuk mencocokkan slug dengan nama mapel di database
             $mapelNameMapping = [
                 'indo' => 'Bahasa Indonesia',
                 'inggris' => 'Bahasa Inggris',
@@ -39,23 +40,27 @@ class PengumpulanTugasController extends Controller
         }
 
         if ($mapel && $mingguKe) {
-            // Dapatkan tugas yang relevan dengan mapel dan minggu ini
-            // Asumsi ada satu tugas per mapel per minggu, atau ambil yang pertama
             $tugas = Tugas::where('mapel_id', $mapel->id)
                           ->where('minggu', $mingguKe)
                           ->first();
 
-            // Dapatkan status pengumpulan tugas oleh siswa untuk tugas ini
             if ($tugas && $userId) {
                 $pengumpulanTugas = PengumpulanTugas::where('siswa_id', $userId)
                                                     ->where('mapel_id', $mapel->id)
                                                     ->where('tugas_id', $tugas->id)
                                                     ->where('minggu_ke', $mingguKe)
                                                     ->first();
+
+                // Ambil nilai dari tabel penilaian
+                $penilaian = Penilaian::where('siswa_id', $userId)
+                                      ->where('mapel_id', $mapel->id)
+                                      ->where('minggu', $mingguKe)
+                                      ->first();
+
+                $nilai = $penilaian?->nilai;
             }
         }
 
-        // Jika mapel atau tugas tidak ditemukan, mungkin redirect atau tampilkan pesan error
         if (!$mapel || !$tugas) {
             Log::warning("Mapel atau Tugas tidak ditemukan saat mengakses halaman pengumpulan tugas. Mapel Slug: {$mapelSlug}, Minggu Ke: {$mingguKe}. Mapel ditemukan: " . ($mapel ? $mapel->nama : 'Tidak'), ['user_id' => $userId]);
 
@@ -63,8 +68,7 @@ class PengumpulanTugasController extends Controller
         }
 
         $tipe = 'siswa';
-        // --- Pastikan variabel 'mingguKe' (camelCase) digunakan di compact() ---
-        return view('siswa.pengumpulan_tugas', compact('mapel', 'mingguKe', 'tugas', 'pengumpulanTugas', 'tipe'));
+        return view('siswa.pengumpulan_tugas', compact('mapel', 'mingguKe', 'tugas', 'pengumpulanTugas', 'tipe', 'nilai'));
     }
 
     /**
@@ -72,7 +76,6 @@ class PengumpulanTugasController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. Validasi Input
         $request->validate([
             'mapel_id' => ['required', 'integer', 'exists:mapel,id'],
             'minggu_ke' => ['required', 'integer', 'min:1', 'max:16'],
@@ -81,7 +84,7 @@ class PengumpulanTugasController extends Controller
             'keterangan' => ['nullable', 'string', 'max:500'],
         ]);
 
-        $userId = Auth::id(); // ID siswa yang sedang login
+        $userId = Auth::id();
         $mapelId = $request->input('mapel_id');
         $mingguKe = $request->input('minggu_ke');
         $tugasId = $request->input('tugas_id');
@@ -89,21 +92,14 @@ class PengumpulanTugasController extends Controller
         $file = $request->file('file_tugas');
 
         try {
-            // 2. Simpan File ke Storage
-            // MENGGUNAKAN DISK 'public' SECARA EKSPLISIT
             $filePath = $file->storeAs(
                 'pengumpulan_tugas/' . $mapelId . '/' . $mingguKe . '/' . $userId,
                 $file->getClientOriginalName(),
-                'public' // MENENTUKAN DISK 'public'
+                'public'
             );
 
-            // Path relatif untuk database (tidak perlu mengganti 'public/' karena sudah di disk public)
-            // Cukup hapus 'public/' dari $filePath jika $filePath mengembalikan path lengkap dengan nama disk.
-            // Namun, storeAs dengan disk 'public' biasanya sudah mengembalikan path relatif terhadap root disk tersebut.
-            // Jadi, $filePath harusnya sudah siap untuk disimpan ke DB.
-            $relativePath = $filePath; // Menggunakan langsung $filePath karena sudah relatif terhadap disk 'public'
+            $relativePath = $filePath;
 
-            // 3. Simpan data ke Database menggunakan updateOrCreate
             $pengumpulanTugas = PengumpulanTugas::updateOrCreate(
                 [
                     'siswa_id' => $userId,
@@ -120,7 +116,6 @@ class PengumpulanTugasController extends Controller
 
             Log::info("Tugas berhasil diunggah dan disimpan untuk Siswa ID: {$userId}, Tugas ID: {$tugasId}. Path: {$relativePath}");
 
-            // --- PERBAIKAN: Dapatkan nama mapel dan mapping untuk redirect yang benar ---
             $currentMapel = Mapel::find($mapelId);
             $mapelNameMapping = [
                 'Bahasa Indonesia' => 'indo',
@@ -131,7 +126,6 @@ class PengumpulanTugasController extends Controller
 
             if (!$mapelSlugForRedirect) {
                 Log::error("Gagal mendapatkan mapel_slug untuk redirect setelah unggah tugas. Mapel ID: {$mapelId}.");
-                // Fallback jika mapelSlug tidak ditemukan, redirect ke halaman kursus
                 return redirect()->route('siswa.kursus.index')->with('error', 'Tugas berhasil diunggah, tetapi terjadi kesalahan saat mengarahkan kembali. Silakan navigasi manual.');
             }
 
@@ -146,12 +140,35 @@ class PengumpulanTugasController extends Controller
         }
     }
 
+    /**
+     * Rekap tugas untuk guru.
+     */
     public function rekapGuru()
     {
-        // Ambil semua data pengumpulan tugas, termasuk relasi ke siswa dan tugas
-        $tugas = \App\Models\PengumpulanTugas::with(['siswa', 'tugas'])->get();
+        $tugas = PengumpulanTugas::with(['siswa', 'tugas'])->get();
 
-        $tipe='guru';
+        $tipe = 'guru';
         return view('guru.pengumpulan', compact('tugas', 'tipe'));
+    }
+
+    /**
+     * Hapus data pengumpulan tugas.
+     */
+    public function destroy($id)
+    {
+        try {
+            $pengumpulan = PengumpulanTugas::findOrFail($id);
+
+            if ($pengumpulan->file_path && Storage::disk('public')->exists($pengumpulan->file_path)) {
+                Storage::disk('public')->delete($pengumpulan->file_path);
+            }
+
+            $pengumpulan->delete();
+
+            return redirect()->back()->with('success', 'Data pengumpulan tugas berhasil dihapus.');
+        } catch (\Exception $e) {
+            Log::error("Gagal menghapus pengumpulan tugas ID {$id}: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data.');
+        }
     }
 }

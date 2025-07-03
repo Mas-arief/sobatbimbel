@@ -176,7 +176,8 @@
                                             <div>
                                                 <button data-modal-target="modalTambahMateri"
                                                     data-modal-toggle="modalTambahMateri"
-                                                    @click="setMateriModalValues({{ $mapel['indo']->id }}, i);">
+                                                    @click="setMateriModalValues({{ $mapel['indo']->id }}, i);"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
@@ -200,7 +201,8 @@
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
-                                                    @click="setTugasModalValues({{ $mapel['indo']->id }}, i);">
+                                                    @click="setTugasModalValues({{ $mapel['indo']->id }}, i);"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-book"></i>
                                                     <span>Buat Tugas</span>
                                                 </button>
@@ -217,14 +219,22 @@
                                                 </template>
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a href="{{ route('guru.pengumpulan') }}">
+                                                <a href="{{ route('guru.pengumpulan') }}"
+                                                 class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-paperclip"></i>
                                                     <span>Pengumpulan</span>
                                                 </a>
 
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['indo']->id) }}' + '?minggu=' + i">
+                                                <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['indo']->id]) }}' + '?minggu=' + i"
+                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    <i class="fas fa-clipboard-check"></i>
+                                                    <span>Penilaian</span>
+                                                </a>
+
+                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['indo']->id) }}' + '?minggu=' + i"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>Absensi</span>
                                                 </a>
@@ -238,7 +248,8 @@
                                             <div>
                                                 <button data-modal-target="modalTambahMateri"
                                                     data-modal-toggle="modalTambahMateri"
-                                                    @click="setMateriModalValues({{ $mapel['inggris']->id }}, i);">
+                                                    @click="setMateriModalValues({{ $mapel['inggris']->id }}, i);"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
@@ -259,7 +270,8 @@
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
-                                                    @click="setTugasModalValues({{ $mapel['inggris']->id }}, i);">
+                                                    @click="setTugasModalValues({{ $mapel['inggris']->id }}, i);"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-book"></i>
                                                     <span>Buat Tugas</span>
                                                 </button>
@@ -276,14 +288,22 @@
                                                 </template>
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a href="{{ route('guru.pengumpulan') }}">
+                                                <a href="{{ route('guru.pengumpulan') }}"
+                                                 class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-paperclip"></i>
                                                     <span>Pengumpulan</span>
                                                 </a>
 
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + i">
+                                                <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['inggris']->id]) }}' + '?minggu=' + i"
+                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    <i class="fas fa-clipboard-check"></i>
+                                                    <span>Penilaian</span>
+                                                </a>
+
+                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['inggris']->id) }}' + '?minggu=' + i"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>Absensi</span>
                                                 </a>
@@ -297,7 +317,8 @@
                                             <div>
                                                 <button data-modal-target="modalTambahMateri"
                                                     data-modal-toggle="modalTambahMateri"
-                                                    @click="setMateriModalValues({{ $mapel['mtk']->id }}, i);">
+                                                    @click="setMateriModalValues({{ $mapel['mtk']->id }}, i);"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
@@ -318,7 +339,8 @@
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
                                                 <button data-modal-target="modalBuatTugas" data-modal-toggle="modalBuatTugas"
-                                                    @click="setTugasModalValues({{ $mapel['mtk']->id }}, i);">
+                                                    @click="setTugasModalValues({{ $mapel['mtk']->id }}, i);"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-book"></i>
                                                     <span>Buat Tugas</span>
                                                 </button>
@@ -335,14 +357,22 @@
                                                 </template>
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a href="{{ route('guru.pengumpulan') }}">
+                                                <a href="{{ route('guru.pengumpulan') }}"
+                                                 class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-paperclip"></i>
                                                     <span>Pengumpulan</span>
                                                 </a>
 
                                                 <hr class="my-2 border-gray-300 dark:border-gray-600 shadow-[0_4px_16px_rgba(0,0,0,0.45)]">
 
-                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + i">
+                                                <a x-bind:href="'{{ route('penilaian.index', ['mapelId' => $mapel['mtk']->id]) }}' + '?minggu=' + i"
+                                                    class="flex items-center space-x-2 text-white hover:underline text-sm">
+                                                    <i class="fas fa-clipboard-check"></i>
+                                                    <span>Penilaian</span>
+                                                </a>
+
+                                                <a x-bind:href="'{{ route('guru.absensi.show', $mapel['mtk']->id) }}' + '?minggu=' + i"
+                                                     class="flex items-center space-x-2 text-white hover:underline text-sm">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>Absensi</span>
                                                 </a>

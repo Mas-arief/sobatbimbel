@@ -42,7 +42,6 @@
                         <th class="px-4 py-3 border">SISWA</th>
                         <th class="px-4 py-3 border">TANGGAL KUMPUL</th>
                         <th class="px-4 py-3 border">TUGAS</th>
-                        <th class="px-4 py-3 border">NILAI</th>
                         <th class="px-4 py-3 border">AKSI</th>
                     </tr>
                 </thead>
@@ -53,13 +52,8 @@
                             <td class="px-4 py-2 border">{{ $item->siswa->name }}</td>
                             <td class="px-4 py-2 border">{{ $item->created_at->format('d-m-Y') }}</td>
                             <td class="px-4 py-2 border">{{ $item->tugas->judul ?? '-' }}</td>
-                            <td class="px-4 py-2 border">{{ $item->nilai ?? '-' }}</td>
                             <td class="px-4 py-2 border">
                                 <div class="flex flex-col sm:flex-row items-center justify-center gap-2">
-                                    <a href="{{ route('guru.tugas.edit', $item->id) }}"
-                                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                                        Edit
-                                    </a>
                                     @if ($item->file_path)
                                         <a href="{{ Storage::url($item->file_path) }}" target="_blank"
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -68,6 +62,16 @@
                                     @else
                                         <span class="text-gray-500 text-xs">Belum ada file</span>
                                     @endif
+
+                                    <form action="{{ route('pengumpulan.destroy', $item->id) }}" method="POST"
+                                         onsubmit="return confirm('Yakin ingin menghapus tugas ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                     <button type="submit"
+                                     class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                                      Hapus
+                                       </button>
+                                 </form>
                                 </div>
                             </td>
                         </tr>

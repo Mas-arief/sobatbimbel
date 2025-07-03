@@ -154,6 +154,8 @@ Route::get('/guru/tugas/download/{id}', [TugasController::class, 'download'])->n
      Route::get('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'index'])->name('pengumpulan_tugas');
     // Rute POST untuk menyimpan file tugas yang diunggah
     Route::post('/siswa.pengumpulan_tugas', [PengumpulanTugasController::class, 'store'])->name('siswa.pengumpulan_tugas.store');
+    Route::delete('/pengumpulan/{id}', [PengumpulanTugasController::class, 'destroy'])->name('pengumpulan.destroy');
+
 
 });
 
