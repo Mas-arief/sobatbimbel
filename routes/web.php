@@ -133,7 +133,7 @@ Route::get('/guru/penilaian/{mapelId}', [PenilaianController::class, 'index'])->
 Route::post('/guru/penilaian/simpan', [PenilaianController::class, 'simpan'])->name('penilaian.simpan');
 Route::post('/guru/penilaian/store', [PenilaianController::class, 'store'])->name('penilaian.store');
 // Untuk edit nilai dari rekap tugas
-Route::get('/guru/penilaian/{siswa_id}/{minggu}', [PenilaianController::class, 'edit'])->name('edit_tugas');
+Route::get('/guru/penilaian/{siswa_id}/{tugas_id}/{minggu}', [PenilaianController::class, 'edit'])->name('edit_tugas');
 
 
     // Tugas (untuk guru menambah tugas)

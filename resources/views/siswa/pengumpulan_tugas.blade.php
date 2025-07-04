@@ -117,13 +117,6 @@
                     @error('file_tugas') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Keterangan --}}
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-gray-700" for="keterangan">📝 Keterangan</label>
-                    <textarea name="keterangan" rows="3" class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm">{{ old('keterangan') }}</textarea>
-                    @error('keterangan') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
-                </div>
-
                 {{-- Tombol --}}
                 <div>
                     <button type="submit"
