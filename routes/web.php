@@ -123,7 +123,7 @@ Route::get('/guru/tugas/download/{id}', [TugasController::class, 'download'])->n
     Route::get('/guru.kursus', [KursusGuruController::class, 'index'])->name('guru.kursus');
     // Absensi
     Route::middleware(['auth'])->prefix('guru')->name('guru.')->group(function () {
-        Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi');
+        Route::get('/absensi', action: [AbsensiController::class, 'index'])->name('absensi');
         Route::get('/absensi/{mapelId}', [AbsensiController::class, 'show'])->name('absensi.show'); // <== YANG INI
         Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
     });

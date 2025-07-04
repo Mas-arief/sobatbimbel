@@ -64,19 +64,23 @@ class MateriController extends Controller
                 $filename = 'materi_' . time() . '_' . Str::random(10) . '.' . $extension;
 
                 // Store file in storage/app/public/materi
+                // $filePath akan berisi 'materi/nama_file_unik.pdf'
                 $filePath = $file->storeAs('materi', $filename, 'public');
+
+                // Ambil hanya NAMA FILENYA untuk disimpan ke database
+                $fileNameForDb = basename($filePath); // <-- BARIS PERBAIKAN DI SINI
 
                 // Simpan data ke database
                 $materi = Materi::create([
                     'judul_materi' => $validated['judul_materi'],
-                    'file_materi' => $filePath, // Path relatif dari storage/app/public
+                    'file_materi' => $fileNameForDb, // <-- SIMPAN HANYA NAMA FILENYA
                     'minggu_ke' => $validated['minggu_ke'],
                     'mapel_id' => $validated['mapel_id'],
                     'file_type' => strtolower($extension),
                     'original_filename' => $originalName
                 ]);
 
-                Log::info('Materi berhasil disimpan:', ['materi_id' => $materi->id, 'file_path' => $filePath]);
+                Log::info('Materi berhasil disimpan:', ['materi_id' => $materi->id, 'file_path_db' => $fileNameForDb]);
 
                 // Redirect kembali ke halaman kursus dengan tab yang benar
                 return redirect()->route('guru.kursus', ['tab' => $request->input('tab')])->with('success', 'Materi berhasil ditambahkan!');
@@ -112,7 +116,8 @@ class MateriController extends Controller
     {
         $materi = Materi::findOrFail($id);
 
-        $filePath = storage_path('app/public/' . $materi->file_materi);
+        // Path untuk download harus lengkap dari root storage/app
+        $filePath = storage_path('app/public/materi/' . $materi->file_materi); // Pastikan ini sesuai dengan lokasi fisik file
 
         if (!file_exists($filePath)) {
             abort(404, 'File tidak ditemukan');
@@ -129,10 +134,13 @@ class MateriController extends Controller
         try {
             $materi = Materi::findOrFail($id);
 
+            // Path untuk menghapus file dari storage (relatif dari disk 'public')
+            $filePathInStorage = 'materi/' . $materi->file_materi; // Tambahkan 'materi/' di sini
+
             // Hapus file dari storage
-            if (Storage::disk('public')->exists($materi->file_materi)) {
-                Storage::disk('public')->delete($materi->file_materi);
-                Log::info('File materi dihapus dari storage:', ['path' => $materi->file_materi]);
+            if (Storage::disk('public')->exists($filePathInStorage)) {
+                Storage::disk('public')->delete($filePathInStorage);
+                Log::info('File materi dihapus dari storage:', ['path' => $filePathInStorage]);
             }
 
             // Hapus record dari database

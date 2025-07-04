@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Tugas;
 use App\Models\Mapel; // Pastikan ini di-import jika digunakan untuk helper
 use App\Models\PengumpulanTugas; // Pastikan ini di-import jika digunakan
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth; // Tambahkan ini untuk auth()->id()
+use Illuminate\Support\Facades\Auth; // Tambahkan ini untuk Auth::id()
+use Illuminate\Support\Str; // Tambahkan ini jika Str::contains digunakan di controller lain
 
 class TugasController extends Controller
 {
@@ -61,24 +62,28 @@ class TugasController extends Controller
     }
 
     /**
-     * Metode untuk menampilkan detail tugas atau langsung mengunduh file.
+     * Metode untuk mengunduh file tugas.
      * Ini akan digunakan oleh link di Blade untuk mengunduh tugas.
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse|\Illuminate\Http\RedirectResponse
      */
-    public function show($id)
+    public function download($id) // Mengganti nama metode dari 'show' menjadi 'download'
     {
         $tugas = Tugas::findOrFail($id);
 
-        $filePath = storage_path('app/public/' . $tugas->file_path);
+        $filePath = 'public/' . $tugas->file_path; // Pastikan path ke file di storage sudah benar
 
-        if (!file_exists($filePath)) {
-            abort(404, 'File tugas tidak ditemukan.');
+        if (!Storage::exists($filePath)) {
+            // Log error jika file tidak ditemukan
+            Log::error('File tugas tidak ditemukan:', ['path' => $filePath, 'tugas_id' => $id]);
+            return redirect()->back()->with('error', 'File tugas tidak ditemukan.');
         }
 
         // Mengambil nama file asli dari path yang disimpan atau menggunakan judul tugas
         // Jika Anda menyimpan original_filename di model Tugas, gunakan itu:
-        // return response()->download($filePath, $tugas->original_filename);
+        // return Storage::download($filePath, $tugas->original_filename);
         // Jika tidak, gunakan judul tugas atau nama file dari path:
-        return response()->download($filePath, $tugas->judul . '.pdf');
+        return Storage::download($filePath, $tugas->judul . '.' . pathinfo($tugas->file_path, PATHINFO_EXTENSION));
     }
 
     public function edit($id)
@@ -103,6 +108,8 @@ class TugasController extends Controller
     /**
      * Metode untuk menghapus tugas dan file terkait.
      * Ini akan digunakan oleh tombol "Hapus" di Blade.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
