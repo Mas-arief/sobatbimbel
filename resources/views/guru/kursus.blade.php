@@ -174,7 +174,8 @@
                                                         </button>
                                                         <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
 
-                                                        <a href="{{ route('guru.pengumpulan') }}"
+                                                        {{-- MODIFIED: Pass mapel_id and minggu to pengumpulan route --}}
+                                                        <a x-bind:href="'{{ route('guru.pengumpulan') }}' + '?mapel_id=' + {{ $mapel['indo']->id }} + '&minggu=' + i"
                                                             class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
                                                             <i class="fas fa-paperclip"></i>
                                                             <span>Pengumpulan</span>
@@ -217,7 +218,8 @@
                                                         </button>
                                                         <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
 
-                                                        <a href="{{ route('guru.pengumpulan') }}"
+                                                        {{-- MODIFIED: Pass mapel_id and minggu to pengumpulan route --}}
+                                                        <a x-bind:href="'{{ route('guru.pengumpulan') }}' + '?mapel_id=' + {{ $mapel['inggris']->id }} + '&minggu=' + i"
                                                             class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
                                                             <i class="fas fa-paperclip"></i>
                                                             <span>Pengumpulan</span>
@@ -246,6 +248,8 @@
                                                     <i class="fas fa-file-pdf"></i>
                                                     <span>Tambah Materi</span>
                                                 </button>
+                                                <p class="ml-6 text-gray-100">Materi Matematika</p>
+                                                <hr class="my-2 border-gray-300 dark:border-gray-600">
 
                                                 {{-- Conditional display for "Buat Tugas" and "Pengumpulan" --}}
                                                 <template x-if="i === mingguAktif">
@@ -258,7 +262,8 @@
                                                         </button>
                                                         <p class="ml-6 text-gray-100">Pengumpulan Tugas</p>
 
-                                                        <a href="{{ route('guru.pengumpulan') }}"
+                                                        {{-- MODIFIED: Pass mapel_id and minggu to pengumpulan route --}}
+                                                        <a x-bind:href="'{{ route('guru.pengumpulan') }}' + '?mapel_id=' + {{ $mapel['mtk']->id }} + '&minggu=' + i"
                                                             class="flex items-center space-x-2 text-white hover:underline text-sm ml-6">
                                                             <i class="fas fa-paperclip"></i>
                                                             <span>Pengumpulan</span>
