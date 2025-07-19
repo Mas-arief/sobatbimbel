@@ -19,7 +19,7 @@ class SiswaController extends Controller
     {
         // Memulai query untuk mengambil pengguna dengan peran 'siswa' yang sudah diverifikasi.
         $query = User::where('role', 'siswa')
-                     ->where('is_verified', true); // Hanya siswa yang sudah diverifikasi yang akan ditampilkan.
+            ->where('is_verified', true); // Hanya siswa yang sudah diverifikasi yang akan ditampilkan.
 
         // Memeriksa jika ada input pencarian dari pengguna.
         if ($request->has('search') && $request->search !== null) {
@@ -28,7 +28,7 @@ class SiswaController extends Controller
             // Menambahkan kondisi WHERE untuk mencari di kolom 'custom_identifier' atau 'name'.
             $query->where(function ($q) use ($search) {
                 $q->where('custom_identifier', 'like', "%{$search}%") // Mencari ID kustom yang mengandung string pencarian.
-                  ->orWhere('name', 'like', "%{$search}%"); // Atau mencari nama yang mengandung string pencarian.
+                    ->orWhere('name', 'like', "%{$search}%"); // Atau mencari nama yang mengandung string pencarian.
             });
         }
 
@@ -50,16 +50,15 @@ class SiswaController extends Controller
      */
     public function destroy(User $siswa)
     {
-        // Memastikan bahwa pengguna yang akan dihapus memiliki peran 'siswa'.
+        // Pastikan yang dihapus memang siswa
         if ($siswa->role !== 'siswa') {
-            // Jika bukan siswa, arahkan kembali dengan pesan error.
-            return redirect()->route('admin.profile_siswa.index')->with('error', 'Hanya siswa yang dapat dihapus dari daftar ini.');
+            return redirect()->back()->with('error', 'Hanya akun siswa yang dapat dihapus.');
         }
 
-        // Menghapus record siswa dari database.
+        // Hapus siswa
         $siswa->delete();
 
-        // Mengarahkan kembali ke halaman daftar siswa dengan pesan sukses.
-        return redirect()->route('admin.profile_siswa.index')->with('success', 'Akun siswa berhasil dihapus.');
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin.profile_siswa')->with('success', 'Akun siswa berhasil dihapus.');
     }
 }

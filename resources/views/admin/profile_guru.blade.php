@@ -66,10 +66,8 @@
                 </tr>
             </thead>
             {{-- Body Tabel --}}
-            <tbody class="text-center">
-                {{-- Loop melalui setiap guru dalam koleksi $dataGuru --}}
-                {{-- @forelse digunakan untuk menampilkan pesan jika koleksi $dataGuru kosong --}}
-                @forelse ($dataGuru as $guru)
+            <tbody class="text-center">{{-- Loop melalui setiap guru dalam koleksi $dataGuru --}}
+                @forelse ($dataGuru as $guru){{-- @forelse digunakan untuk menampilkan pesan jika koleksi $dataGuru kosong --}}
                     <tr class="border border-gray-300">
                         <td class="px-2 py-2 border break-words">{{ $guru->custom_identifier }}</td> {{-- Menampilkan ID kustom --}}
                         <td class="px-2 py-2 border font-semibold">{{ $guru->name ?? $guru->username }}</td> {{-- Nama atau username --}}

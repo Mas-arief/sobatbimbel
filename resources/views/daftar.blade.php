@@ -55,9 +55,7 @@
 
         <form action="{{ route('register') }}" method="POST">
             @csrf
-
-            {{-- Username --}}
-            <div class="relative mb-4">
+            <div class="relative mb-4">{{-- Username --}}
                 <input type="text" name="username" placeholder="Nama Pengguna"
                     class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 @error('username') border-red-500 @enderror"
                     value="{{ old('username') }}" required />
@@ -69,8 +67,7 @@
                 @enderror
             </div>
 
-            {{-- Nama --}}
-            <div class="relative mb-4">
+            <div class="relative mb-4"> {{-- Nama --}}
                 <input type="text" name="name" placeholder="Nama Lengkap"
                     class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 @error('name') border-red-500 @enderror"
                     value="{{ old('name') }}" required />
@@ -82,8 +79,7 @@
                 @enderror
             </div>
 
-            {{-- Email --}}
-            <div class="relative mb-4">
+            <div class="relative mb-4"> {{-- Email --}}
                 <input type="email" name="email" placeholder="Email"
                     class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 @error('email') border-red-500 @enderror"
                     value="{{ old('email') }}" required />
@@ -95,8 +91,7 @@
                 @enderror
             </div>
 
-            {{-- Password --}}
-            <div class="relative mb-4">
+            <div class="relative mb-4"> {{-- Password --}}
                 <input type="password" name="password" placeholder="Kata Sandi"
                     class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400 @error('password') border-red-500 @enderror"
                     required />
@@ -108,8 +103,7 @@
                 @enderror
             </div>
 
-            {{-- Konfirmasi Password --}}
-            <div class="relative mb-4">
+            <div class="relative mb-4"> {{-- Konfirmasi Password --}}
                 <input type="password" name="password_confirmation" placeholder="Konfirmasi Kata Sandi"
                     class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 placeholder-gray-400"
                     required />
@@ -118,8 +112,7 @@
                 </span>
             </div>
 
-            {{-- Role --}}
-            <div class="relative mb-6">
+            <div class="relative mb-6">{{-- Role --}}
                 <select name="role" class="w-full pl-10 pr-4 py-2 rounded-full text-gray-700 @error('role') border-red-500 @enderror" required>
                     <option value="">Pilih Peran</option>
                     <option value="siswa" {{ old('role') == 'siswa' ? 'selected' : '' }}>Siswa</option>

@@ -67,7 +67,7 @@ Route::put('/admin/guru/{id}/atur-mapel', [GuruController::class, 'aturMapel'])-
 Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('admin.guru.destroy'); // Menghapus guru
 
 Route::get('/admin.profile_siswa', [SiswaController::class, 'index'])->name('admin.profile_siswa');
-Route::delete('/admin/siswa/{id}', [SiswaController::class, 'destroy'])->name('admin.siswa.destroy');
+Route::delete('/admin/siswa/{siswa}', [SiswaController::class, 'destroy'])->name('admin.siswa.destroy');
 
 // Guru Mata Pelajaran (dari sisi Admin) - dari blok kedua
 Route::get('/admin.guru_mapel', function () {
