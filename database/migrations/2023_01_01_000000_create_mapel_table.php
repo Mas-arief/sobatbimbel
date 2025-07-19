@@ -7,22 +7,29 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migrasi.
+     * Metode ini membuat tabel 'mapel' di database.
+     *
+     * @return void
      */
     public function up(): void
     {
+        // Membuat tabel 'mapel'
         Schema::create('mapel', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->timestamps();
+            $table->id(); // Kolom ID auto-incrementing (primary key)
+            $table->string('nama'); // Kolom untuk menyimpan nama mata pelajaran (misal: "Matematika", "Bahasa Indonesia")
+            $table->timestamps(); // Kolom `created_at` dan `updated_at` untuk mencatat waktu pembuatan dan pembaruan record
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Balikkan migrasi (hapus tabel).
+     * Metode ini menghapus tabel 'mapel' jika migrasi dibalikkan.
+     *
+     * @return void
      */
     public function down(): void
     {
-        Schema::dropIfExists('mapel');
+        Schema::dropIfExists('mapel'); // Hapus tabel 'mapel' jika ada
     }
 };
